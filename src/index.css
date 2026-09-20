@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-drivex-bg: #08090B;
+  --color-drivex-card: rgba(255, 255, 255, 0.03);
+  --color-drivex-card-hover: rgba(255, 255, 255, 0.05);
+  --color-drivex-border: rgba(255, 255, 255, 0.1);
+  --color-drivex-accent: #D4AF37;
+  --color-drivex-accent-hover: #C5A028;
+  --color-drivex-text: #FFFFFF;
+  --color-drivex-text-muted: #A1A1AA;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  :root {
+    background-color: var(--color-drivex-bg);
+    color: var(--color-drivex-text);
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    background-color: var(--color-drivex-bg);
+    color: var(--color-drivex-text);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    background: rgba(20, 21, 26, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-drivex-border);
+  }
+
+  .cinematic-gradient {
+    background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, rgba(8, 9, 11, 0) 60%);
+  }
+  
+  .cinematic-shadow {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.05);
+  }
+}
