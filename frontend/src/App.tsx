@@ -16,7 +16,16 @@ import { CustomerLayout } from './components/layout/CustomerLayout';
 import { CustomerDashboardPage } from './pages/customer/CustomerDashboardPage';
 import { AdminLayout } from './components/layout/AdminLayout';
 
+import { useEffect } from 'react';
+
 function App() {
+  useEffect(() => {
+    fetch('http://localhost:5000/api/health')
+      .then(res => res.json())
+      .then(data => console.log('Backend connection status:', data))
+      .catch(err => console.error('Failed to connect to backend:', err));
+  }, []);
+
   return (
     <Router>
       <AuthProvider>
