@@ -13,6 +13,7 @@ import { RegisterPage } from './pages/auth/RegisterPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 
 import { CustomerLayout } from './components/layout/CustomerLayout';
+import { CustomerDashboardPage } from './pages/customer/CustomerDashboardPage';
 import { AdminLayout } from './components/layout/AdminLayout';
 
 function App() {
@@ -42,7 +43,7 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<div className="text-white text-2xl font-bold">Welcome to your Dashboard</div>} />
+              <Route index element={<CustomerDashboardPage />} />
               <Route path="bookings" element={<div className="text-white">My Bookings View</div>} />
               <Route path="profile" element={<div className="text-white">Profile Settings View</div>} />
             </Route>
