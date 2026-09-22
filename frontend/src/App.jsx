@@ -7,11 +7,14 @@ import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import AdminLayout from './layouts/AdminLayout';
 
-// Pages (Stubs for now)
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Vehicles from './pages/Vehicles';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import {
-  Vehicles, VehicleDetails, Booking, About, Contact,
-  Login, Register,
+  VehicleDetails, Booking,
   CustomerDashboard, MyBookings, Profile,
   AdminDashboard, AdminVehicles, AdminBookings, AdminCustomers, AdminDrivers, AdminMaintenance, AdminReports, AdminSettings
 } from './pages/stubs';

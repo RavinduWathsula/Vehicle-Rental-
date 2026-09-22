@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Container from './Container';
 
 const Navbar = () => {
@@ -39,17 +40,28 @@ const Navbar = () => {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name}
-                to={link.path} 
-                className={`text-sm font-medium tracking-wider uppercase transition-colors hover:text-[var(--color-drivex-accent)] ${
-                  location.pathname === link.path ? 'text-[var(--color-drivex-accent)]' : 'text-gray-300'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
+              return (
+                <Link 
+                  key={link.name}
+                  to={link.path} 
+                  className={`relative py-2 text-sm font-medium tracking-wider uppercase transition-colors hover:text-[var(--color-drivex-accent)] ${
+                    isActive ? 'text-[var(--color-drivex-accent)]' : 'text-gray-300'
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-drivex-accent)]"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-4">

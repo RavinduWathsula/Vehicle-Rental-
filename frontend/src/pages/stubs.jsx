@@ -3,11 +3,8 @@ import Container from '../components/Container';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
 
-export const Vehicles = () => <Container className="py-12"><SectionHeading title="Our Fleet" /><GlassCard>Vehicle listing goes here.</GlassCard></Container>;
 export const VehicleDetails = () => <Container className="py-12"><SectionHeading title="Vehicle Details" /><GlassCard>Details and 3D viewer go here.</GlassCard></Container>;
 export const Booking = () => <Container className="py-12"><SectionHeading title="Complete Booking" /><GlassCard>Booking form goes here.</GlassCard></Container>;
-export const About = () => <Container className="py-12"><SectionHeading title="About DRIVEX" /><GlassCard>About content goes here.</GlassCard></Container>;
-export const Contact = () => <Container className="py-12"><SectionHeading title="Contact Us" /><GlassCard>Contact form goes here.</GlassCard></Container>;
 
 // Auth
 export const Login = () => <div className="w-full"><SectionHeading title="Welcome Back" subtitle="Sign In" /><p className="text-gray-400">Login form goes here.</p></div>;
