@@ -1,24 +1,27 @@
-const db = require('../config/db');
+const healthService = require('../services/health.service');
 
-exports.checkHealth = async (req, res) => {
-  try {
-    // Attempt a simple database query to verify full end-to-end connectivity
-    await db.query('SELECT 1');
-    
-    res.status(200).json({
-      status: 'success',
-      message: 'DRIVEX Backend is running smoothly',
-      database: 'connected',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    // If DB is down, still return backend is running, but DB is disconnected
-    res.status(200).json({
-      status: 'success',
-      message: 'DRIVEX Backend is running (Database disconnected)',
-      database: 'disconnected',
-      error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-};
+/**
+ * Health Controller
+ * Handles HTTP requests related to system health
+ */
+class HealthController {
+  /**
+   * Get API health status
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Function} next - Express next middleware function
+   */
+  getHealth = (req, res, next) => {
+    try {
+      const status = healthService.getHealthStatus();
+      return res.status(200).json({
+        success: status.success,
+        message: status.message
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+
+module.exports = new HealthController();
