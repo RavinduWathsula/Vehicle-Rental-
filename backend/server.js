@@ -8,11 +8,11 @@ const { errorHandler, notFoundHandler } = require('./src/middleware/errorMiddlew
 // Route imports
 const healthRoutes = require('./src/routes/health.routes');
 // TODO: Import other routes as they are built
-// const authRoutes = require('./src/routes/auth.routes');
+const authRoutes = require('./src/routes/auth.routes');
 // const userRoutes = require('./src/routes/user.routes');
-// const vehicleRoutes = require('./src/routes/vehicle.routes');
+const vehicleRoutes = require('./src/routes/vehicle.routes');
 // const categoryRoutes = require('./src/routes/category.routes');
-// const bookingRoutes = require('./src/routes/booking.routes');
+const bookingRoutes = require('./src/routes/booking.routes');
 // const driverRoutes = require('./src/routes/driver.routes');
 // const extraRoutes = require('./src/routes/extra.routes');
 // const locationRoutes = require('./src/routes/location.routes');
@@ -21,7 +21,7 @@ const healthRoutes = require('./src/routes/health.routes');
 // const reviewRoutes = require('./src/routes/review.routes');
 // const couponRoutes = require('./src/routes/coupon.routes');
 // const notificationRoutes = require('./src/routes/notification.routes');
-// const adminRoutes = require('./src/routes/admin.routes');
+const adminRoutes = require('./src/routes/admin.routes');
 
 const app = express();
 
@@ -47,11 +47,11 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/health', healthRoutes);
 
 // Stubbed routes for future implementation
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api/users', userRoutes);
-// app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 // app.use('/api/categories', categoryRoutes);
-// app.use('/api/bookings', bookingRoutes);
+app.use('/api/bookings', bookingRoutes);
 // app.use('/api/drivers', driverRoutes);
 // app.use('/api/extras', extraRoutes);
 // app.use('/api/locations', locationRoutes);
@@ -60,7 +60,7 @@ app.use('/api/health', healthRoutes);
 // app.use('/api/reviews', reviewRoutes);
 // app.use('/api/coupons', couponRoutes);
 // app.use('/api/notifications', notificationRoutes);
-// app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
 
 // --- Error Handling ---
 // Catch-all for 404 Not Found

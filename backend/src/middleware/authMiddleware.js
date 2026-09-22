@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 /**
  * Middleware to verify JWT token and inject user data into request
  */
-const authenticate = (req, res, next) => {
+const authenticateUser = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -37,22 +37,33 @@ const authenticate = (req, res, next) => {
 };
 
 /**
- * Middleware to restrict access to specific roles
- * @param {...String} roles Allowed roles (e.g., 'admin', 'staff')
+ * Middleware to restrict access to admin only
  */
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Forbidden. You do not have permission to perform this action.',
-      });
-    }
-    next();
-  };
+const requireAdmin = (req, res, next) => {
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden. Admin access required.',
+    });
+  }
+  next();
+};
+
+/**
+ * Middleware to restrict access to staff and admin only
+ */
+const requireStaff = (req, res, next) => {
+  if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'staff')) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden. Staff access required.',
+    });
+  }
+  next();
 };
 
 module.exports = {
-  authenticate,
-  authorize,
+  authenticateUser,
+  requireAdmin,
+  requireStaff
 };
