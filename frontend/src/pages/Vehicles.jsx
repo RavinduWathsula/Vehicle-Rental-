@@ -6,52 +6,28 @@ import VehicleCard from '../components/VehicleCard';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import Loading from '../components/Loading';
+import { vehicleService } from '../services/vehicleService';
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Mocking vehicle data for now since backend MySQL is unreachable.
-  // In a real flow, this would call vehicleService.getVehicles()
   useEffect(() => {
-    setTimeout(() => {
-      setVehicles([
-        {
-          id: 1,
-          brand: 'Porsche',
-          model: '911 GT3 RS',
-          year: 2024,
-          transmission: 'PDK Automatic',
-          fuel_type: 'petrol',
-          daily_price: '1200.00',
-          status: 'available',
-          images: [{ image_url: 'https://images.unsplash.com/photo-1503376760367-1b612164d402?q=80&w=2070&auto=format&fit=crop' }]
-        },
-        {
-          id: 2,
-          brand: 'Mercedes-Benz',
-          model: 'G63 AMG',
-          year: 2023,
-          transmission: 'Automatic',
-          fuel_type: 'petrol',
-          daily_price: '900.00',
-          status: 'available',
-          images: [{ image_url: 'https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=1974&auto=format&fit=crop' }]
-        },
-        {
-          id: 3,
-          brand: 'Lamborghini',
-          model: 'Huracan EVO',
-          year: 2024,
-          transmission: 'Automatic',
-          fuel_type: 'petrol',
-          daily_price: '1500.00',
-          status: 'rented',
-          images: [{ image_url: 'https://images.unsplash.com/photo-1519245659620-e859806a8d3b?q=80&w=1974&auto=format&fit=crop' }]
-        }
-      ]);
-      setIsLoading(false);
-    }, 1000);
+    const fetchVehicles = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await vehicleService.getVehicles();
+        setVehicles(data.data || data || []);
+      } catch (err) {
+        setError(err.message || 'Failed to load vehicles');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchVehicles();
   }, []);
 
   return (
@@ -123,6 +99,28 @@ const Vehicles = () => {
             {isLoading ? (
               <div className="h-[400px] flex items-center justify-center">
                 <Loading />
+              </div>
+            ) : error ? (
+              <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 bg-[#111218] rounded-xl border border-red-500/20">
+                <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h3 className="text-xl font-bold text-white mb-2">Oops! Something went wrong</h3>
+                <p className="text-gray-400 max-w-md">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-6 px-6 py-2 bg-[var(--color-drivex-accent)] text-black font-bold uppercase tracking-wider rounded-sm hover:opacity-90 transition-opacity"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : vehicles.length === 0 ? (
+              <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 bg-[#111218] rounded-xl border border-white/5">
+                <svg className="w-16 h-16 text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <h3 className="text-xl font-bold text-white mb-2">No Vehicles Found</h3>
+                <p className="text-gray-400 max-w-md">Try adjusting your filters to find what you're looking for.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -15,67 +15,69 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavClick = (e, path, target) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const element = document.getElementById(target);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Fleet', path: '/vehicles' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Home', path: '/#home', target: 'home' },
+    { name: 'About', path: '/#about', target: 'about' },
+    { name: 'How to Work', path: '/#how-to-work', target: 'how-to-work' },
+    { name: 'Contact', path: '/#contact', target: 'contact' }
   ];
 
   return (
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled ? 'bg-[#08090B]/90 backdrop-blur-md border-b border-white/5 py-4' : 'bg-transparent py-6'
+        scrolled ? 'bg-[#08090B]/95 backdrop-blur-xl border-b border-white/10 py-4 shadow-2xl' : 'bg-transparent py-6'
       }`}
     >
       <Container>
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-[var(--color-drivex-accent)] rounded-sm flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-8 h-8 bg-[var(--color-drivex-accent)] rounded-sm flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-[var(--color-drivex-accent)]/20">
               <span className="text-black font-black italic text-lg leading-none">D</span>
             </div>
-            <span className="text-2xl font-black tracking-widest text-white uppercase italic">
+            <span className="text-2xl font-black tracking-widest text-white uppercase italic drop-shadow-md">
               DriveX
             </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
-              return (
-                <Link 
-                  key={link.name}
-                  to={link.path} 
-                  className={`relative py-2 text-sm font-medium tracking-wider uppercase transition-colors hover:text-[var(--color-drivex-accent)] ${
-                    isActive ? 'text-[var(--color-drivex-accent)]' : 'text-gray-300'
-                  }`}
-                >
-                  {link.name}
-                  {isActive && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-drivex-accent)]"
-                      initial={false}
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
+            {navLinks.map((link) => (
+              <a 
+                key={link.name}
+                href={link.path}
+                onClick={(e) => handleNavClick(e, link.path, link.target)}
+                className={`relative py-2 text-sm font-bold tracking-wider uppercase transition-colors hover:text-[var(--color-drivex-accent)] ${
+                  scrolled ? 'text-white' : 'text-gray-100 drop-shadow-md'
+                }`}
+              >
+                {link.name}
+              </a>
+            ))}
           </nav>
 
           <div className="flex items-center gap-4">
             <Link 
               to="/login"
-              className="hidden md:block text-sm font-medium text-white hover:text-[var(--color-drivex-accent)] transition-colors"
+              className={`hidden md:block text-sm font-bold uppercase tracking-wider transition-colors hover:text-[var(--color-drivex-accent)] ${
+                scrolled ? 'text-white' : 'text-gray-100'
+              }`}
             >
-              Sign In
+              Login
             </Link>
             <Link 
-              to="/vehicles"
-              className="px-5 py-2.5 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-[var(--color-drivex-accent)] transition-colors rounded-sm"
+              to="/register"
+              className="px-5 py-2.5 bg-[var(--color-drivex-accent)] text-black text-sm font-bold uppercase tracking-wider hover:bg-white transition-colors rounded-sm shadow-lg shadow-[var(--color-drivex-accent)]/20"
             >
-              Book Now
+              Register
             </Link>
           </div>
         </div>

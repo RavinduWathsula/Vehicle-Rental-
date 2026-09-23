@@ -12,6 +12,7 @@ export const VehicleDetailsPage = () => {
   
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Extract dates from URL if the user came from the search page
   const pickupDate = searchParams.get('pickupDate') || '2026-10-01'; // Defaulting for demo purposes
@@ -20,10 +21,16 @@ export const VehicleDetailsPage = () => {
   useEffect(() => {
     const fetchVehicle = async () => {
       if (!id) return;
-      setLoading(true);
-      const data = await getVehicleById(id);
-      setVehicle(data);
-      setLoading(false);
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getVehicleById(id);
+        setVehicle(data);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load vehicle details');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchVehicle();
@@ -37,10 +44,16 @@ export const VehicleDetailsPage = () => {
     );
   }
 
-  if (!vehicle) {
+  if (error || !vehicle) {
     return (
-      <div className="min-h-screen bg-[#08090B] flex items-center justify-center pt-20">
-        <h1 className="text-2xl text-white">Vehicle not found.</h1>
+      <div className="min-h-screen bg-[#08090B] flex flex-col items-center justify-center pt-20">
+        <h1 className="text-2xl text-white mb-4">{error || 'Vehicle not found.'}</h1>
+        <button 
+          onClick={() => window.history.back()}
+          className="text-[#D4AF37] hover:underline uppercase tracking-widest text-sm"
+        >
+          Go Back
+        </button>
       </div>
     );
   }

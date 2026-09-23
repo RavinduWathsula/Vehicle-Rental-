@@ -11,11 +11,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Vehicles from './pages/Vehicles';
-import About from './pages/About';
-import Contact from './pages/Contact';
+import { VehicleDetailsPage } from './pages/VehicleDetailsPage';
+import { BookingPage } from './pages/BookingPage';
+import { CustomerDashboardPage } from './pages/customer/CustomerDashboardPage';
 import {
-  VehicleDetails, Booking,
-  CustomerDashboard, MyBookings, Profile,
   AdminDashboard, AdminVehicles, AdminBookings, AdminCustomers, AdminDrivers, AdminMaintenance, AdminReports, AdminSettings
 } from './pages/stubs';
 
@@ -27,10 +26,8 @@ const App = () => {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/vehicles" element={<Vehicles />} />
-          <Route path="/vehicles/:id" element={<VehicleDetails />} />
-          <Route path="/booking/:id" element={<Booking />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
+          <Route path="/booking/:id" element={<BookingPage />} />
         </Route>
 
         {/* Auth Routes */}
@@ -41,9 +38,9 @@ const App = () => {
 
         {/* Customer Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<CustomerDashboard />} />
-          <Route path="bookings" element={<MyBookings />} />
-          <Route path="profile" element={<Profile />} />
+          <Route index element={<CustomerDashboardPage />} />
+          <Route path="bookings" element={<CustomerDashboardPage />} />
+          <Route path="profile" element={<CustomerDashboardPage />} />
         </Route>
 
         {/* Admin Dashboard Routes */}

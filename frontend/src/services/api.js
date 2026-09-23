@@ -24,15 +24,42 @@ export const apiFetch = async (endpoint, options = {}) => {
 
   try {
     const response = await fetch(`${API_URL}${endpoint}`, config);
-    const data = await response.json();
+    let data;
+    
+    // Check if the response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      data = { message: await response.text() };
+    }
 
     if (!response.ok) {
-      throw new Error(data.message || 'An error occurred during the request');
+      // Handle specific HTTP status codes
+      switch (response.status) {
+        case 401:
+          // Unauthorized: Token expired or invalid
+          localStorage.removeItem('drivex_token');
+          window.dispatchEvent(new Event('auth-error'));
+          throw new Error('Your session has expired. Please log in again.');
+        case 403:
+          throw new Error('You do not have permission to perform this action.');
+        case 404:
+          throw new Error('The requested resource was not found.');
+        case 500:
+          // Mask sensitive backend info
+          throw new Error('An internal server error occurred. Please try again later.');
+        default:
+          throw new Error(data.message || 'An unexpected error occurred.');
+      }
     }
 
     return data;
   } catch (error) {
-    console.error(`API Error [${endpoint}]:`, error);
+    // Only log the actual error internally if needed, but the thrown error is sanitized above
+    if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+      throw new Error('Network error. Please check your connection or try again later.');
+    }
     throw error;
   }
 };
