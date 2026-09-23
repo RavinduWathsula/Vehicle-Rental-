@@ -46,6 +46,52 @@ class BookingService {
     }
 
     // 3. Calculation Engine
+    const pricing = await this.calculatePrice({
+      vehicle_id,
+      driver_id,
+      pickup_datetime,
+      return_datetime,
+      extras
+    });
+    
+
+
+    // 4. Assemble Data
+    const bookingData = {
+      user_id: userId,
+      vehicle_id,
+      driver_id: driver_id || null,
+      pickup_location_id,
+      return_location_id,
+      pickup_datetime,
+      return_datetime,
+      vehicle_amount: pricing.vehicle_amount,
+      driver_amount: pricing.driver_amount,
+      extras_amount: pricing.extras_amount,
+      discount_amount: pricing.discount_amount,
+      tax_amount: pricing.tax_amount,
+      total_amount: pricing.total_amount,
+      booking_status: 'pending',
+      payment_status: 'pending'
+    };
+
+    // 5. Transactional Insert
+    return await bookingModel.createBooking(bookingData, pricing.bookingExtrasData);
+  }
+
+  /**
+   * Calculate Booking Price dynamically without creating a booking
+   */
+  async calculatePrice(payload) {
+    const { vehicle_id, driver_id, pickup_datetime, return_datetime, extras } = payload;
+    
+    const vehicle = await vehicleModel.findById(vehicle_id);
+    if (!vehicle) {
+      const error = new Error('Vehicle not found.');
+      error.statusCode = 404;
+      throw error;
+    }
+
     const rentalDays = this._calculateDurationInDays(pickup_datetime, return_datetime);
     
     // Vehicle Price
@@ -59,20 +105,21 @@ class BookingService {
 
     // Extras Price
     let extras_amount = 0;
-    const bookingExtrasData = []; // To pass to model for insertion
+    const bookingExtrasData = [];
     
     if (extras && extras.length > 0) {
-      // Fetch current prices from DB to prevent client manipulation
-      const extraIds = extras.map(e => e.extra_id);
+      const extraIds = extras.map(e => e.extra_id || e);
       const [extrasDB] = await pool.query(
         'SELECT id, price, pricing_type FROM extras WHERE id IN (?) AND status = "active"',
         [extraIds]
       );
 
       extras.forEach(reqExtra => {
-        const dbExtra = extrasDB.find(e => e.id === reqExtra.extra_id);
+        const extraId = typeof reqExtra === 'object' ? reqExtra.extra_id : reqExtra;
+        const dbExtra = extrasDB.find(e => e.id === extraId);
+        
         if (dbExtra) {
-          const qty = reqExtra.quantity || 1;
+          const qty = typeof reqExtra === 'object' ? (reqExtra.quantity || 1) : 1;
           const cost = dbExtra.pricing_type === 'per_day' 
                         ? (dbExtra.price * qty * rentalDays)
                         : (dbExtra.price * qty);
@@ -82,46 +129,29 @@ class BookingService {
           bookingExtrasData.push({
             extra_id: dbExtra.id,
             quantity: qty,
-            price: dbExtra.price // snapshot price at time of booking
+            price: dbExtra.price
           });
         }
       });
     }
 
-    // Discount (Placeholder for coupons later)
     const discount_amount = 0;
-
-    // Subtotal
     const subtotal = vehicle_amount + driver_amount + extras_amount - discount_amount;
-
-    // Tax
     const tax_amount = parseFloat((subtotal * CONSTANTS.TAX_RATE).toFixed(2));
-
-    // Total
     const total_amount = subtotal + tax_amount;
 
-    // 4. Assemble Data
-    const bookingData = {
-      user_id: userId,
-      vehicle_id,
-      driver_id: driver_id || null,
-      pickup_location_id,
-      return_location_id,
-      pickup_datetime,
-      return_datetime,
+    return {
+      rentalDays,
       vehicle_amount,
       driver_amount,
       extras_amount,
       discount_amount,
       tax_amount,
       total_amount,
-      booking_status: 'pending',
-      payment_status: 'pending'
+      bookingExtrasData
     };
-
-    // 5. Transactional Insert
-    return await bookingModel.createBooking(bookingData, bookingExtrasData);
   }
+
 
   async getMyBookings(userId, query) {
     const limit = query.limit || 10;

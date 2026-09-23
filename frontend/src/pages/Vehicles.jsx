@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Container from '../components/Container';
-import SectionHeading from '../components/SectionHeading';
 import VehicleCard from '../components/VehicleCard';
-import Input from '../components/Input';
-import Select from '../components/Select';
 import Loading from '../components/Loading';
 import { vehicleService } from '../services/vehicleService';
+
+const CATEGORIES = ['All', 'City', 'SUV', 'Luxury', 'Premium', 'Family', 'Van'];
+const TRANSMISSIONS = ['All', 'Automatic', 'Manual'];
+const FUEL_TYPES = ['All', 'Petrol', 'Diesel', 'Electric', 'Hybrid'];
+const SEAT_OPTIONS = ['All', '2', '4', '5', '7+'];
+const AVAILABILITY = ['All', 'Available', 'Reserved'];
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Filter States
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeTransmission, setActiveTransmission] = useState('All');
+  const [activeFuel, setActiveFuel] = useState('All');
+  const [activeSeats, setActiveSeats] = useState('All');
+  const [activeAvailability, setActiveAvailability] = useState('All');
+
+  // Load Vehicles
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
@@ -26,115 +37,245 @@ const Vehicles = () => {
         setIsLoading(false);
       }
     };
-    
     fetchVehicles();
   }, []);
 
+  // Filter Logic
+  const filteredVehicles = useMemo(() => {
+    return vehicles.filter(v => {
+      // Category Match
+      if (activeCategory !== 'All') {
+        if (!v.category || v.category.toLowerCase() !== activeCategory.toLowerCase()) return false;
+      }
+      
+      // Transmission Match
+      if (activeTransmission !== 'All') {
+        if (!v.transmission || v.transmission.toLowerCase() !== activeTransmission.toLowerCase()) return false;
+      }
+      
+      // Fuel Match
+      if (activeFuel !== 'All') {
+        if (!v.fuel_type || v.fuel_type.toLowerCase() !== activeFuel.toLowerCase()) return false;
+      }
+      
+      // Seats Match
+      if (activeSeats !== 'All') {
+        if (activeSeats === '7+') {
+          if (!v.seats || v.seats < 7) return false;
+        } else {
+          if (!v.seats || v.seats.toString() !== activeSeats) return false;
+        }
+      }
+
+      // Availability Match
+      if (activeAvailability !== 'All') {
+        if (!v.status || v.status.toLowerCase() !== activeAvailability.toLowerCase()) return false;
+      }
+
+      return true;
+    });
+  }, [vehicles, activeCategory, activeTransmission, activeFuel, activeSeats, activeAvailability]);
+
+  const resetFilters = () => {
+    setActiveCategory('All');
+    setActiveTransmission('All');
+    setActiveFuel('All');
+    setActiveSeats('All');
+    setActiveAvailability('All');
+  };
+
   return (
-    <div className="w-full pt-12 pb-32">
-      {/* Header Banner */}
-      <div className="w-full h-[40vh] relative mb-16 overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop" 
-            alt="Fleet Header" 
-            className="w-full h-full object-cover grayscale opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#08090B] via-[#08090B]/60 to-transparent" />
+    <div className="w-full pt-24 pb-32 min-h-screen bg-[#040508]">
+      
+      {/* Header Section */}
+      <Container className="mb-12 text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase mb-4 text-xs"
+        >
+          Our Fleet
+        </motion.p>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter"
+        >
+          Find the vehicle built <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">for your journey.</span>
+        </motion.h1>
+      </Container>
+
+      {/* Primary Category Pills */}
+      <Container className="mb-12">
+        <div className="flex flex-wrap justify-center gap-3">
+          {CATEGORIES.map((cat, idx) => (
+            <motion.button
+              key={cat}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 + (idx * 0.05) }}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                activeCategory === cat 
+                  ? 'bg-[#D4AF37] text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+              }`}
+            >
+              {cat}
+            </motion.button>
+          ))}
         </div>
-        <Container className="h-full relative z-10 flex flex-col justify-end pb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">Our <span className="text-[var(--color-drivex-accent)] italic">Fleet</span></h1>
-            <p className="text-gray-400 max-w-xl text-lg">Browse our exclusive collection of premium, luxury, and high-performance vehicles ready for your next journey.</p>
-          </motion.div>
-        </Container>
-      </div>
+      </Container>
 
       <Container>
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* Filters Sidebar */}
+        <div className="flex flex-col xl:flex-row gap-12">
+          
+          {/* Secondary Advanced Filters Sidebar */}
           <motion.aside 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="w-full lg:w-1/4"
+            transition={{ delay: 0.4 }}
+            className="w-full xl:w-1/4 shrink-0"
           >
-            <div className="bg-[#111218] border border-white/5 rounded-xl p-6 sticky top-24">
-              <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[var(--color-drivex-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-                Filter Vehicles
-              </h3>
+            <div className="bg-[#08090B] border border-white/5 rounded-2xl p-8 sticky top-28 shadow-2xl">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-sm font-bold text-white uppercase tracking-widest">Filters</h3>
+                <button 
+                  onClick={resetFilters}
+                  className="text-xs text-[#D4AF37] hover:text-white transition-colors uppercase tracking-widest"
+                >
+                  Reset
+                </button>
+              </div>
               
-              <div className="space-y-5">
-                <Input placeholder="Search brand or model..." />
-                
-                <Select 
-                  label="Category"
-                  options={[
-                    { value: 'luxury', label: 'Luxury' },
-                    { value: 'sports', label: 'Sports' },
-                    { value: 'suv', label: 'SUV' }
-                  ]}
-                />
-                
-                <Select 
-                  label="Fuel Type"
-                  options={[
-                    { value: 'petrol', label: 'Petrol' },
-                    { value: 'electric', label: 'Electric' },
-                    { value: 'hybrid', label: 'Hybrid' }
-                  ]}
-                />
+              <div className="space-y-8">
+                {/* Transmission */}
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase tracking-widest mb-3">Transmission</label>
+                  <div className="flex flex-wrap gap-2">
+                    {TRANSMISSIONS.map(t => (
+                      <button 
+                        key={t}
+                        onClick={() => setActiveTransmission(t)}
+                        className={`px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                          activeTransmission === t ? 'bg-white text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Fuel */}
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase tracking-widest mb-3">Fuel Type</label>
+                  <div className="flex flex-wrap gap-2">
+                    {FUEL_TYPES.map(f => (
+                      <button 
+                        key={f}
+                        onClick={() => setActiveFuel(f)}
+                        className={`px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                          activeFuel === f ? 'bg-white text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                        }`}
+                      >
+                        {f}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Seats */}
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase tracking-widest mb-3">Seats</label>
+                  <div className="flex flex-wrap gap-2">
+                    {SEAT_OPTIONS.map(s => (
+                      <button 
+                        key={s}
+                        onClick={() => setActiveSeats(s)}
+                        className={`px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                          activeSeats === s ? 'bg-white text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Availability */}
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase tracking-widest mb-3">Availability</label>
+                  <div className="flex flex-wrap gap-2">
+                    {AVAILABILITY.map(a => (
+                      <button 
+                        key={a}
+                        onClick={() => setActiveAvailability(a)}
+                        className={`px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                          activeAvailability === a ? 'bg-[#D4AF37] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                        }`}
+                      >
+                        {a}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </div>
           </motion.aside>
 
-          {/* Vehicle Grid */}
+          {/* Vehicle Grid Area */}
           <div className="flex-1">
             {isLoading ? (
-              <div className="h-[400px] flex items-center justify-center">
+              <div className="h-[500px] flex items-center justify-center">
                 <Loading />
               </div>
             ) : error ? (
-              <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 bg-[#111218] rounded-xl border border-red-500/20">
+              <div className="h-[500px] flex flex-col items-center justify-center text-center p-8 bg-[#08090B] rounded-2xl border border-red-500/20">
                 <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <h3 className="text-xl font-bold text-white mb-2">Oops! Something went wrong</h3>
+                <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Error Loading Fleet</h3>
                 <p className="text-gray-400 max-w-md">{error}</p>
                 <button 
                   onClick={() => window.location.reload()} 
-                  className="mt-6 px-6 py-2 bg-[var(--color-drivex-accent)] text-black font-bold uppercase tracking-wider rounded-sm hover:opacity-90 transition-opacity"
+                  className="mt-8 px-8 py-3 bg-[var(--color-drivex-accent)] text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors rounded-sm"
                 >
                   Try Again
                 </button>
               </div>
-            ) : vehicles.length === 0 ? (
-              <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 bg-[#111218] rounded-xl border border-white/5">
-                <svg className="w-16 h-16 text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                <h3 className="text-xl font-bold text-white mb-2">No Vehicles Found</h3>
-                <p className="text-gray-400 max-w-md">Try adjusting your filters to find what you're looking for.</p>
-              </div>
+            ) : filteredVehicles.length === 0 ? (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="h-[500px] flex flex-col items-center justify-center text-center p-12 bg-[#08090B] rounded-2xl border border-white/5 shadow-2xl"
+              >
+                <div className="w-24 h-24 mb-6 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                  <svg className="w-10 h-10 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-black text-white mb-3 uppercase tracking-widest italic">No Vehicles Match</h3>
+                <p className="text-gray-400 max-w-md mb-8">
+                  We couldn't find any vehicles in our fleet matching your exact criteria. Try adjusting your filters.
+                </p>
+                <button 
+                  onClick={resetFilters}
+                  className="px-8 py-3 border border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors rounded-sm"
+                >
+                  Clear All Filters
+                </button>
+              </motion.div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {vehicles.map((vehicle, index) => (
-                  <motion.div
-                    key={vehicle.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <VehicleCard vehicle={vehicle} />
-                  </motion.div>
-                ))}
-              </div>
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <AnimatePresence>
+                  {filteredVehicles.map((vehicle) => (
+                    <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             )}
           </div>
         </div>

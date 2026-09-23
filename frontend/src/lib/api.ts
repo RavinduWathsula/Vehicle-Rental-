@@ -68,12 +68,14 @@ export interface BookingCalculationRequest {
   vehicleId: string;
   pickupDate: string;
   returnDate: string;
-  extras: string[];
+  extras?: string[];
+  driverId?: string | null;
 }
 
 export interface BookingCalculationResponse {
   rentalDays: number;
   vehicleTotal: number;
+  driverTotal?: number;
   extrasTotal: number;
   taxes: number;
   grandTotal: number;
@@ -97,11 +99,28 @@ export const getVehicleById = async (id: string): Promise<Vehicle | null> => {
 };
 
 export const calculateBookingPrice = async (data: BookingCalculationRequest): Promise<BookingCalculationResponse> => {
+  const backendPayload = {
+    vehicle_id: data.vehicleId,
+    pickup_datetime: data.pickupDate,
+    return_datetime: data.returnDate,
+    extras: data.extras || [],
+    driver_id: data.driverId || null
+  };
+  
   const response = await apiFetch('/bookings/calculate', {
     method: 'POST',
-    body: JSON.stringify(data)
+    body: JSON.stringify(backendPayload)
   });
-  return response.data || response as BookingCalculationResponse;
+  
+  const pricing = response.data || response;
+  return {
+    rentalDays: pricing.rentalDays || 1,
+    vehicleTotal: pricing.vehicle_amount || 0,
+    driverTotal: pricing.driver_amount || 0,
+    extrasTotal: pricing.extras_amount || 0,
+    taxes: pricing.tax_amount || 0,
+    grandTotal: pricing.total_amount || 0
+  } as BookingCalculationResponse;
 };
 
 export const getExtras = async (): Promise<Extra[]> => {

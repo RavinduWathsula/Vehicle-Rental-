@@ -12,6 +12,10 @@ router.use(authenticateUser);
 // @desc    Create a new booking
 router.post('/', validateRequest(createBookingSchema), bookingController.createBooking);
 
+// @route   POST /api/bookings/calculate
+// @desc    Calculate booking price
+router.post('/calculate', bookingController.calculatePrice);
+
 // @route   GET /api/bookings/my
 // @desc    Get current user's bookings
 router.get('/my', bookingController.getMyBookings);

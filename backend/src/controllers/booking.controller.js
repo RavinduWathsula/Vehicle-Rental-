@@ -17,6 +17,21 @@ class BookingController {
     }
   };
 
+  calculatePrice = async (req, res, next) => {
+    try {
+      // Note: This route might be hit before a user is fully authenticated depending on the UX, 
+      // but if it's protected, we just proceed.
+      const pricing = await bookingService.calculatePrice(req.body);
+      
+      res.status(200).json({
+        success: true,
+        data: pricing
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getMyBookings = async (req, res, next) => {
     try {
       const userId = req.user.id;
