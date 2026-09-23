@@ -22,6 +22,17 @@ const AuthLayout = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#040508] via-transparent to-[#040508]" />
       </div>
 
+      {/* Back to Home Button */}
+      <Link 
+        to="/" 
+        className="absolute top-6 left-6 md:top-8 md:left-12 z-50 flex items-center gap-2 text-white/50 hover:text-white transition-colors uppercase tracking-widest text-xs font-bold group"
+      >
+        <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Home
+      </Link>
+
       {/* Floating Animated Orbs */}
       <motion.div 
         animate={{ 

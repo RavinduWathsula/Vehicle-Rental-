@@ -37,7 +37,7 @@ const NewHero = () => {
           transition={{ duration: 1, delay: 0.4 }}
           className="text-5xl md:text-8xl font-black text-white uppercase italic tracking-tighter mb-8 leading-tight drop-shadow-2xl"
         >
-          Unleash <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">The Extraordinary</span>
+          Unleash <br/> <span className="inline-block pb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">The Extraordinary</span>
         </motion.h1>
 
         <motion.p
