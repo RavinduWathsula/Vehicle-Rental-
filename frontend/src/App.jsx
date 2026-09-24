@@ -39,7 +39,11 @@ const App = () => {
         {/* Customer Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<CustomerDashboardPage />} />
+          <Route path="vehicles" element={<Vehicles />} />
+          <Route path="vehicles/:id" element={<VehicleDetailsPage />} />
+          <Route path="booking/:id" element={<BookingPage />} />
           <Route path="bookings" element={<CustomerDashboardPage />} />
+          <Route path="favorites" element={<CustomerDashboardPage />} />
           <Route path="profile" element={<CustomerDashboardPage />} />
         </Route>
 

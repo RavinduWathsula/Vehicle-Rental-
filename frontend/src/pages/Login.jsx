@@ -20,9 +20,10 @@ const Login = () => {
     
     try {
       const response = await authService.login(formData);
-      localStorage.setItem('drivex_token', response.token);
-      localStorage.setItem('drivex_user', JSON.stringify(response.data));
-      if (response.data.role === 'admin') {
+      const { user, token } = response.data;
+      localStorage.setItem('drivex_token', token);
+      localStorage.setItem('drivex_user', JSON.stringify(user));
+      if (user.role === 'admin') {
         navigate('/admin');
       } else {
         navigate('/dashboard');

@@ -4,10 +4,12 @@ export interface Vehicle {
   id: string;
   name: string;
   brand: string;
+  model?: string;
   category: 'compact' | 'sedan' | 'suv' | 'luxury' | 'minivan' | 'sport';
   pricePerDay: number;
   transmission: 'Automatic' | 'Manual';
   fuel: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid';
+  fuel_type?: string;
   seats: number;
   doors: number;
   luggage: number;
@@ -34,6 +36,7 @@ export interface Extra {
   name: string;
   description: string;
   pricePerDay: number;
+  price?: number;
   icon: string;
 }
 

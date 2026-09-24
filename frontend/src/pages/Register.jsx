@@ -32,10 +32,10 @@ const Register = () => {
     
     try {
       const { confirmPassword, ...registerData } = formData;
-      const response = await authService.register(registerData);
-      localStorage.setItem('drivex_token', response.token);
-      localStorage.setItem('drivex_user', JSON.stringify(response.data));
-      navigate('/dashboard');
+      await authService.register(registerData);
+      
+      // The backend doesn't return a token on registration, so redirect to login
+      navigate('/login');
     } catch (err) {
       setError(err.message || 'Failed to create account.');
     } finally {

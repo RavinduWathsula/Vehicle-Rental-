@@ -13,14 +13,28 @@ import {
   ChevronRight,
   Download,
   XCircle,
-  Eye,
   CheckCircle2
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 import { getCustomerBookings, type CustomerBooking } from '../../lib/api';
 
 export const CustomerDashboardPage = () => {
-  const { user } = useAuth();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('drivex_user');
+    if (userStr) {
+      try {
+        const u = JSON.parse(userStr);
+        if (u.name) {
+          const parts = u.name.split(' ');
+          u.firstName = parts[0];
+          u.lastName = parts.slice(1).join(' ');
+        }
+        setUser(u);
+      } catch (e) {}
+    }
+  }, []);
   const [bookings, setBookings] = useState<CustomerBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'active' | 'completed' | 'cancelled'>('upcoming');
@@ -74,10 +88,49 @@ export const CustomerDashboardPage = () => {
         >
           <p className="text-[#D4AF37] text-sm font-bold tracking-[0.2em] uppercase">Digital Garage</p>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-            GOOD MORNING, <span className="text-white/80">{user?.firstName?.toUpperCase()}</span>
+            GOOD MORNING, <span className="text-white/80">{user?.firstName?.toUpperCase() || 'DRIVER'}</span>
           </h1>
         </motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex gap-3"
+        >
+          <Link to="/dashboard/vehicles" className="bg-[#D4AF37] text-black px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors shadow-[0_0_15px_rgba(212,175,55,0.4)] flex items-center gap-2">
+            <Car size={16} /> Book Vehicle
+          </Link>
+        </motion.div>
       </header>
+
+      {/* Quick Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          { label: 'Active Rentals', value: bookings.filter(b => b.status === 'active').length, icon: Car },
+          { label: 'Upcoming', value: bookings.filter(b => b.status === 'upcoming').length, icon: Calendar },
+          { label: 'Completed', value: bookings.filter(b => b.status === 'completed').length, icon: CheckCircle2 },
+          { label: 'DriveX Points', value: '2,450', icon: CreditCard },
+        ].map((stat, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + (i * 0.05) }}
+            className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col justify-between"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-2 bg-white/5 rounded-lg text-[#D4AF37]">
+                <stat.icon size={20} />
+              </div>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-white">{stat.value}</p>
+              <p className="text-xs font-bold text-white/50 uppercase tracking-wider">{stat.label}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -332,15 +385,48 @@ export const CustomerDashboardPage = () => {
           </section>
 
           {/* Quick Stats or info could go here in the future */}
-          <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-2xl p-6">
-            <h3 className="text-[#D4AF37] font-bold mb-2 flex items-center gap-2">
-              <CreditCard size={18} />
+          <div className="bg-gradient-to-br from-[#D4AF37]/20 to-transparent border border-[#D4AF37]/30 rounded-2xl p-6 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
+              <CreditCard size={100} className="text-[#D4AF37]" />
+            </div>
+            <h3 className="text-[#D4AF37] font-black tracking-widest uppercase mb-1 flex items-center gap-2">
+              DriveX Black
+            </h3>
+            <p className="text-white/70 text-sm mb-6">
+              Elite Member Status
+            </p>
+            
+            <div className="space-y-2 mb-6">
+              <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                <span className="text-white">2,450 pts</span>
+                <span className="text-white/50">5,000 pts</span>
+              </div>
+              <div className="h-2 bg-black/50 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#D4AF37] to-yellow-300 w-1/2 rounded-full" />
+              </div>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest text-right">To Next Tier</p>
+            </div>
+
+            <button className="w-full text-white text-sm font-bold bg-white/10 hover:bg-[#D4AF37] hover:text-black py-3 rounded-xl transition-colors">
+              View Rewards
+            </button>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <CreditCard size={18} className="text-[#D4AF37]" />
               Payment Method
             </h3>
-            <p className="text-white/70 text-sm mb-4">
-              Your default payment method is Visa ending in 4242.
-            </p>
-            <button className="text-white text-sm font-medium hover:text-[#D4AF37] transition-colors underline decoration-white/30 hover:decoration-[#D4AF37]/50 underline-offset-4">
+            <div className="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-white/5 mb-4">
+              <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center">
+                <span className="text-white font-bold text-xs italic">VISA</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-white">•••• •••• •••• 4242</p>
+                <p className="text-xs text-white/50">Expires 12/28</p>
+              </div>
+            </div>
+            <button className="text-white text-xs font-bold uppercase tracking-widest hover:text-[#D4AF37] transition-colors underline decoration-white/30 hover:decoration-[#D4AF37]/50 underline-offset-4">
               Manage Billing
             </button>
           </div>
