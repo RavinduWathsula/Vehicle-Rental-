@@ -14,8 +14,15 @@ import Vehicles from './pages/Vehicles';
 import { VehicleDetailsPage } from './pages/VehicleDetailsPage';
 import { BookingPage } from './pages/BookingPage';
 import { CustomerDashboardPage } from './pages/customer/CustomerDashboardPage';
+import { CustomerBookings } from './pages/customer/CustomerBookings';
+import { CustomerFavorites } from './pages/customer/CustomerFavorites';
+import { CustomerProfile } from './pages/customer/CustomerProfile';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { AdminVehicles } from './pages/admin/AdminVehicles';
+import { AdminBookings } from './pages/admin/AdminBookings';
+import { AdminCustomers } from './pages/admin/AdminCustomers';
 import {
-  AdminDashboard, AdminVehicles, AdminBookings, AdminCustomers, AdminDrivers, AdminMaintenance, AdminReports, AdminSettings
+  AdminDrivers, AdminMaintenance, AdminReports, AdminSettings
 } from './pages/stubs';
 
 const App = () => {
@@ -42,9 +49,9 @@ const App = () => {
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="vehicles/:id" element={<VehicleDetailsPage />} />
           <Route path="booking/:id" element={<BookingPage />} />
-          <Route path="bookings" element={<CustomerDashboardPage />} />
-          <Route path="favorites" element={<CustomerDashboardPage />} />
-          <Route path="profile" element={<CustomerDashboardPage />} />
+          <Route path="bookings" element={<CustomerBookings />} />
+          <Route path="favorites" element={<CustomerFavorites />} />
+          <Route path="profile" element={<CustomerProfile />} />
         </Route>
 
         {/* Admin Dashboard Routes */}
