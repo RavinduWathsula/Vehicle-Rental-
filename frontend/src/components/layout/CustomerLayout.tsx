@@ -18,7 +18,7 @@ export const CustomerLayout = () => {
       <aside className="w-full md:w-64 bg-white/5 border-r border-white/10 shrink-0 p-6 flex flex-col gap-8 md:h-[calc(100vh-6rem)] md:sticky md:top-24">
         <div>
           <h2 className="text-white font-bold text-xl">{user?.firstName} {user?.lastName}</h2>
-          <p className="text-[#D4AF37] text-xs font-bold tracking-widest uppercase mt-1">Customer</p>
+          <p className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mt-1">Customer</p>
         </div>
 
         <nav className="flex-1 flex flex-col gap-2">
@@ -30,7 +30,7 @@ export const CustomerLayout = () => {
                 to={item.path}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   isActive 
-                    ? 'bg-[#D4AF37]/10 text-[#D4AF37]' 
+                    ? 'bg-[#00E5FF]/10 text-[#00E5FF]' 
                     : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`}
               >

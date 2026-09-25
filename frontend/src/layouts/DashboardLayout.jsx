@@ -75,7 +75,7 @@ const DashboardLayout = () => {
       >
         <div className="p-8 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-[#D4AF37] rounded-sm flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-[#D4AF37]/20">
+            <div className="w-8 h-8 bg-[#00E5FF] rounded-sm flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-[#00E5FF]/20">
               <span className="text-black font-black italic text-lg leading-none">D</span>
             </div>
             <span className="text-2xl font-black tracking-widest text-white uppercase italic drop-shadow-md">
@@ -100,11 +100,11 @@ const DashboardLayout = () => {
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${
                     isActive
-                      ? 'bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20'
+                      ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20'
                       : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <Icon size={18} className={isActive ? 'text-[#D4AF37]' : 'text-white/40'} />
+                  <Icon size={18} className={isActive ? 'text-[#00E5FF]' : 'text-white/40'} />
                   {link.name}
                 </Link>
               );
@@ -114,7 +114,7 @@ const DashboardLayout = () => {
 
         <div className="mt-auto p-6 border-t border-white/5">
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4AF37] to-yellow-600 flex items-center justify-center text-black font-bold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00E5FF] to-cyan-600 flex items-center justify-center text-black font-bold">
               {user?.firstName?.[0] || 'U'}
             </div>
             <div className="overflow-hidden">
@@ -142,7 +142,7 @@ const DashboardLayout = () => {
             >
               <Menu size={20} />
             </button>
-            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-64 focus-within:w-80 transition-all focus-within:border-[#D4AF37]/50">
+            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-64 focus-within:w-80 transition-all focus-within:border-[#00E5FF]/50">
               <Search size={16} className="text-white/40" />
               <input 
                 type="text" 
@@ -155,7 +155,7 @@ const DashboardLayout = () => {
           <div className="flex items-center gap-4">
             <button className="relative w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors border border-white/5">
               <Bell size={18} />
-              <span className="absolute top-2 right-2.5 w-2 h-2 bg-[#D4AF37] rounded-full shadow-[0_0_10px_#D4AF37]" />
+              <span className="absolute top-2 right-2.5 w-2 h-2 bg-[#00E5FF] rounded-full shadow-[0_0_10px_#00E5FF]" />
             </button>
           </div>
         </header>

@@ -62,7 +62,7 @@ export const RegisterPage = () => {
                   type="text" required
                   value={formData.firstName}
                   onChange={e => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
                 />
               </div>
             </div>
@@ -74,7 +74,7 @@ export const RegisterPage = () => {
                   type="text" required
                   value={formData.lastName}
                   onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
                 />
               </div>
             </div>
@@ -88,7 +88,7 @@ export const RegisterPage = () => {
                 type="email" required
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -101,7 +101,7 @@ export const RegisterPage = () => {
                 type="tel" required
                 value={formData.phone}
                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -114,7 +114,7 @@ export const RegisterPage = () => {
                 type="password" required minLength={8}
                 value={formData.password}
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -127,7 +127,7 @@ export const RegisterPage = () => {
                 type="password" required minLength={8}
                 value={formData.confirmPassword}
                 onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -145,7 +145,7 @@ export const RegisterPage = () => {
         </form>
 
         <p className="text-center text-white/50 text-sm mt-8">
-          Already have an account? <Link to="/login" className="text-[#D4AF37] hover:text-white transition-colors ml-1">Sign in</Link>
+          Already have an account? <Link to="/login" className="text-[#00E5FF] hover:text-white transition-colors ml-1">Sign in</Link>
         </p>
       </motion.div>
     </div>

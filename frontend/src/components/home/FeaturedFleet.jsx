@@ -30,9 +30,9 @@ const FeaturedFleet = () => {
   if (loading || vehicles.length === 0) return null;
 
   return (
-    <section id="fleet" className="py-24 bg-[#040508] relative overflow-hidden">
+    <section id="fleet" className="py-24 bg-transparent relative overflow-hidden">
       {/* Background abstract elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E5FF]/5 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
@@ -43,7 +43,7 @@ const FeaturedFleet = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase text-sm mb-4">Our Collection</h2>
+            <h2 className="text-[#00E5FF] font-bold tracking-[0.3em] uppercase text-sm mb-4">Our Collection</h2>
             <h3 className="text-4xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
               Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Fleet</span>
             </h3>
@@ -57,7 +57,7 @@ const FeaturedFleet = () => {
           >
             <Link 
               to="/vehicles"
-              className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover:text-[#D4AF37] transition-colors"
+              className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover:text-[#00E5FF] transition-colors"
             >
               View Full Fleet
               <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
@@ -73,7 +73,7 @@ const FeaturedFleet = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="group relative bg-[#08090B] rounded-xl overflow-hidden border border-white/5 hover:border-[#D4AF37]/30 transition-colors"
+              className="group relative bg-[#08090B] rounded-xl overflow-hidden border border-white/5 hover:border-[#00E5FF]/30 transition-colors"
             >
               {/* Image Container */}
               <div className="relative h-64 overflow-hidden bg-[#0A0B0E]">
@@ -92,7 +92,7 @@ const FeaturedFleet = () => {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <span className="text-[#D4AF37] text-xs font-bold uppercase tracking-widest">{vehicle.brand}</span>
+                    <span className="text-[#00E5FF] text-xs font-bold uppercase tracking-widest">{vehicle.brand}</span>
                     <h4 className="text-xl font-black text-white italic uppercase tracking-wider">{vehicle.name || vehicle.model}</h4>
                   </div>
                   <div className="text-right">
@@ -119,7 +119,7 @@ const FeaturedFleet = () => {
 
                 <Link 
                   to={`/vehicles/${vehicle.id}`}
-                  className="block w-full py-3 text-center bg-transparent border border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors rounded-sm"
+                  className="block w-full py-3 text-center bg-transparent border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest text-xs hover:bg-[#00E5FF] hover:text-black transition-colors rounded-sm"
                 >
                   View Details
                 </Link>

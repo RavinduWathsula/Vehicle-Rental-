@@ -34,7 +34,7 @@ export const ForgotPasswordPage = () => {
 
         {success ? (
           <div className="flex flex-col items-center gap-4 text-center">
-            <CheckCircle size={48} className="text-[#D4AF37]" />
+            <CheckCircle size={48} className="text-[#00E5FF]" />
             <p className="text-white/80">If an account exists for {email}, a recovery link has been sent.</p>
             <Link to="/login" className="w-full mt-4">
               <Button className="w-full">BACK TO LOGIN</Button>
@@ -52,7 +52,7 @@ export const ForgotPasswordPage = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="john@example.com" 
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
                 />
               </div>
             </div>
@@ -65,7 +65,7 @@ export const ForgotPasswordPage = () => {
 
         {!success && (
           <p className="text-center text-white/50 text-sm mt-8">
-            Remembered your password? <Link to="/login" className="text-[#D4AF37] hover:text-white transition-colors ml-1">Sign in</Link>
+            Remembered your password? <Link to="/login" className="text-[#00E5FF] hover:text-white transition-colors ml-1">Sign in</Link>
           </p>
         )}
       </motion.div>

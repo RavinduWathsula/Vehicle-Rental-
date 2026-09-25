@@ -50,7 +50,7 @@ const Register = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="w-full bg-black/40 backdrop-blur-2xl p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
     >
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent opacity-50" />
       
       <div className="mb-10 text-center">
         <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-widest italic">Create Account</h2>
@@ -83,7 +83,7 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all outline-none"
+              className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
             />
           </div>
         </div>
@@ -104,7 +104,7 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
               />
             </div>
           </div>
@@ -123,7 +123,7 @@ const Register = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
               />
             </div>
           </div>
@@ -145,7 +145,7 @@ const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
               />
             </div>
           </div>
@@ -164,7 +164,7 @@ const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
               />
             </div>
           </div>
@@ -189,7 +189,7 @@ const Register = () => {
       <div className="mt-8 pt-8 border-t border-white/10 text-center">
         <p className="text-sm text-gray-400">
           Already have an account?{' '}
-          <Link to="/login" className="text-white hover:text-[#D4AF37] transition-colors font-bold uppercase tracking-widest text-xs ml-1">
+          <Link to="/login" className="text-white hover:text-[#00E5FF] transition-colors font-bold uppercase tracking-widest text-xs ml-1">
             Sign In
           </Link>
         </p>

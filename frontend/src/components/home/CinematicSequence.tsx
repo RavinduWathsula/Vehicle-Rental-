@@ -66,9 +66,9 @@ export const CinematicSequence = () => {
           >
             <h1 className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-heading font-bold text-white tracking-tighter">
               MOVE <br />
-              <span className="text-[#D4AF37] relative inline-block">
+              <span className="text-[#00E5FF] relative inline-block">
                 BEYOND.
-                <div className="absolute inset-0 bg-[#D4AF37]/20 blur-3xl -z-10 rounded-full" />
+                <div className="absolute inset-0 bg-[#00E5FF]/20 blur-3xl -z-10 rounded-full" />
               </span>
             </h1>
             <p className="mt-8 text-lg md:text-xl text-white/70 max-w-md font-light leading-relaxed">
@@ -87,7 +87,7 @@ export const CinematicSequence = () => {
         <div className="sticky top-0 h-screen flex flex-col justify-center items-end px-6 md:px-10 max-w-7xl mx-auto w-full text-right pointer-events-auto">
           <div className="scene-text max-w-xl">
             <h2 className="text-5xl md:text-7xl font-heading font-bold text-white tracking-tight">
-              BUILT FOR <br /> THE <span className="text-[#D4AF37]">CITY.</span>
+              BUILT FOR <br /> THE <span className="text-[#00E5FF]">CITY.</span>
             </h2>
             <p className="mt-6 text-lg text-white/70 font-light">
               Navigate urban environments with unparalleled grace. Our vehicles are engineered to turn city streets into your personal runway.
@@ -101,7 +101,7 @@ export const CinematicSequence = () => {
         <div className="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-10 max-w-7xl mx-auto w-full pointer-events-auto">
           <div className="scene-text max-w-xl">
             <h2 className="text-5xl md:text-7xl font-heading font-bold text-white tracking-tight">
-              DESIGNED FOR <br /> THE <span className="text-[#D4AF37]">JOURNEY.</span>
+              DESIGNED FOR <br /> THE <span className="text-[#00E5FF]">JOURNEY.</span>
             </h2>
             <p className="mt-6 text-lg text-white/70 font-light">
               Experience the open road with advanced driver assistance, premium comfort, and range that takes you further.
@@ -115,7 +115,7 @@ export const CinematicSequence = () => {
         <div className="sticky top-0 h-screen flex flex-col justify-center items-center px-6 md:px-10 max-w-7xl mx-auto w-full text-center pointer-events-auto">
           <div className="scene-text max-w-2xl flex flex-col items-center">
             <h2 className="text-5xl md:text-8xl font-heading font-bold text-white tracking-tight mb-8">
-              READY WHEN <br /> <span className="text-[#D4AF37]">YOU ARE.</span>
+              READY WHEN <br /> <span className="text-[#00E5FF]">YOU ARE.</span>
             </h2>
             <Button size="lg" className="px-12 py-6 text-lg">BOOK YOUR RENTAL NOW</Button>
           </div>

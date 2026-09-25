@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-32 relative bg-[#040508] z-20 border-t border-white/5">
+    <section id="about" className="py-32 relative bg-transparent z-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -12,7 +12,7 @@ const AboutSection = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-sm font-bold tracking-[0.3em] text-[#D4AF37] uppercase mb-4">The Standard</h2>
+            <h2 className="text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-4">The Standard</h2>
             <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic mb-8">
               Engineering <br/>Excellence.
             </h3>
@@ -26,17 +26,17 @@ const AboutSection = () => {
             <div className="flex items-center gap-8">
               <div>
                 <p className="text-3xl font-black text-white">48+</p>
-                <p className="text-xs text-[#D4AF37] tracking-widest uppercase mt-1">Vehicles</p>
+                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Vehicles</p>
               </div>
               <div className="w-px h-10 bg-white/10" />
               <div>
                 <p className="text-3xl font-black text-white">12</p>
-                <p className="text-xs text-[#D4AF37] tracking-widest uppercase mt-1">Locations</p>
+                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Locations</p>
               </div>
               <div className="w-px h-10 bg-white/10" />
               <div>
                 <p className="text-3xl font-black text-white">24/7</p>
-                <p className="text-xs text-[#D4AF37] tracking-widest uppercase mt-1">Support</p>
+                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Support</p>
               </div>
             </div>
           </motion.div>

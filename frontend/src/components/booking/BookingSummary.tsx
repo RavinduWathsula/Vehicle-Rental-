@@ -89,7 +89,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
             type="date" 
             value={pickupDate}
             onChange={(e) => setPickupDate(e.target.value)}
-            className="w-full bg-[#08090B] border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all text-sm outline-none"
+            className="w-full bg-[#08090B] border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all text-sm outline-none"
             min={new Date().toISOString().split('T')[0]}
           />
         </div>
@@ -99,7 +99,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
             type="date" 
             value={returnDate}
             onChange={(e) => setReturnDate(e.target.value)}
-            className="w-full bg-[#08090B] border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all text-sm outline-none"
+            className="w-full bg-[#08090B] border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all text-sm outline-none"
             min={pickupDate || new Date().toISOString().split('T')[0]}
           />
         </div>
@@ -108,7 +108,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
       {/* Driver Toggle */}
       <div className="mb-6">
         <label className="flex items-center gap-3 cursor-pointer group">
-          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${needsDriver ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20 group-hover:border-white/50'}`}>
+          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${needsDriver ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
             {needsDriver && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
           </div>
           <input type="checkbox" className="hidden" checked={needsDriver} onChange={() => setNeedsDriver(!needsDriver)} />
@@ -124,12 +124,12 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
             {availableExtras.map(extra => (
               <label key={extra.id} className="flex items-center justify-between cursor-pointer group">
                 <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${selectedExtras.includes(extra.id) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20 group-hover:border-white/50'}`}>
+                  <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${selectedExtras.includes(extra.id) ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
                     {selectedExtras.includes(extra.id) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                   </div>
                   <span className="text-sm text-white/80 select-none">{extra.name}</span>
                 </div>
-                <span className="text-xs text-[#D4AF37] tracking-widest">+${extra.pricePerDay || extra.price}/day</span>
+                <span className="text-xs text-[#00E5FF] tracking-widest">+${extra.pricePerDay || extra.price}/day</span>
                 <input type="checkbox" className="hidden" checked={selectedExtras.includes(extra.id)} onChange={() => handleToggleExtra(extra.id)} />
               </label>
             ))}
@@ -143,7 +143,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
           <p className="text-white/40 text-center text-sm uppercase tracking-widest py-4">Select dates to view pricing</p>
         ) : loading ? (
           <div className="flex justify-center py-6">
-            <div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : error ? (
           <p className="text-red-500 text-sm text-center py-4">{error}</p>

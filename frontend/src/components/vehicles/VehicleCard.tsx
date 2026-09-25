@@ -23,7 +23,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute top-4 left-4">
-          <span className="bg-[#D4AF37] text-black text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider">
+          <span className="bg-[#00E5FF] text-black text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider">
             {vehicle.category}
           </span>
         </div>
@@ -36,22 +36,22 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             <p className="text-sm text-white/50">{vehicle.brand}</p>
           </div>
           <div className="text-right">
-            <span className="block text-2xl font-bold text-[#D4AF37]">${vehicle.pricePerDay}</span>
+            <span className="block text-2xl font-bold text-[#00E5FF]">${vehicle.pricePerDay}</span>
             <span className="text-xs text-white/50 uppercase">per day</span>
           </div>
         </div>
 
         <div className="flex gap-4 mt-6 pt-6 border-t border-white/10 text-white/60 text-sm">
           <div className="flex items-center gap-1.5">
-            <Users size={16} className="text-[#D4AF37]" />
+            <Users size={16} className="text-[#00E5FF]" />
             <span>{vehicle.seats} Seats</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Settings size={16} className="text-[#D4AF37]" />
+            <Settings size={16} className="text-[#00E5FF]" />
             <span>{vehicle.transmission}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Fuel size={16} className="text-[#D4AF37]" />
+            <Fuel size={16} className="text-[#00E5FF]" />
             <span>{vehicle.fuel}</span>
           </div>
         </div>

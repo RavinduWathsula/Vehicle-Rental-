@@ -62,7 +62,7 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
 
       {loadingPrice ? (
         <div className="flex-1 flex items-center justify-center flex-col gap-4">
-          <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
           <p className="text-white/50 text-sm">Securely calculating pricing with backend...</p>
         </div>
       ) : pricing ? (
@@ -70,7 +70,7 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
           {/* Summary Left */}
           <div className="flex-1 flex flex-col gap-6 bg-white/5 p-6 rounded-xl border border-white/5">
             <div>
-              <h3 className="text-[#D4AF37] text-xs font-bold tracking-widest uppercase mb-4">Journey</h3>
+              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-4">Journey</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="block text-white/50 mb-1">Pickup</span>
@@ -88,7 +88,7 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
             <div className="h-px w-full bg-white/10" />
 
             <div>
-              <h3 className="text-[#D4AF37] text-xs font-bold tracking-widest uppercase mb-4">Driver Details</h3>
+              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-4">Driver Details</h3>
               <div className="text-sm">
                 <span className="text-white block">{data.customer.firstName} {data.customer.lastName}</span>
                 <span className="text-white/80 block mt-1">{data.customer.email}</span>
@@ -99,8 +99,8 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
           </div>
 
           {/* Pricing Right */}
-          <div className="flex-1 flex flex-col gap-4 bg-white/5 p-6 rounded-xl border border-[#D4AF37]/20">
-            <h3 className="text-[#D4AF37] text-xs font-bold tracking-widest uppercase mb-2">Final Cost</h3>
+          <div className="flex-1 flex flex-col gap-4 bg-white/5 p-6 rounded-xl border border-[#00E5FF]/20">
+            <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-2">Final Cost</h3>
             
             <div className="flex justify-between text-white/80 text-sm">
               <span>Vehicle ({pricing.rentalDays} days)</span>
@@ -117,11 +117,11 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
             
             <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/10">
               <span className="text-white font-heading font-bold text-xl">Total</span>
-              <span className="text-[#D4AF37] font-bold text-3xl">${pricing.grandTotal.toFixed(2)}</span>
+              <span className="text-[#00E5FF] font-bold text-3xl">${pricing.grandTotal.toFixed(2)}</span>
             </div>
             
             <div className="mt-4 flex gap-2 items-start text-[10px] text-white/40 leading-tight">
-              <ShieldAlert size={14} className="shrink-0 text-[#D4AF37]" />
+              <ShieldAlert size={14} className="shrink-0 text-[#00E5FF]" />
               <p>Prices are securely calculated by the DRIVEX backend. By clicking confirm, you agree to the rental terms and conditions.</p>
             </div>
           </div>

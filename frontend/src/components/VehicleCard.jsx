@@ -50,7 +50,7 @@ const VehicleCard = ({ vehicle }) => {
         
         <div>
           <h3 className="text-2xl font-bold text-white mb-1 uppercase tracking-wide">
-            {vehicle.brand} <span className="text-[#D4AF37]">{vehicle.model}</span>
+            {vehicle.brand} <span className="text-[#00E5FF]">{vehicle.model}</span>
           </h3>
           
           <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 text-xs text-gray-400 uppercase tracking-wider">

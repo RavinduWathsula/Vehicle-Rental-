@@ -38,7 +38,7 @@ export const ExperienceSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative w-full bg-[#08090B] py-24 md:py-32 z-10 border-t border-white/5">
+    <section className="relative w-full bg-transparent py-24 md:py-32 z-10 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-10 mb-16">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
@@ -48,7 +48,7 @@ export const ExperienceSection = () => {
           className="text-4xl md:text-6xl font-heading font-bold text-white tracking-tight"
         >
           CHOOSE YOUR <br />
-          <span className="text-[#D4AF37]">EXPERIENCE.</span>
+          <span className="text-[#00E5FF]">EXPERIENCE.</span>
         </motion.h2>
       </div>
 
@@ -111,7 +111,7 @@ export const ExperienceSection = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.4 }}
-                            className="w-10 h-10 rounded-full bg-[#D4AF37] flex items-center justify-center hidden md:flex"
+                            className="w-10 h-10 rounded-full bg-[#00E5FF] flex items-center justify-center hidden md:flex"
                           >
                             <ArrowRight size={20} className="text-black" />
                           </motion.div>

@@ -62,7 +62,7 @@ export const BookingPage = () => {
   if (loading || !vehicle) {
     return (
       <div className="min-h-screen bg-[#08090B] flex items-center justify-center pt-20">
-        <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -74,13 +74,13 @@ export const BookingPage = () => {
         {/* Progress Header */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-8">
-            Complete your <span className="text-[#D4AF37]">Booking.</span>
+            Complete your <span className="text-[#00E5FF]">Booking.</span>
           </h1>
           
           <div className="flex items-center justify-between relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-white/10 -z-10" />
             <div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-[#D4AF37] -z-10 transition-all duration-500 ease-out" 
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-[#00E5FF] -z-10 transition-all duration-500 ease-out" 
               style={{ width: `${((currentStep - 1) / 4) * 100}%` }} 
             />
             
@@ -88,7 +88,7 @@ export const BookingPage = () => {
               <div key={step.num} className="flex flex-col items-center gap-3 bg-[#08090B] px-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-300 ${
                   currentStep >= step.num 
-                    ? 'bg-[#D4AF37] text-black shadow-[0_0_15px_rgba(212,175,55,0.3)]' 
+                    ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(212,175,55,0.3)]' 
                     : 'bg-white/5 text-white/40 border border-white/10'
                 }`}>
                   {step.num}

@@ -26,7 +26,7 @@ export const StepVehicle: React.FC<Props> = ({ vehicle, prev, next }) => {
         
         <div className="w-full md:w-1/2 flex flex-col gap-4">
           <div>
-            <span className="text-[#D4AF37] text-xs font-bold tracking-widest uppercase block mb-1">
+            <span className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase block mb-1">
               {vehicle.category}
             </span>
             <h3 className="text-3xl font-heading font-bold text-white">{vehicle.name}</h3>
@@ -35,21 +35,21 @@ export const StepVehicle: React.FC<Props> = ({ vehicle, prev, next }) => {
 
           <div className="flex gap-4 mt-2 py-4 border-y border-white/10 text-white/60 text-sm">
             <div className="flex items-center gap-1.5">
-              <Users size={16} className="text-[#D4AF37]" />
+              <Users size={16} className="text-[#00E5FF]" />
               <span>{vehicle.seats}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Settings size={16} className="text-[#D4AF37]" />
+              <Settings size={16} className="text-[#00E5FF]" />
               <span>{vehicle.transmission}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Fuel size={16} className="text-[#D4AF37]" />
+              <Fuel size={16} className="text-[#00E5FF]" />
               <span>{vehicle.fuel}</span>
             </div>
           </div>
 
           <div className="mt-2">
-            <span className="text-3xl font-bold text-[#D4AF37]">${vehicle.pricePerDay}</span>
+            <span className="text-3xl font-bold text-[#00E5FF]">${vehicle.pricePerDay}</span>
             <span className="text-white/50 text-sm ml-2">/ day</span>
           </div>
         </div>

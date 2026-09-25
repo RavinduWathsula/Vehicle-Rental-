@@ -79,7 +79,7 @@ export const BookingWidget = () => {
                 value={formData.pickupLocation}
                 onChange={handleChange}
                 placeholder="City, Airport, or Station" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ export const BookingWidget = () => {
                 value={formData.returnLocation}
                 onChange={handleChange}
                 placeholder="City, Airport, or Station" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -111,7 +111,7 @@ export const BookingWidget = () => {
                   name="pickupDate"
                   value={formData.pickupDate}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
               <div className="relative w-24">
@@ -120,7 +120,7 @@ export const BookingWidget = () => {
                   name="pickupTime"
                   value={formData.pickupTime}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
             </div>
@@ -137,7 +137,7 @@ export const BookingWidget = () => {
                   name="returnDate"
                   value={formData.returnDate}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
               <div className="relative w-24">
@@ -146,7 +146,7 @@ export const BookingWidget = () => {
                   name="returnTime"
                   value={formData.returnTime}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
             </div>

@@ -66,7 +66,7 @@ export const SearchPage = () => {
                 <div className="flex flex-col gap-2">
                   {['suv', 'luxury', 'sport', 'sedan', 'compact', 'minivan'].map(cat => (
                     <label key={cat} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${category === cat ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20 group-hover:border-white/50'}`}>
+                      <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${category === cat ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
                         {category === cat && <div className="w-2 h-2 bg-black rounded-sm" />}
                       </div>
                       <span className="text-sm text-white/80 uppercase">{cat}</span>
@@ -106,7 +106,7 @@ export const SearchPage = () => {
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-sm py-2 px-4 text-white text-sm focus:outline-none focus:border-[#D4AF37] [color-scheme:dark]"
+              className="bg-white/5 border border-white/10 rounded-sm py-2 px-4 text-white text-sm focus:outline-none focus:border-[#00E5FF] [color-scheme:dark]"
             >
               <option value="recommended">Recommended</option>
               <option value="price-low">Price: Low to High</option>
@@ -117,7 +117,7 @@ export const SearchPage = () => {
 
           {loading ? (
             <div className="w-full h-64 flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : vehicles.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">

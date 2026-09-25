@@ -59,13 +59,13 @@ export const VehicleGallery: React.FC<VehicleGalleryProps> = ({ images }) => {
         {images.length > 1 && (
           <>
             <button
-              className="absolute left-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-black/80 hover:text-[#D4AF37] transition-colors border border-white/10"
+              className="absolute left-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-black/80 hover:text-[#00E5FF] transition-colors border border-white/10"
               onClick={() => paginate(-1)}
             >
               <ChevronLeft size={24} />
             </button>
             <button
-              className="absolute right-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-black/80 hover:text-[#D4AF37] transition-colors border border-white/10"
+              className="absolute right-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-black/80 hover:text-[#00E5FF] transition-colors border border-white/10"
               onClick={() => paginate(1)}
             >
               <ChevronRight size={24} />
@@ -85,7 +85,7 @@ export const VehicleGallery: React.FC<VehicleGalleryProps> = ({ images }) => {
                 setCurrentIndex(idx);
               }}
               className={`relative h-16 w-24 rounded-sm overflow-hidden border-2 transition-colors ${
-                idx === currentIndex ? 'border-[#D4AF37]' : 'border-transparent opacity-50 hover:opacity-100'
+                idx === currentIndex ? 'border-[#00E5FF]' : 'border-transparent opacity-50 hover:opacity-100'
               }`}
             >
               <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />

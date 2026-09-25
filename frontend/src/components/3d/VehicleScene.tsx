@@ -153,7 +153,7 @@ export const VehicleScene = () => {
         {/* Cinematic Lighting */}
         <ambientLight intensity={0.2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow={!isMobile} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#D4AF37" />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00E5FF" />
         <pointLight position={[0, 5, -10]} intensity={0.5} color="#ffffff" />
         
         <Environment preset="city" />
@@ -163,7 +163,7 @@ export const VehicleScene = () => {
         <ContactShadows position={[0, -0.1, 0]} opacity={0.7} scale={10} blur={2.5} far={4} resolution={isMobile ? 128 : 256} color="#000000" />
         
         {!isMobile && !prefersReducedMotion && (
-          <Sparkles count={40} scale={12} size={2} speed={0.2} opacity={0.15} color="#D4AF37" />
+          <Sparkles count={40} scale={12} size={2} speed={0.2} opacity={0.15} color="#00E5FF" />
         )}
       </Canvas>
     </div>

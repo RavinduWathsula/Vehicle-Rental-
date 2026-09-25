@@ -46,10 +46,10 @@ export const Hero = () => {
             className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-heading font-bold text-white tracking-tighter"
           >
             MOVE <br />
-            <span className="text-[#D4AF37] relative inline-block">
+            <span className="text-[#00E5FF] relative inline-block">
               BEYOND.
               {/* Subtle accent glow behind the word */}
-              <div className="absolute inset-0 bg-[#D4AF37]/20 blur-3xl -z-10 rounded-full" />
+              <div className="absolute inset-0 bg-[#00E5FF]/20 blur-3xl -z-10 rounded-full" />
             </span>
           </motion.h1>
 
@@ -81,15 +81,15 @@ export const Hero = () => {
           >
             <div>
               <div className="text-3xl font-heading font-bold text-white">48+</div>
-              <div className="text-xs text-[#D4AF37] uppercase tracking-widest mt-1">Vehicles</div>
+              <div className="text-xs text-[#00E5FF] uppercase tracking-widest mt-1">Vehicles</div>
             </div>
             <div>
               <div className="text-3xl font-heading font-bold text-white">12</div>
-              <div className="text-xs text-[#D4AF37] uppercase tracking-widest mt-1">Locations</div>
+              <div className="text-xs text-[#00E5FF] uppercase tracking-widest mt-1">Locations</div>
             </div>
             <div>
               <div className="text-3xl font-heading font-bold text-white">24/7</div>
-              <div className="text-xs text-[#D4AF37] uppercase tracking-widest mt-1">Support</div>
+              <div className="text-xs text-[#00E5FF] uppercase tracking-widest mt-1">Support</div>
             </div>
           </motion.div>
         </motion.div>

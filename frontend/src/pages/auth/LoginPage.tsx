@@ -53,7 +53,7 @@ export const LoginPage = () => {
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                 placeholder="john@example.com" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -61,7 +61,7 @@ export const LoginPage = () => {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <label className="text-xs text-white/60 uppercase tracking-widest font-medium">Password</label>
-              <Link to="/forgot-password" className="text-xs text-[#D4AF37] hover:text-white transition-colors">Forgot password?</Link>
+              <Link to="/forgot-password" className="text-xs text-[#00E5FF] hover:text-white transition-colors">Forgot password?</Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={18} />
@@ -71,7 +71,7 @@ export const LoginPage = () => {
                 value={formData.password}
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
                 placeholder="••••••••" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -89,7 +89,7 @@ export const LoginPage = () => {
         </form>
 
         <p className="text-center text-white/50 text-sm mt-8">
-          Don't have an account? <Link to="/register" className="text-[#D4AF37] hover:text-white transition-colors ml-1">Register</Link>
+          Don't have an account? <Link to="/register" className="text-[#00E5FF] hover:text-white transition-colors ml-1">Register</Link>
         </p>
       </motion.div>
     </div>

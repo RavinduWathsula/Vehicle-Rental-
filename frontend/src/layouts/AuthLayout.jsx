@@ -41,7 +41,7 @@ const AuthLayout = () => {
           opacity: [0.3, 0.6, 0.3] 
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#D4AF37] rounded-full mix-blend-screen filter blur-[120px] opacity-30 pointer-events-none z-0"
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00E5FF] rounded-full mix-blend-screen filter blur-[120px] opacity-30 pointer-events-none z-0"
       />
       <motion.div 
         animate={{ 
@@ -64,7 +64,7 @@ const AuthLayout = () => {
           className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left"
         >
           <Link to="/" className="inline-flex items-center gap-3 mb-8 group">
-            <div className="w-12 h-12 bg-[#D4AF37] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+            <div className="w-12 h-12 bg-[#00E5FF] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
               <span className="text-black font-black italic text-3xl leading-none">D</span>
             </div>
             <span className="text-3xl font-black tracking-widest text-white uppercase italic">
@@ -74,7 +74,7 @@ const AuthLayout = () => {
           
           <h1 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-[0.9] mb-6">
             Unlock <br/> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">
               The Fleet.
             </span>
           </h1>

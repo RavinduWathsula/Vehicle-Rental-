@@ -59,7 +59,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                 value={data.pickupLocation || ''}
                 onChange={handleChange}
                 placeholder="City, Airport, or Station" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -73,7 +73,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                 value={data.returnLocation || ''}
                 onChange={handleChange}
                 placeholder="City, Airport, or Station" 
-                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
               />
             </div>
           </div>
@@ -91,7 +91,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                   name="pickupDate"
                   value={data.pickupDate || ''}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
               <input 
@@ -99,7 +99,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                 name="pickupTime"
                 value={data.pickupTime || ''}
                 onChange={handleChange}
-                className="w-24 bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                className="w-24 bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
               />
             </div>
           </div>
@@ -113,7 +113,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                   name="returnDate"
                   value={data.returnDate || ''}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                  className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
                 />
               </div>
               <input 
@@ -121,7 +121,7 @@ export const StepJourney: React.FC<Props> = ({ data, updateData, next }) => {
                 name="returnTime"
                 value={data.returnTime || ''}
                 onChange={handleChange}
-                className="w-24 bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+                className="w-24 bg-white/5 border border-white/10 rounded-sm py-3 px-2 text-white focus:outline-none focus:border-[#00E5FF] transition-colors [color-scheme:dark]"
               />
             </div>
           </div>

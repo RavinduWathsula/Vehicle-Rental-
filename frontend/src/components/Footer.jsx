@@ -20,7 +20,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#040508] relative overflow-hidden border-t border-white/5 pt-24 pb-12">
       {/* Decorative gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent opacity-30" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#00E5FF]/50 to-transparent opacity-30" />
       
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
@@ -28,7 +28,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-4">
             <Link to="/" className="inline-flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 bg-[#D4AF37] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500">
+              <div className="w-10 h-10 bg-[#00E5FF] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500">
                 <span className="text-black font-black italic text-2xl leading-none">D</span>
               </div>
               <span className="text-2xl font-black tracking-widest text-white uppercase italic">
@@ -39,16 +39,16 @@ const Footer = () => {
               Experience the future of mobility. We provide access to the world's most exclusive fleet of high-performance and luxury vehicles, tailored for those who demand excellence in every journey.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all text-[10px] font-bold">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#00E5FF] hover:border-[#00E5FF] hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all text-xs font-bold">
                 IG
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all text-[10px] font-bold">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#00E5FF] hover:border-[#00E5FF] hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all text-xs font-bold">
                 TW
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all text-[10px] font-bold">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#00E5FF] hover:border-[#00E5FF] hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all text-xs font-bold">
                 IN
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all text-[10px] font-bold">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#00E5FF] hover:border-[#00E5FF] hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all text-xs font-bold">
                 FB
               </a>
             </div>
@@ -59,19 +59,19 @@ const Footer = () => {
             <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Explore</h4>
             <ul className="space-y-4">
               <li>
-                <Link to="/vehicles" className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <Link to="/vehicles" className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   Our Fleet
                 </Link>
               </li>
               <li>
-                <Link to="/#about" onClick={(e) => handleNavClick(e, '/#about', 'about')} className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <Link to="/#about" onClick={(e) => handleNavClick(e, '/#about', 'about')} className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/#how-to-work" onClick={(e) => handleNavClick(e, '/#how-to-work', 'how-to-work')} className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <Link to="/#how-to-work" onClick={(e) => handleNavClick(e, '/#how-to-work', 'how-to-work')} className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   How It Works
                 </Link>
@@ -83,25 +83,25 @@ const Footer = () => {
             <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Support</h4>
             <ul className="space-y-4">
               <li>
-                <Link to="/#contact" onClick={(e) => handleNavClick(e, '/#contact', 'contact')} className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <Link to="/#contact" onClick={(e) => handleNavClick(e, '/#contact', 'contact')} className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   Contact Us
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <a href="#" className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <a href="#" className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-[#D4AF37] text-sm transition-colors flex items-center gap-2 group">
+                <a href="#" className="text-gray-400 hover:text-[#00E5FF] text-sm transition-colors flex items-center gap-2 group">
                   <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                   Privacy Policy
                 </a>
@@ -121,11 +121,11 @@ const Footer = () => {
                 type="email" 
                 placeholder="Enter your email address"
                 required
-                className="w-full bg-[#08090B] border border-white/10 rounded-sm pl-10 pr-24 py-3 text-white placeholder-gray-600 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all text-sm outline-none"
+                className="w-full bg-[#08090B] border border-white/10 rounded-sm pl-10 pr-24 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all text-sm outline-none"
               />
               <button 
                 type="submit"
-                className="absolute inset-y-1 right-1 px-4 bg-[#D4AF37] text-black text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-white transition-colors"
+                className="absolute inset-y-1 right-1 px-4 bg-[#00E5FF] text-black text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-white transition-colors"
               >
                 Subscribe
               </button>
@@ -140,8 +140,8 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} DRIVEX PREMIUM RENTALS. ALL RIGHTS RESERVED.
           </p>
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-black italic uppercase tracking-[0.2em] text-xs">Move Beyond.</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#00E5FF]" />
+            <span className="text-[#00E5FF] font-black italic uppercase tracking-[0.2em] text-xs">Move Beyond.</span>
           </div>
         </div>
       </div>

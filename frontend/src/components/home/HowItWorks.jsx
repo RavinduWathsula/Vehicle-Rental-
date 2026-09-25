@@ -21,7 +21,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-to-work" className="py-32 relative bg-[#040508] z-20 border-t border-white/5">
+    <section id="how-to-work" className="py-32 relative bg-transparent z-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         
         <div className="text-center mb-24">
@@ -29,7 +29,7 @@ const HowItWorks = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm font-bold tracking-[0.3em] text-[#D4AF37] uppercase mb-4"
+            className="text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-4"
           >
             Seamless Process
           </motion.h2>
@@ -57,9 +57,9 @@ const HowItWorks = () => {
               transition={{ delay: index * 0.2, duration: 0.8 }}
               className="relative z-10 flex flex-col items-center text-center group"
             >
-              <div className="w-24 h-24 rounded-full bg-[#08090B] border border-white/10 flex items-center justify-center mb-8 relative group-hover:border-[#D4AF37] transition-colors duration-500">
-                <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="text-3xl font-black text-[#D4AF37] italic">{step.number}</span>
+              <div className="w-24 h-24 rounded-full bg-[#08090B] border border-white/10 flex items-center justify-center mb-8 relative group-hover:border-[#00E5FF] transition-colors duration-500">
+                <div className="absolute inset-0 bg-[#00E5FF]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <span className="text-3xl font-black text-[#00E5FF] italic">{step.number}</span>
               </div>
               <h4 className="text-2xl font-bold text-white mb-4 uppercase">{step.title}</h4>
               <p className="text-gray-400 font-light leading-relaxed max-w-sm">

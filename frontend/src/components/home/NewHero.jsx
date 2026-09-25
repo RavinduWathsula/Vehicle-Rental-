@@ -26,7 +26,7 @@ const NewHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase mb-6 text-sm"
+          className="text-[#00E5FF] font-bold tracking-[0.3em] uppercase mb-6 text-sm"
         >
           Redefining Mobility
         </motion.p>
@@ -37,7 +37,7 @@ const NewHero = () => {
           transition={{ duration: 1, delay: 0.4 }}
           className="text-5xl md:text-8xl font-black text-white uppercase italic tracking-tighter mb-8 leading-tight drop-shadow-2xl"
         >
-          Unleash <br/> <span className="inline-block pb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">The Extraordinary</span>
+          Unleash <br/> <span className="inline-block pb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">The Extraordinary</span>
         </motion.h1>
 
         <motion.p
@@ -55,15 +55,15 @@ const NewHero = () => {
           transition={{ duration: 0.8, delay: 1 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          <a 
-            href="#how-to-work"
-            className="px-8 py-4 bg-[var(--color-drivex-accent)] text-black font-bold uppercase tracking-widest text-sm hover:bg-white transition-all duration-300 rounded-sm shadow-lg shadow-[var(--color-drivex-accent)]/20 w-full sm:w-auto"
+          <Link 
+            to="/#how-to-work"
+            className="px-8 py-4 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-sm hover:bg-white hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm shadow-[0_0_15px_rgba(0,229,255,0.3)] w-full sm:w-auto"
           >
             How It Works
-          </a>
+          </Link>
           <Link 
             to="/register"
-            className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all duration-300 rounded-sm w-full sm:w-auto"
+            className="px-8 py-4 bg-transparent border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest text-sm hover:bg-[#00E5FF] hover:text-black hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm w-full sm:w-auto"
           >
             Create Account
           </Link>

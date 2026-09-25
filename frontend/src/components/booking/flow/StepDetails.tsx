@@ -62,7 +62,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.firstName}
               onChange={handleChange}
               placeholder="John" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
             />
           </div>
         </div>
@@ -77,7 +77,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.lastName}
               onChange={handleChange}
               placeholder="Doe" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.email}
               onChange={handleChange}
               placeholder="john.doe@example.com" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
             />
           </div>
         </div>
@@ -107,7 +107,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.phone}
               onChange={handleChange}
               placeholder="+1 (555) 000-0000" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.licenseNumber}
               onChange={handleChange}
               placeholder="D12345678" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
             />
           </div>
         </div>

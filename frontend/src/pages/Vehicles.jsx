@@ -92,7 +92,7 @@ const Vehicles = () => {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase mb-4 text-xs"
+          className="text-[#00E5FF] font-bold tracking-[0.3em] uppercase mb-4 text-xs"
         >
           Our Fleet
         </motion.p>
@@ -102,7 +102,7 @@ const Vehicles = () => {
           transition={{ delay: 0.1 }}
           className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter"
         >
-          Find the vehicle built <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#D4AF37]">for your journey.</span>
+          Find the vehicle built <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">for your journey.</span>
         </motion.h1>
       </Container>
 
@@ -118,7 +118,7 @@ const Vehicles = () => {
               onClick={() => setActiveCategory(cat)}
               className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                 activeCategory === cat 
-                  ? 'bg-[#D4AF37] text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
+                  ? 'bg-[#00E5FF] text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
                   : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
               }`}
             >
@@ -143,7 +143,7 @@ const Vehicles = () => {
                 <h3 className="text-sm font-bold text-white uppercase tracking-widest">Filters</h3>
                 <button 
                   onClick={resetFilters}
-                  className="text-xs text-[#D4AF37] hover:text-white transition-colors uppercase tracking-widest"
+                  className="text-xs text-[#00E5FF] hover:text-white transition-colors uppercase tracking-widest"
                 >
                   Reset
                 </button>
@@ -213,7 +213,7 @@ const Vehicles = () => {
                         key={a}
                         onClick={() => setActiveAvailability(a)}
                         className={`px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                          activeAvailability === a ? 'bg-[#D4AF37] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                          activeAvailability === a ? 'bg-[#00E5FF] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
                         }`}
                       >
                         {a}
@@ -263,7 +263,7 @@ const Vehicles = () => {
                 </p>
                 <button 
                   onClick={resetFilters}
-                  className="px-8 py-3 border border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors rounded-sm"
+                  className="px-8 py-3 border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest text-xs hover:bg-[#00E5FF] hover:text-black transition-colors rounded-sm"
                 >
                   Clear All Filters
                 </button>
