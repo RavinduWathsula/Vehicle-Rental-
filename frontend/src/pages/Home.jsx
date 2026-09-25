@@ -7,19 +7,33 @@ import HowItWorks from '../components/home/HowItWorks';
 import Testimonials from '../components/home/Testimonials';
 import ContactSection from '../components/home/ContactSection';
 import FinalCTA from '../components/home/FinalCTA';
+import { ExperienceSection } from '../components/home/ExperienceSection';
 
 const Home = () => {
   return (
     <div className="w-full bg-[#040508] text-white">
-      <NewHero />
+      <div id="home">
+        <NewHero />
+      </div>
+      
       <FeaturedFleet />
+      <ExperienceSection />
+      
       <div id="about">
         <WhyChooseUs />
         <AboutSection />
       </div>
-      <HowItWorks />
+      
+      <div id="how-to-work">
+        <HowItWorks />
+      </div>
+      
       <Testimonials />
-      <ContactSection />
+      
+      <div id="contact">
+        <ContactSection />
+      </div>
+      
       <FinalCTA />
     </div>
   );

@@ -8,7 +8,7 @@ const experiences = [
     id: 'city',
     title: 'CITY',
     description: 'Fast. Flexible. Effortless.',
-    image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=2115&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop',
     category: 'compact',
   },
   {
@@ -22,14 +22,14 @@ const experiences = [
     id: 'luxury',
     title: 'LUXURY',
     description: 'Travel differently.',
-    image: 'https://images.unsplash.com/photo-1503376712391-74f4b232e022?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=2070&auto=format&fit=crop',
     category: 'luxury',
   },
   {
     id: 'family',
     title: 'FAMILY',
     description: 'More space. More comfort. More memories.',
-    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=2070&auto=format&fit=crop',
     category: 'minivan',
   },
 ];

@@ -5,6 +5,7 @@ import Container from './Container';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
 
   useEffect(() => {
@@ -15,12 +16,41 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px', // Trigger when section is exactly in the middle of viewport
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    const sections = ['home', 'about', 'how-to-work', 'contact'];
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [location]);
+
   const handleNavClick = (e, path, target) => {
     if (location.pathname === '/') {
       e.preventDefault();
       const element = document.getElementById(target);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(target);
       }
     }
   };
@@ -28,7 +58,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/#home', target: 'home' },
     { name: 'About', path: '/#about', target: 'about' },
-    { name: 'How to Work', path: '/#how-to-work', target: 'how-to-work' },
+    { name: 'How it Works', path: '/#how-to-work', target: 'how-to-work' },
     { name: 'Contact', path: '/#contact', target: 'contact' }
   ];
 
@@ -50,18 +80,33 @@ const Navbar = () => {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name}
-                href={link.path}
-                onClick={(e) => handleNavClick(e, link.path, link.target)}
-                className={`relative py-2 text-sm font-bold tracking-wider uppercase transition-colors hover:text-[var(--color-drivex-accent)] ${
-                  scrolled ? 'text-white' : 'text-gray-100 drop-shadow-md'
-                }`}
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.target && location.pathname === '/';
+              return (
+                <a 
+                  key={link.name}
+                  href={link.path}
+                  onClick={(e) => handleNavClick(e, link.path, link.target)}
+                  className={`relative py-2 text-sm font-bold tracking-wider uppercase transition-colors duration-300 ${
+                    isActive 
+                      ? 'text-[var(--color-drivex-accent)]' 
+                      : scrolled 
+                        ? 'text-white hover:text-[var(--color-drivex-accent)]' 
+                        : 'text-gray-100 drop-shadow-md hover:text-[var(--color-drivex-accent)]'
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--color-drivex-accent)] shadow-[0_0_8px_var(--color-drivex-accent)]"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-4">

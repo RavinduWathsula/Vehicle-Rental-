@@ -1,7 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Button from '../Button';
-import { Link } from 'react-router-dom';
 
 const FinalCTA = () => {
   return (
@@ -23,11 +21,6 @@ const FinalCTA = () => {
             Join thousands of satisfied clients who have elevated their journey with DRIVEX.
           </p>
           
-          <Link to="/vehicles">
-            <Button size="lg" className="w-64 h-16 text-xl">
-              Explore Fleet
-            </Button>
-          </Link>
         </motion.div>
       </div>
     </section>
