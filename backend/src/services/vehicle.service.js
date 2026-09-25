@@ -55,7 +55,23 @@ class VehicleService {
       error.statusCode = 409;
       throw error;
     }
-    return await vehicleModel.create(vehicleData);
+    
+    // Extract image_url if provided
+    const imageUrl = vehicleData.image_url;
+    delete vehicleData.image_url;
+
+    const newVehicle = await vehicleModel.create(vehicleData);
+
+    // If an image was provided, add it to vehicle_images
+    if (imageUrl) {
+      const pool = require('../config/db');
+      await pool.execute(
+        'INSERT INTO vehicle_images (vehicle_id, image_url, is_primary) VALUES (?, ?, ?)',
+        [newVehicle.id, imageUrl, true]
+      );
+    }
+    
+    return newVehicle;
   }
 
   async updateVehicle(id, vehicleData) {

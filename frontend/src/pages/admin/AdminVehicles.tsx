@@ -1,37 +1,102 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  CarFront, 
-  Search, 
-  Plus, 
-  Filter, 
-  MoreVertical, 
-  Edit, 
-  Trash2,
-  CheckCircle2,
-  XCircle
-} from 'lucide-react';
-
-const mockVehicles = [
-  { id: 'V-001', name: 'Porsche 911 GT3 RS', category: 'Sports', price: '$850/day', status: 'Available', trips: 42, rating: 4.9 },
-  { id: 'V-002', name: 'Mercedes G63 AMG', category: 'Luxury SUV', price: '$650/day', status: 'Rented', trips: 128, rating: 4.8 },
-  { id: 'V-003', name: 'Lamborghini Urus', category: 'Luxury SUV', price: '$950/day', status: 'Maintenance', trips: 36, rating: 5.0 },
-  { id: 'V-004', name: 'Range Rover Sport', category: 'SUV', price: '$450/day', status: 'Available', trips: 215, rating: 4.7 },
-  { id: 'V-005', name: 'Ferrari F8 Tributo', category: 'Supercar', price: '$1200/day', status: 'Available', trips: 18, rating: 5.0 },
-  { id: 'V-006', name: 'Rolls Royce Phantom', category: 'Ultra Luxury', price: '$1500/day', status: 'Rented', trips: 24, rating: 4.9 },
-];
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CarFront, Search, Plus, Filter, MoreVertical, Edit, Trash2, CheckCircle2, XCircle, X, Image as ImageIcon } from 'lucide-react';
+import { apiFetch } from '../../services/api';
 
 export const AdminVehicles = () => {
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
+  // Form State
+  const [formData, setFormData] = useState<any>({
+    brand: '',
+    model: '',
+    category_id: 1, // Default to 1 (Assume Category 1 exists)
+    year: new Date().getFullYear(),
+    registration_number: '',
+    fuel_type: 'petrol',
+    transmission: 'automatic',
+    seats: 4,
+    doors: 4,
+    luggage_capacity: 2,
+    daily_price: '',
+    weekly_price: '',
+    monthly_price: '',
+    description: '',
+    status: 'available',
+    image_url: ''
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Fetch vehicles on mount
+  useEffect(() => {
+    fetchVehicles();
+  }, []);
+
+  const fetchVehicles = async () => {
+    try {
+      const data = await apiFetch('/admin/vehicles');
+      if (data.success) {
+        setVehicles(data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching vehicles:", err);
+    }
+  };
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Auto-calculate weekly and monthly if not provided
+      const payload: any = { ...formData };
+      if (!payload.weekly_price) payload.weekly_price = String(Number(payload.daily_price) * 6); // slightly discounted
+      if (!payload.monthly_price) payload.monthly_price = String(Number(payload.daily_price) * 20);
+
+      const data = await apiFetch('/vehicles', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+
+      if (data.success) {
+        setIsAddModalOpen(false);
+        fetchVehicles(); // Refresh list
+        // Reset form
+        setFormData({
+          brand: '', model: '', category_id: 1, year: new Date().getFullYear(),
+          registration_number: '', fuel_type: 'petrol', transmission: 'automatic',
+          seats: 4, doors: 4, luggage_capacity: 2, daily_price: '', weekly_price: '',
+          monthly_price: '', description: '', status: 'available', image_url: ''
+        });
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to add vehicle');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-white italic uppercase tracking-wider mb-2">Fleet Management</h1>
           <p className="text-gray-400 text-sm">Manage your vehicles, track their status, and add new inventory.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-2.5 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-xs hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all rounded-sm shrink-0">
+        <button 
+          onClick={() => setIsAddModalOpen(true)}
+          className="flex items-center gap-2 px-6 py-2.5 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-xs hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all rounded-sm shrink-0"
+        >
           <Plus size={16} />
           Add New Vehicle
         </button>
@@ -44,41 +109,28 @@ export const AdminVehicles = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
             <input 
               type="text"
-              placeholder="Search vehicles by name or ID..."
+              placeholder="Search vehicles by brand or model..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all"
             />
           </div>
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold text-white transition-colors w-full md:w-auto justify-center">
-              <Filter size={16} />
-              Filter
-            </button>
-            <select className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm font-bold text-white focus:outline-none focus:border-[#00E5FF] transition-all w-full md:w-auto">
-              <option value="all">All Categories</option>
-              <option value="sports">Sports</option>
-              <option value="suv">SUV</option>
-              <option value="luxury">Luxury</option>
-            </select>
-          </div>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto min-h-[400px]">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-black/40 border-b border-white/10">
                 <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Vehicle Details</th>
-                <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Category</th>
+                <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Specs</th>
                 <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Price/Day</th>
                 <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">Stats</th>
                 <th className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {mockVehicles.map((vehicle, i) => (
+              {vehicles.filter(v => `${v.brand} ${v.model}`.toLowerCase().includes(searchTerm.toLowerCase())).map((vehicle, i) => (
                 <motion.tr 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -92,36 +144,29 @@ export const AdminVehicles = () => {
                         <CarFront size={24} className="text-[#00E5FF]" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-white mb-0.5">{vehicle.name}</p>
-                        <p className="text-xs text-gray-500">{vehicle.id}</p>
+                        <p className="text-sm font-bold text-white mb-0.5">{vehicle.brand} {vehicle.model} ({vehicle.year})</p>
+                        <p className="text-xs text-gray-500">{vehicle.registration_number}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-sm text-gray-300">
-                    <span className="bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs">
-                      {vehicle.category}
-                    </span>
+                  <td className="py-4 px-6">
+                    <div className="flex flex-col gap-1 text-xs text-gray-300">
+                      <span>{vehicle.transmission} • {vehicle.fuel_type}</span>
+                      <span>{vehicle.seats} Seats</span>
+                    </div>
                   </td>
-                  <td className="py-4 px-6 text-sm font-bold text-white">{vehicle.price}</td>
+                  <td className="py-4 px-6 text-sm font-bold text-white">${vehicle.daily_price}</td>
                   <td className="py-4 px-6">
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                      vehicle.status === 'Available' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
-                      vehicle.status === 'Rented' ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20' :
+                      vehicle.status === 'available' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+                      vehicle.status === 'rented' ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20' :
                       'bg-orange-500/10 text-orange-400 border border-orange-500/20'
                     }`}>
-                      {vehicle.status === 'Available' && <CheckCircle2 size={12} />}
-                      {vehicle.status === 'Rented' && <CarFront size={12} />}
-                      {vehicle.status === 'Maintenance' && <XCircle size={12} />}
-                      {vehicle.status}
+                      {vehicle.status === 'available' && <CheckCircle2 size={12} />}
+                      {vehicle.status === 'rented' && <CarFront size={12} />}
+                      {vehicle.status === 'maintenance' && <XCircle size={12} />}
+                      <span className="capitalize">{vehicle.status}</span>
                     </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-xs text-gray-400"><strong className="text-white">{vehicle.trips}</strong> trips</span>
-                      <span className="text-xs text-gray-400 flex items-center gap-1">
-                        <strong className="text-yellow-400">{vehicle.rating}</strong> ★
-                      </span>
-                    </div>
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -131,27 +176,128 @@ export const AdminVehicles = () => {
                       <button className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
                         <Trash2 size={16} />
                       </button>
-                      <button className="p-2 text-gray-400 hover:text-white rounded-lg transition-colors">
-                        <MoreVertical size={16} />
-                      </button>
                     </div>
                   </td>
                 </motion.tr>
               ))}
+              {vehicles.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="py-12 text-center text-gray-500">
+                    No vehicles found. Click "Add New Vehicle" to get started.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-        <div className="p-4 border-t border-white/10 flex items-center justify-between bg-black/20 text-xs text-gray-400">
-          <p>Showing 1 to 6 of 245 entries</p>
-          <div className="flex gap-2">
-            <button className="px-3 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 hover:text-white transition-colors">Previous</button>
-            <button className="px-3 py-1 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/30 rounded">1</button>
-            <button className="px-3 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 hover:text-white transition-colors">2</button>
-            <button className="px-3 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 hover:text-white transition-colors">3</button>
-            <button className="px-3 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 hover:text-white transition-colors">Next</button>
-          </div>
-        </div>
       </div>
+
+      {/* Add Vehicle Modal */}
+      <AnimatePresence>
+        {isAddModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              onClick={() => setIsAddModalOpen(false)}
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-4xl bg-[#08090B] border border-white/10 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            >
+              <div className="flex items-center justify-between p-6 border-b border-white/10 bg-black/40">
+                <h2 className="text-xl font-bold text-white uppercase tracking-widest">Add New Vehicle</h2>
+                <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-y-auto flex-1">
+                {error && (
+                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm font-medium">
+                    {error}
+                  </div>
+                )}
+                <form id="add-vehicle-form" onSubmit={handleSubmit} className="space-y-6">
+                  
+                  {/* Photo Upload Input */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Vehicle Image URL</label>
+                    <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-lg px-4 py-2 focus-within:border-[#00E5FF] transition-all">
+                      <ImageIcon size={18} className="text-gray-500 shrink-0" />
+                      <input 
+                        type="url" 
+                        name="image_url" 
+                        value={formData.image_url} 
+                        onChange={handleInputChange} 
+                        placeholder="https://example.com/car-image.jpg" 
+                        className="w-full bg-transparent text-white outline-none py-1" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Brand *</label>
+                      <input type="text" name="brand" value={formData.brand} onChange={handleInputChange} required placeholder="e.g. Porsche" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Model *</label>
+                      <input type="text" name="model" value={formData.model} onChange={handleInputChange} required placeholder="e.g. 911 GT3" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Registration No *</label>
+                      <input type="text" name="registration_number" value={formData.registration_number} onChange={handleInputChange} required placeholder="e.g. ABC-1234" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Daily Price ($) *</label>
+                      <input type="number" name="daily_price" value={formData.daily_price} onChange={handleInputChange} required placeholder="0.00" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Fuel Type</label>
+                      <select name="fuel_type" value={formData.fuel_type} onChange={handleInputChange} className="w-full bg-[#111218] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none">
+                        <option value="petrol">Petrol</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="electric">Electric</option>
+                        <option value="hybrid">Hybrid</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Transmission</label>
+                      <select name="transmission" value={formData.transmission} onChange={handleInputChange} className="w-full bg-[#111218] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] outline-none">
+                        <option value="automatic">Automatic</option>
+                        <option value="manual">Manual</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div className="p-6 border-t border-white/10 bg-black/40 flex justify-end gap-4">
+                <button 
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-6 py-2.5 bg-transparent border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button 
+                  form="add-vehicle-form"
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2.5 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-xs hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all rounded-lg disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save Vehicle'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -6,8 +6,8 @@ import Badge from './Badge';
 const VehicleCard = ({ vehicle }) => {
   const navigate = useNavigate();
   // Use a placeholder if no image exists
-  const imageUrl = vehicle.images && vehicle.images.length > 0 
-    ? vehicle.images[0].image_url 
+  const imageUrl = vehicle.primary_image 
+    ? vehicle.primary_image 
     : 'https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop';
 
   const isAvailable = vehicle.status === 'available';

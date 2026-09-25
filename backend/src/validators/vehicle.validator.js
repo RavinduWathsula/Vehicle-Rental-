@@ -15,7 +15,8 @@ const createVehicleSchema = Joi.object({
   weekly_price: Joi.number().precision(2).positive().required(),
   monthly_price: Joi.number().precision(2).positive().required(),
   description: Joi.string().allow('', null),
-  status: Joi.string().valid('available', 'rented', 'maintenance', 'inactive').default('available')
+  status: Joi.string().valid('available', 'rented', 'maintenance', 'inactive').default('available'),
+  image_url: Joi.string().uri().allow('', null)
 });
 
 const updateVehicleSchema = Joi.object({

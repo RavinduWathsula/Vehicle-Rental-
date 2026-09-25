@@ -73,7 +73,11 @@ export const VehicleViewer = ({ vehicle }) => {
   const has3D = !!vehicle?.model_3d_url;
   
   // Collect images (fallback to galleryImages array if API returns strings, or object if it's from images relation)
-  const images = vehicle?.images?.length ? vehicle.images : vehicle?.galleryImages || [];
+  const images = vehicle?.images?.length 
+    ? vehicle.images 
+    : vehicle?.galleryImages 
+      ? vehicle.galleryImages 
+      : (vehicle?.primary_image ? [vehicle.primary_image] : ['https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop']);
 
   return (
     <div className="relative w-full h-[50vh] lg:h-screen bg-black overflow-hidden">

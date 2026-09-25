@@ -21,9 +21,10 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminVehicles } from './pages/admin/AdminVehicles';
 import { AdminBookings } from './pages/admin/AdminBookings';
 import { AdminCustomers } from './pages/admin/AdminCustomers';
-import {
-  AdminDrivers, AdminMaintenance, AdminReports, AdminSettings
-} from './pages/stubs';
+import { AdminDrivers } from './pages/admin/AdminDrivers';
+import { AdminMaintenance } from './pages/admin/AdminMaintenance';
+import { AdminReports } from './pages/admin/AdminReports';
+import { AdminSettings } from './pages/admin/AdminSettings';
 
 const App = () => {
   return (
