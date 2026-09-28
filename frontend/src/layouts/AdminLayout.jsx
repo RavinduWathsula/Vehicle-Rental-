@@ -1,6 +1,8 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { authService } from '../services/authService';
+import DateTimeDisplay from '../components/ui/DateTimeDisplay';
 import { 
   LayoutDashboard, 
   CarFront, 
@@ -16,6 +18,12 @@ import {
 
 const AdminLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    authService.logout();
+    navigate('/login');
+  };
 
   const links = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
@@ -86,7 +94,10 @@ const AdminLayout = () => {
         </nav>
         
         <div className="p-4 border-t border-white/5 bg-black/20">
-          <button className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all uppercase tracking-widest border border-transparent hover:border-red-400/20">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all uppercase tracking-widest border border-transparent hover:border-red-400/20"
+          >
             <LogOut size={18} />
             Sign Out
           </button>
@@ -100,6 +111,10 @@ const AdminLayout = () => {
           <div className="md:hidden flex items-center">
             {/* Mobile menu button */}
             <span className="text-lg font-bold text-white uppercase tracking-widest">Menu</span>
+          </div>
+          
+          <div className="hidden lg:block">
+            <DateTimeDisplay />
           </div>
           
           <div className="flex items-center gap-6 ml-auto">

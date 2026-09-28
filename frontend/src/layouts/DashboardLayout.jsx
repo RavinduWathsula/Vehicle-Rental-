@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { authService } from '../services/authService';
+import DateTimeDisplay from '../components/ui/DateTimeDisplay';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -135,28 +136,34 @@ const DashboardLayout = () => {
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         {/* Top Header */}
         <header className="h-20 bg-[#040508]/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-6 lg:px-10 z-30 shrink-0">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-1">
             <button 
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Menu size={20} />
             </button>
-            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-64 focus-within:w-80 transition-all focus-within:border-[#00E5FF]/50">
+            <div className="hidden lg:block ml-4">
+              <DateTimeDisplay />
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4 justify-end">
+            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-48 focus-within:w-64 transition-all focus-within:border-[#00E5FF]/50">
               <Search size={16} className="text-white/40" />
               <input 
                 type="text" 
-                placeholder="Search vehicles, bookings..." 
+                placeholder="Search..." 
                 className="bg-transparent border-none outline-none text-sm text-white placeholder-white/40 w-full"
               />
             </div>
-          </div>
 
-          <div className="flex items-center gap-4">
-            <button className="relative w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors border border-white/5">
-              <Bell size={18} />
-              <span className="absolute top-2 right-2.5 w-2 h-2 bg-[#00E5FF] rounded-full shadow-[0_0_10px_#00E5FF]" />
-            </button>
+            <div className="flex items-center gap-4">
+              <button className="relative w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors border border-white/5">
+                <Bell size={18} />
+                <span className="absolute top-2 right-2.5 w-2 h-2 bg-[#00E5FF] rounded-full shadow-[0_0_10px_#00E5FF]" />
+              </button>
+            </div>
           </div>
         </header>
 
