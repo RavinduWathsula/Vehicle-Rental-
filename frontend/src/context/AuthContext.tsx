@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [token, setToken] = useState<string | null>(localStorage.getItem('drivex_token') || localStorage.getItem('token'));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,20 +38,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const data = await login(credentials);
     setToken(data.token);
     setUser(data.user);
-    localStorage.setItem('token', data.token);
+    localStorage.setItem('drivex_token', data.token);
   };
 
   const registerUser = async (userData: any) => {
     const data = await register(userData);
     setToken(data.token);
     setUser(data.user);
-    localStorage.setItem('token', data.token);
+    localStorage.setItem('drivex_token', data.token);
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
+    localStorage.removeItem('drivex_token');
+    localStorage.removeItem('drivex_user');
     localStorage.removeItem('token');
+    window.location.href = '/login';
   };
 
   return (
