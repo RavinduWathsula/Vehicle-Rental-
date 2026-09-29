@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // Layouts
 import PublicLayout from './layouts/PublicLayout';
-import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import AdminLayout from './layouts/AdminLayout';
 
@@ -39,10 +38,8 @@ const App = () => {
         </Route>
 
         {/* Auth Routes */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Login />} />
 
         {/* Customer Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
