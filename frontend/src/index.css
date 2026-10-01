@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-drivex-bg: #08090B;
-  --color-drivex-card: rgba(255, 255, 255, 0.03);
-  --color-drivex-card-hover: rgba(255, 255, 255, 0.05);
-  --color-drivex-border: rgba(255, 255, 255, 0.1);
-  --color-drivex-accent: #00E5FF;
-  --color-drivex-accent-hover: #00B8CC;
-  --color-drivex-text: #FFFFFF;
-  --color-drivex-text-muted: #A1A1AA;
+  --color-drivex-bg: var(--bg);
+  --color-drivex-sidebar: var(--sidebar);
+  --color-drivex-card: var(--card);
+  --color-drivex-card-hover: var(--card-hover);
+  --color-drivex-border: var(--border);
+  --color-drivex-accent: var(--accent);
+  --color-drivex-accent-hover: var(--accent-hover);
+  --color-drivex-text: var(--text);
+  --color-drivex-text-muted: var(--text-muted);
+  --color-drivex-text-inverse: var(--text-inverse);
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
@@ -16,18 +18,43 @@
 
 @layer base {
   :root {
-    background-color: var(--color-drivex-bg);
-    color: var(--color-drivex-text);
+    --bg: #F8FAFC;
+    --sidebar: #FFFFFF;
+    --card: #FFFFFF;
+    --card-hover: #F1F5F9;
+    --border: #E2E8F0;
+    --accent: #0088CC;
+    --accent-hover: #006699;
+    --text: #0F172A;
+    --text-muted: #64748B;
+    --text-inverse: #FFFFFF;
+
+    background-color: var(--bg);
+    color: var(--text);
     font-family: var(--font-sans);
   }
   
+  :root.dark {
+    --bg: #040508;
+    --sidebar: #08090B;
+    --card: rgba(255, 255, 255, 0.03);
+    --card-hover: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #00E5FF;
+    --accent-hover: #00B8CC;
+    --text: #FFFFFF;
+    --text-muted: #A1A1AA;
+    --text-inverse: #000000;
+  }
+
   body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    background-color: var(--color-drivex-bg);
-    color: var(--color-drivex-text);
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -38,17 +65,21 @@
 
 @layer utilities {
   .glassmorphism {
-    background: rgba(20, 21, 26, 0.6);
+    background: var(--card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--color-drivex-border);
+    border: 1px solid var(--border);
   }
 
   .cinematic-gradient {
     background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.15) 0%, rgba(8, 9, 11, 0) 60%);
   }
   
-  .cinematic-shadow {
+  :root.dark .cinematic-shadow {
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 229, 255, 0.15);
+  }
+
+  :root:not(.dark) .cinematic-shadow {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 136, 204, 0.15);
   }
 }
