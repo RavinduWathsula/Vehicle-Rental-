@@ -19,11 +19,11 @@ const VehicleCard = ({ vehicle }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -10 }}
-      className="group relative bg-[#08090B] border border-white/5 rounded-xl overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(212,175,55,0.1)] transition-all duration-500 flex flex-col h-[500px]"
+      className="group relative bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-[500px]"
     >
       {/* Large Image Section */}
-      <div className="relative h-3/5 w-full overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#08090B] via-transparent to-black/40 z-10" />
+      <div className="relative h-3/5 w-full overflow-hidden bg-[var(--sidebar)]">
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--card)] via-transparent to-[var(--sidebar)]/40 z-10" />
         <img 
           src={imageUrl} 
           alt={`${vehicle.brand} ${vehicle.model}`} 
@@ -39,51 +39,51 @@ const VehicleCard = ({ vehicle }) => {
         
         {/* Category Pill */}
         <div className="absolute top-4 left-4 z-20">
-          <span className="px-3 py-1 bg-black/60 backdrop-blur-md text-white text-[10px] uppercase tracking-widest border border-white/10 rounded-full">
+          <span className="px-3 py-1 bg-[var(--bg)]/60 backdrop-blur-md text-[var(--text)] text-[10px] uppercase tracking-widest border border-[var(--border)] rounded-full shadow-sm">
             {vehicle.category || 'Luxury'}
           </span>
         </div>
       </div>
       
       {/* Details Section */}
-      <div className="p-6 relative z-20 flex-1 flex flex-col justify-between bg-[#08090B]">
+      <div className="p-6 relative z-20 flex-1 flex flex-col justify-between bg-[var(--card)]">
         
         <div>
-          <h3 className="text-2xl font-bold text-white mb-1 uppercase tracking-wide">
-            {vehicle.brand} <span className="text-[#00E5FF]">{vehicle.model}</span>
+          <h3 className="text-2xl font-bold text-[var(--text)] mb-1 uppercase tracking-wide">
+            {vehicle.brand} <span className="text-[var(--accent)]">{vehicle.model}</span>
           </h3>
           
-          <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 text-xs text-gray-400 uppercase tracking-wider">
+          <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 text-xs text-[var(--text-muted)] uppercase tracking-wider">
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+              <svg className="w-4 h-4 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
               {vehicle.transmission || 'Auto'}
             </span>
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <svg className="w-4 h-4 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
               {vehicle.fuel_type || 'Petrol'}
             </span>
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+              <svg className="w-4 h-4 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
               {vehicle.seats || 4} Seats
             </span>
           </div>
         </div>
         
         {/* Price and CTA Container (Overlapping logic for slide-up reveal) */}
-        <div className="mt-6 relative overflow-hidden h-14">
+        <div className="mt-6 relative overflow-hidden h-14 bg-[var(--card)]">
           {/* Default Price View (Slides down on hover) */}
-          <div className="absolute inset-0 flex items-center justify-between transition-transform duration-300 transform group-hover:translate-y-full">
-            <p className="text-xs text-gray-500 uppercase tracking-widest">Daily Rate</p>
-            <p className="text-3xl font-black text-white">
-              ${vehicle.daily_price}<span className="text-sm text-gray-500 font-normal">/day</span>
+          <div className="absolute inset-0 flex items-center justify-between transition-transform duration-300 transform group-hover:translate-y-full bg-[var(--card)]">
+            <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Daily Rate</p>
+            <p className="text-3xl font-black text-[var(--text)]">
+              ${vehicle.daily_price}<span className="text-sm text-[var(--text-muted)] font-normal">/day</span>
             </p>
           </div>
           
           {/* CTA Buttons (Slides up on hover) */}
-          <div className="absolute inset-0 flex items-center justify-between gap-3 transition-transform duration-300 transform -translate-y-full group-hover:translate-y-0">
+          <div className="absolute inset-0 flex items-center justify-between gap-3 transition-transform duration-300 transform -translate-y-full group-hover:translate-y-0 bg-[var(--card)]">
             <button 
               onClick={() => navigate(`/vehicles/${vehicle.id}`)}
-              className="flex-1 py-3 border border-white/20 text-white font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors rounded-sm text-center"
+              className="flex-1 py-3 border border-[var(--border)] text-[var(--text)] font-bold text-xs uppercase tracking-widest hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] hover:border-transparent transition-colors rounded-sm text-center shadow-sm"
             >
               View Vehicle
             </button>
@@ -93,10 +93,10 @@ const VehicleCard = ({ vehicle }) => {
                 navigate(`/booking/${vehicle.id}`);
               }}
               disabled={!isAvailable}
-              className={`flex-1 py-3 font-bold text-xs uppercase tracking-widest transition-colors rounded-sm text-center ${
+              className={`flex-1 py-3 font-bold text-xs uppercase tracking-widest transition-colors rounded-sm text-center shadow-sm border border-transparent ${
                 isAvailable 
-                  ? 'bg-[var(--color-drivex-accent)] text-black hover:bg-white' 
-                  : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                  ? 'bg-[var(--accent)] text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]' 
+                  : 'bg-[var(--sidebar)] text-[var(--text-muted)] cursor-not-allowed border-[var(--border)]'
               }`}
             >
               Book Now
