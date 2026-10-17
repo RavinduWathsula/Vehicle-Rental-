@@ -10,6 +10,10 @@ const { authenticateUser, requireAdmin } = require('../middleware/authMiddleware
 // @desc    Get all active vehicles with optional filtering and pagination
 router.get('/', vehicleController.getAllVehicles);
 
+// @route   GET /api/vehicles/search
+// @desc    Search active vehicles
+router.get('/search', vehicleController.getAllVehicles);
+
 // @route   GET /api/vehicles/:id
 // @desc    Get vehicle by ID
 router.get('/:id', vehicleController.getVehicleById);
