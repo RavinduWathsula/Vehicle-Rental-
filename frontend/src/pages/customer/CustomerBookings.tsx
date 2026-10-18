@@ -1,23 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Calendar, 
   MapPin, 
   Clock, 
   Car, 
-  ChevronRight,
-  Download,
-  XCircle,
   CheckCircle2,
-  Eye,
-  Filter,
-  Search
+  XCircle,
+  Search,
+  RefreshCw
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const mockBookings = [];
+import { getCustomerBookings, type CustomerBooking } from '../../lib/api';
 
 export const CustomerBookings = () => {
+  const [bookings, setBookings] = useState<CustomerBooking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+
+  const loadBookings = async () => {
+    try {
+      setLoading(true);
+      const data = await getCustomerBookings();
+      setBookings(data || []);
+    } catch (err) {
+      console.error('Error fetching customer bookings:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  const filteredBookings = bookings.filter(b => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = 
+      b.id.toLowerCase().includes(term) ||
+      b.vehicle.name.toLowerCase().includes(term) ||
+      b.vehicle.brand.toLowerCase().includes(term);
+
+    const matchesStatus = statusFilter === 'all' || b.status.toLowerCase() === statusFilter.toLowerCase();
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div className="space-y-6 pb-20">
       {/* Animated Background */}
@@ -34,13 +63,22 @@ export const CustomerBookings = () => {
           <h1 className="text-3xl font-black text-[var(--text)] italic uppercase tracking-wider mb-2">My Bookings</h1>
           <p className="text-[var(--text-muted)] text-sm">View and manage all your past, present, and future rentals.</p>
         </div>
-        <Link 
-          to="/dashboard/vehicles"
-          className="px-6 py-2.5 bg-[var(--accent)] text-[var(--text-inverse)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent-hover)] transition-all rounded-sm flex items-center gap-2 w-fit shadow-md shadow-[var(--accent)]/20"
-        >
-          <Car size={16} />
-          Book New Vehicle
-        </Link>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={loadBookings}
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text)] rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
+          >
+            <RefreshCw size={14} className={loading ? 'animate-spin text-[var(--accent)]' : ''} />
+            Refresh
+          </button>
+          <Link 
+            to="/dashboard/vehicles"
+            className="px-6 py-2.5 bg-[var(--accent)] text-[var(--text-inverse)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent-hover)] transition-all rounded-sm flex items-center gap-2 w-fit shadow-md shadow-[var(--accent)]/20"
+          >
+            <Car size={16} />
+            Book New Vehicle
+          </Link>
+        </div>
       </div>
 
       <div className="relative z-10 bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden backdrop-blur-md shadow-sm">
@@ -50,27 +88,39 @@ export const CustomerBookings = () => {
             <input 
               type="text"
               placeholder="Search by booking ID or vehicle..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-[var(--card)] border border-[var(--border)] rounded-lg pl-10 pr-4 py-2 text-sm text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-sm"
             />
           </div>
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <select className="bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-2 text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-all w-full md:w-auto shadow-sm">
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-2 text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-all w-full md:w-auto shadow-sm"
+            >
               <option value="all">All Statuses</option>
               <option value="upcoming">Upcoming</option>
+              <option value="confirmed">Confirmed</option>
               <option value="active">Active</option>
               <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </div>
         </div>
 
         <div className="p-6">
-          {mockBookings.length === 0 ? (
+          {filteredBookings.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="w-24 h-24 bg-[var(--sidebar)] rounded-full flex items-center justify-center mb-6 border border-[var(--border)] shadow-sm">
                 <Car className="text-[var(--text-muted)]" size={40} />
               </div>
               <h3 className="text-2xl font-bold text-[var(--text)] uppercase tracking-wider mb-2">No Bookings Yet</h3>
-              <p className="text-[var(--text-muted)] max-w-md mb-8">You haven't made any reservations yet. Browse our exclusive fleet and book your next premium vehicle.</p>
+              <p className="text-[var(--text-muted)] max-w-md mb-8">
+                {searchTerm || statusFilter !== 'all' 
+                  ? 'No reservations matched your filter criteria.'
+                  : "You haven't made any reservations yet. Browse our exclusive fleet and book your next premium vehicle."}
+              </p>
               <Link 
                 to="/dashboard/vehicles"
                 className="px-8 py-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--text-inverse)] font-bold uppercase tracking-widest text-sm rounded-lg transition-all shadow-md"
@@ -80,68 +130,75 @@ export const CustomerBookings = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              {mockBookings.map((booking, index) => (
-                <motion.div
-                  key={booking.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-[var(--sidebar)] border border-[var(--border)] rounded-xl p-4 flex flex-col md:flex-row gap-6 items-center hover:bg-[var(--card-hover)] transition-colors group shadow-sm"
-                >
-                  <div className="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 relative border border-[var(--border)]">
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] to-transparent opacity-80 z-10" />
-                    <img src={booking.image} alt={booking.vehicle} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute bottom-2 left-2 z-20">
-                      <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest">{booking.id}</span>
-                    </div>
-                  </div>
+              {filteredBookings.map((booking, index) => {
+                const isCompleted = booking.status === 'completed';
+                const isActive = booking.status === 'active';
+                const isConfirmed = booking.status === 'confirmed';
+                const isCancelled = booking.status === 'cancelled';
 
-                  <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
-                    <div className="space-y-3">
-                      <h3 className="text-xl font-bold text-[var(--text)] uppercase tracking-wider">{booking.vehicle}</h3>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--text-muted)]">
-                        <div className="flex items-center gap-1.5">
-                          <Calendar size={14} className="text-[var(--accent)]" />
-                          <span>{booking.startDate} to {booking.endDate}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <MapPin size={14} className="text-[var(--accent)]" />
-                          <span>Beverly Hills, CA</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest border ${
-                          booking.status === 'Completed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
-                          booking.status === 'Active' ? 'bg-[var(--accent)]/10 text-[var(--accent)] border-[var(--accent)]/20' :
-                          booking.status === 'Upcoming' ? 'bg-purple-500/10 text-purple-500 border-purple-500/20' :
-                          'bg-red-500/10 text-red-500 border-red-500/20'
-                        }`}>
-                          {booking.status === 'Completed' && <CheckCircle2 size={12} />}
-                          {booking.status === 'Active' && <Clock size={12} />}
-                          {booking.status === 'Upcoming' && <Clock size={12} />}
-                          {booking.status === 'Cancelled' && <XCircle size={12} />}
-                          {booking.status}
-                        </span>
+                return (
+                  <motion.div
+                    key={booking.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="bg-[var(--sidebar)] border border-[var(--border)] rounded-xl p-4 flex flex-col md:flex-row gap-6 items-center hover:bg-[var(--card-hover)] transition-colors group shadow-sm"
+                  >
+                    <div className="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 relative border border-[var(--border)]">
+                      <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] to-transparent opacity-60 z-10" />
+                      <img 
+                        src={booking.vehicle.imageUrl} 
+                        alt={booking.vehicle.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute bottom-2 left-2 z-20">
+                        <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest">{booking.id}</span>
                       </div>
                     </div>
 
-                    <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-4 md:border-l md:border-[var(--border)] md:pl-6">
-                      <div className="text-left md:text-right">
-                        <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-1">Total Amount</p>
-                        <p className="text-2xl font-black text-[var(--text)]">{booking.amount}</p>
+                    <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-bold text-[var(--text)] uppercase tracking-wider">{booking.vehicle.name}</h3>
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--text-muted)]">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar size={14} className="text-[var(--accent)]" />
+                            <span>{booking.pickupDate} to {booking.returnDate}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <MapPin size={14} className="text-[var(--accent)]" />
+                            <span>{booking.pickupLocation}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest border ${
+                            isCompleted ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                            isActive ? 'bg-[var(--accent)]/10 text-[var(--accent)] border-[var(--accent)]/20' :
+                            isConfirmed ? 'bg-purple-500/10 text-purple-500 border-purple-500/20' :
+                            isCancelled ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                            'bg-orange-500/10 text-orange-400 border-orange-500/20'
+                          }`}>
+                            {isCompleted && <CheckCircle2 size={12} />}
+                            {isActive && <Clock size={12} />}
+                            {isConfirmed && <CheckCircle2 size={12} />}
+                            {isCancelled && <XCircle size={12} />}
+                            {!isCompleted && !isActive && !isConfirmed && !isCancelled && <Clock size={12} />}
+                            {booking.status}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <button className="px-3 py-2 bg-[var(--card)] hover:bg-[var(--card-hover)] text-[var(--text)] rounded-lg transition-colors border border-[var(--border)]" title="Download Invoice">
-                          <Download size={16} />
-                        </button>
-                        <button className="px-4 py-2 bg-[var(--card-hover)] hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] text-[var(--text)] rounded-lg transition-colors text-sm font-bold uppercase tracking-widest border border-[var(--border)] hover:border-transparent">
-                          View Details
-                        </button>
+
+                      <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-4 md:border-l md:border-[var(--border)] md:pl-6 w-full md:w-auto">
+                        <div className="text-left md:text-right">
+                          <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-1">Total Amount</p>
+                          <p className="text-2xl font-black text-[var(--text)]">
+                            ${booking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>

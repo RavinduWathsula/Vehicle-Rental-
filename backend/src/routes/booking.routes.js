@@ -5,16 +5,16 @@ const { validateRequest } = require('../middleware/validationMiddleware');
 const { createBookingSchema } = require('../validators/booking.validator');
 const { authenticateUser } = require('../middleware/authMiddleware');
 
-// All booking routes require authentication
+// @route   POST /api/bookings/calculate
+// @desc    Calculate booking price
+router.post('/calculate', bookingController.calculatePrice);
+
+// Remaining booking routes require authentication
 router.use(authenticateUser);
 
 // @route   POST /api/bookings
 // @desc    Create a new booking
 router.post('/', validateRequest(createBookingSchema), bookingController.createBooking);
-
-// @route   POST /api/bookings/calculate
-// @desc    Calculate booking price
-router.post('/calculate', bookingController.calculatePrice);
 
 // @route   GET /api/bookings/my
 // @desc    Get current user's bookings

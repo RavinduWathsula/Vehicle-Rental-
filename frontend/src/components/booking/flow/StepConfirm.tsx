@@ -42,10 +42,21 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
   const handleConfirm = async () => {
     setSubmitting(true);
     setError('');
+
+    const token = localStorage.getItem('drivex_token');
+    if (!token) {
+      setError('Please log in or register an account to complete your booking.');
+      setSubmitting(false);
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+      return;
+    }
+
     try {
       const response = await createBooking(data);
       if (response.status === 'confirmed') {
-        navigate(`/booking-confirmation/${response.reference}`);
+        navigate('/dashboard/bookings');
       } else {
         throw new Error(response.message || 'Booking could not be confirmed.');
       }

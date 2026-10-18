@@ -1,17 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PieChart, TrendingUp, Download, Calendar, DollarSign, Users, Car } from 'lucide-react';
+import { PieChart, TrendingUp, Calendar, DollarSign, Car, RefreshCw, BarChart2 } from 'lucide-react';
+import { apiFetch } from '../../services/api';
 
 export const AdminReports = () => {
+  const [data, setData] = useState({
+    totalRevenue: 0,
+    totalBookings: 0,
+    statusBreakdown: [] as any[],
+    fleetBreakdown: [] as any[],
+    topVehicles: [] as any[]
+  });
+  const [loading, setLoading] = useState(true);
+
+  const fetchReports = async () => {
+    try {
+      setLoading(true);
+      const res = await apiFetch('/admin/reports');
+      if (res.success && res.data) {
+        setData(res.data);
+      }
+    } catch (err) {
+      console.error('Error fetching reports:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
   return (
     <div className="space-y-6 pb-20">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Analytics & Reports</h1>
-          <p className="text-drivex-text-muted text-sm">Comprehensive insights into your business performance.</p>
+          <p className="text-drivex-text-muted text-sm">Comprehensive performance metrics calculated from your real database records.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-2.5 bg-drivex-card border border-drivex-border text-drivex-text font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent hover:text-drivex-text-inverse transition-all rounded-sm shrink-0 border border-drivex-border hover:border-drivex-accent">
-          <Download size={16} /> Export CSV
+        <button 
+          onClick={fetchReports}
+          className="flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
+        >
+          <RefreshCw size={14} className={loading ? 'animate-spin text-drivex-accent' : ''} />
+          Refresh Data
         </button>
       </div>
 
@@ -23,11 +55,13 @@ export const AdminReports = () => {
               <DollarSign size={24} />
             </div>
             <span className="flex items-center gap-1 text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-md border border-green-400/20">
-              <TrendingUp size={12} /> +14.5%
+              <TrendingUp size={12} /> Live
             </span>
           </div>
           <h3 className="text-drivex-text-muted text-sm font-medium mb-1 uppercase tracking-wider">Total Revenue</h3>
-          <p className="text-3xl font-black text-drivex-text">$124,500</p>
+          <p className="text-3xl font-black text-drivex-text">
+            ${data.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm">
@@ -35,12 +69,12 @@ export const AdminReports = () => {
             <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
               <Calendar size={24} />
             </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-md border border-green-400/20">
-              <TrendingUp size={12} /> +5.2%
+            <span className="flex items-center gap-1 text-xs font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded-md border border-purple-400/20">
+              Total
             </span>
           </div>
           <h3 className="text-drivex-text-muted text-sm font-medium mb-1 uppercase tracking-wider">Total Bookings</h3>
-          <p className="text-3xl font-black text-drivex-text">1,842</p>
+          <p className="text-3xl font-black text-drivex-text">{data.totalBookings}</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm">
@@ -48,28 +82,76 @@ export const AdminReports = () => {
             <div className="p-3 rounded-xl bg-orange-500/10 text-orange-400">
               <Car size={24} />
             </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-md border border-green-400/20">
-              <TrendingUp size={12} /> +12%
+            <span className="flex items-center gap-1 text-xs font-bold text-orange-400 bg-orange-400/10 px-2 py-1 rounded-md border border-orange-400/20">
+              Fleet
             </span>
           </div>
-          <h3 className="text-drivex-text-muted text-sm font-medium mb-1 uppercase tracking-wider">Fleet Utilization</h3>
-          <p className="text-3xl font-black text-drivex-text">82%</p>
+          <h3 className="text-drivex-text-muted text-sm font-medium mb-1 uppercase tracking-wider">Fleet Breakdown</h3>
+          <p className="text-3xl font-black text-drivex-text">
+            {data.fleetBreakdown.reduce((sum, item) => sum + (parseInt(item.count) || 0), 0)} Vehicles
+          </p>
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <div className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm h-96 flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-drivex-accent)_0%,_transparent_50%)] opacity-[0.05] group-hover:opacity-[0.1] transition-opacity" />
-          <PieChart size={64} className="text-drivex-accent mb-4 opacity-50" />
-          <h3 className="text-xl font-bold text-drivex-text uppercase tracking-wider mb-2">Revenue Chart</h3>
-          <p className="text-drivex-text-muted text-sm text-center">A beautiful chart representation would render here.</p>
+        {/* Booking Status Breakdown */}
+        <div className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm">
+          <h3 className="text-lg font-bold text-drivex-text uppercase tracking-wider mb-4 flex items-center gap-2">
+            <PieChart size={20} className="text-drivex-accent" />
+            Bookings By Status
+          </h3>
+          {data.statusBreakdown && data.statusBreakdown.length > 0 ? (
+            <div className="space-y-4">
+              {data.statusBreakdown.map((item: any) => (
+                <div key={item.booking_status} className="space-y-1">
+                  <div className="flex justify-between text-xs font-bold text-drivex-text uppercase tracking-wider">
+                    <span className="capitalize">{item.booking_status}</span>
+                    <span>{item.count}</span>
+                  </div>
+                  <div className="h-2 bg-drivex-sidebar rounded-full overflow-hidden border border-drivex-border">
+                    <div 
+                      className={`h-full rounded-full ${
+                        item.booking_status === 'completed' ? 'bg-green-500' :
+                        item.booking_status === 'active' ? 'bg-blue-500' :
+                        item.booking_status === 'confirmed' ? 'bg-purple-500' :
+                        item.booking_status === 'cancelled' ? 'bg-red-500' :
+                        'bg-orange-500'
+                      }`}
+                      style={{ width: `${Math.min(100, (item.count / (data.totalBookings || 1)) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-drivex-text-muted text-sm py-10 text-center">No bookings recorded yet in the database.</p>
+          )}
         </div>
-        
-        <div className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm h-96 flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#a855f7_0%,_transparent_50%)] opacity-[0.05] group-hover:opacity-[0.1] transition-opacity" />
-          <Users size={64} className="text-purple-400 mb-4 opacity-50" />
-          <h3 className="text-xl font-bold text-drivex-text uppercase tracking-wider mb-2">Demographics</h3>
-          <p className="text-drivex-text-muted text-sm text-center">Customer breakdown charts would render here.</p>
+
+        {/* Top Performing Vehicles */}
+        <div className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm">
+          <h3 className="text-lg font-bold text-drivex-text uppercase tracking-wider mb-4 flex items-center gap-2">
+            <BarChart2 size={20} className="text-purple-400" />
+            Top Performing Vehicles
+          </h3>
+          {data.topVehicles && data.topVehicles.length > 0 ? (
+            <div className="space-y-3">
+              {data.topVehicles.map((vehicle: any) => (
+                <div key={vehicle.id} className="p-3 bg-drivex-sidebar border border-drivex-border rounded-xl flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-drivex-text">{vehicle.brand} {vehicle.model}</p>
+                    <p className="text-xs text-drivex-text-muted">${vehicle.daily_price}/day</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-drivex-accent">{vehicle.bookingCount} reservation{vehicle.bookingCount === 1 ? '' : 's'}</p>
+                    <p className="text-xs text-drivex-text-muted">${parseFloat(vehicle.totalRevenue || 0).toLocaleString()} earned</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-drivex-text-muted text-sm py-10 text-center">No vehicle rental history recorded yet.</p>
+          )}
         </div>
       </div>
     </div>

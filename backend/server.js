@@ -59,13 +59,26 @@ app.use('/api/vehicles', vehicleRoutes);
 // app.use('/api/categories', categoryRoutes);
 app.use('/api/bookings', bookingRoutes);
 // app.use('/api/drivers', driverRoutes);
-// app.use('/api/extras', extraRoutes);
-// app.use('/api/locations', locationRoutes);
-// app.use('/api/payments', paymentRoutes);
-// app.use('/api/maintenance', maintenanceRoutes);
-// app.use('/api/reviews', reviewRoutes);
-// app.use('/api/coupons', couponRoutes);
-// app.use('/api/notifications', notificationRoutes);
+app.get('/api/extras', async (req, res, next) => {
+  try {
+    const { pool } = require('./src/config/database');
+    const [rows] = await pool.query('SELECT * FROM extras WHERE status = "active"');
+    res.status(200).json({ success: true, data: rows });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/locations', async (req, res, next) => {
+  try {
+    const { pool } = require('./src/config/database');
+    const [rows] = await pool.query('SELECT * FROM locations WHERE status = "active"');
+    res.status(200).json({ success: true, data: rows });
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.use('/api/admin', adminRoutes);
 
 // --- Error Handling ---

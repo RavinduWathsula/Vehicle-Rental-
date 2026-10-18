@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CarFront, Search, Plus, Filter, MoreVertical, Edit, Trash2, CheckCircle2, XCircle, X, Image as ImageIcon } from 'lucide-react';
+import { CarFront, Search, Plus, Trash2, CheckCircle2, XCircle, X, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 
 export const AdminVehicles = () => {
@@ -12,7 +12,7 @@ export const AdminVehicles = () => {
   const [formData, setFormData] = useState<any>({
     brand: '',
     model: '',
-    category_id: 1, // Default to 1 (Assume Category 1 exists)
+    category_id: 1,
     year: new Date().getFullYear(),
     registration_number: '',
     fuel_type: 'petrol',
@@ -29,6 +29,7 @@ export const AdminVehicles = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [error, setError] = useState('');
 
   // Fetch vehicles on mount
@@ -38,12 +39,15 @@ export const AdminVehicles = () => {
 
   const fetchVehicles = async () => {
     try {
+      setFetching(true);
       const data = await apiFetch('/admin/vehicles');
       if (data.success) {
-        setVehicles(data.data);
+        setVehicles(data.data || []);
       }
     } catch (err) {
       console.error("Error fetching vehicles:", err);
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -58,10 +62,21 @@ export const AdminVehicles = () => {
     setError('');
     
     try {
-      // Auto-calculate weekly and monthly if not provided
-      const payload: any = { ...formData };
-      if (!payload.weekly_price) payload.weekly_price = String(Number(payload.daily_price) * 6); // slightly discounted
-      if (!payload.monthly_price) payload.monthly_price = String(Number(payload.daily_price) * 20);
+      const payload: any = { 
+        ...formData,
+        category_id: Number(formData.category_id),
+        year: Number(formData.year),
+        seats: Number(formData.seats),
+        doors: Number(formData.doors),
+        luggage_capacity: Number(formData.luggage_capacity),
+        daily_price: Number(formData.daily_price),
+        weekly_price: Number(formData.weekly_price || Number(formData.daily_price) * 6),
+        monthly_price: Number(formData.monthly_price || Number(formData.daily_price) * 20),
+      };
+
+      if (!payload.image_url) {
+        delete payload.image_url;
+      }
 
       const data = await apiFetch('/vehicles', {
         method: 'POST',
@@ -86,20 +101,57 @@ export const AdminVehicles = () => {
     }
   };
 
+  const handleStatusChange = async (id: number, status: string) => {
+    try {
+      await apiFetch(`/vehicles/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ status })
+      });
+      fetchVehicles();
+    } catch (err) {
+      console.error('Failed to update vehicle status:', err);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this vehicle from the fleet?')) return;
+    try {
+      await apiFetch(`/vehicles/${id}`, {
+        method: 'DELETE'
+      });
+      fetchVehicles();
+    } catch (err: any) {
+      alert(err.message || 'Failed to delete vehicle');
+    }
+  };
+
+  const filteredVehicles = vehicles.filter(v => 
+    `${v.brand} ${v.model} ${v.registration_number}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-6 pb-20">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Fleet Management</h1>
-          <p className="text-drivex-text-muted text-sm">Manage your vehicles, track their status, and add new inventory.</p>
+          <p className="text-drivex-text-muted text-sm">Manage live vehicles in your database. Any vehicle added here is instantly visible to customers.</p>
         </div>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent-hover hover:bg-drivex-accent-hover shadow-md transition-all rounded-sm shrink-0"
-        >
-          <Plus size={16} />
-          Add New Vehicle
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={fetchVehicles}
+            className="flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
+          >
+            <RefreshCw size={14} className={fetching ? 'animate-spin text-drivex-accent' : ''} />
+            Refresh
+          </button>
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent-hover shadow-md transition-all rounded-sm shrink-0"
+          >
+            <Plus size={16} />
+            Add New Vehicle
+          </button>
+        </div>
       </div>
 
       <div className="bg-drivex-card border border-drivex-border rounded-2xl overflow-hidden shadow-sm">
@@ -108,8 +160,8 @@ export const AdminVehicles = () => {
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-drivex-text-muted" size={18} />
             <input 
-              type="text"
-              placeholder="Search vehicles by brand or model..."
+              type="text" 
+              placeholder="Search vehicles by brand, model, or plate..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-drivex-card border border-drivex-border rounded-lg pl-10 pr-4 py-2 text-sm text-drivex-text placeholder-gray-500 focus:outline-none focus:border-drivex-accent focus:ring-1 focus:ring-drivex-accent transition-all"
@@ -118,7 +170,7 @@ export const AdminVehicles = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto min-h-[400px]">
+        <div className="overflow-x-auto min-h-[300px]">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-drivex-sidebar border-b border-drivex-border">
@@ -130,60 +182,83 @@ export const AdminVehicles = () => {
               </tr>
             </thead>
             <tbody>
-              {vehicles.filter(v => `${v.brand} ${v.model}`.toLowerCase().includes(searchTerm.toLowerCase())).map((vehicle, i) => (
-                <motion.tr 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  key={vehicle.id} 
-                  className="border-b border-drivex-border hover:bg-drivex-card transition-colors group"
-                >
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-drivex-accent/20 to-purple-500/20 rounded-lg flex items-center justify-center shrink-0 border border-drivex-border">
-                        <CarFront size={24} className="text-drivex-accent" />
+              {filteredVehicles.length > 0 ? (
+                filteredVehicles.map((vehicle, i) => (
+                  <motion.tr 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.04 }}
+                    key={vehicle.id} 
+                    className="border-b border-drivex-border hover:bg-drivex-card transition-colors group"
+                  >
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-12 rounded-lg flex items-center justify-center shrink-0 border border-drivex-border overflow-hidden bg-drivex-sidebar">
+                          {vehicle.primary_image ? (
+                            <img src={vehicle.primary_image} alt={vehicle.model} className="w-full h-full object-cover" />
+                          ) : (
+                            <CarFront size={22} className="text-drivex-accent" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-drivex-text mb-0.5">{vehicle.brand} {vehicle.model} ({vehicle.year})</p>
+                          <p className="text-xs text-drivex-text-muted font-mono">{vehicle.registration_number}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-drivex-text mb-0.5">{vehicle.brand} {vehicle.model} ({vehicle.year})</p>
-                        <p className="text-xs text-drivex-text-muted">{vehicle.registration_number}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex flex-col gap-1 text-xs text-drivex-text-muted">
+                        <span className="capitalize">{vehicle.transmission} • {vehicle.fuel_type}</span>
+                        <span>{vehicle.seats} Seats • {vehicle.category_name || 'Vehicle'}</span>
                       </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex flex-col gap-1 text-xs text-drivex-text-muted">
-                      <span>{vehicle.transmission} • {vehicle.fuel_type}</span>
-                      <span>{vehicle.seats} Seats</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-sm font-bold text-drivex-text">${vehicle.daily_price}</td>
-                  <td className="py-4 px-6">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                      vehicle.status === 'available' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
-                      vehicle.status === 'rented' ? 'bg-drivex-accent/10 text-drivex-accent border border-drivex-accent/20' :
-                      'bg-orange-500/10 text-orange-400 border border-orange-500/20'
-                    }`}>
-                      {vehicle.status === 'available' && <CheckCircle2 size={12} />}
-                      {vehicle.status === 'rented' && <CarFront size={12} />}
-                      {vehicle.status === 'maintenance' && <XCircle size={12} />}
-                      <span className="capitalize">{vehicle.status}</span>
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-drivex-text-muted hover:text-drivex-accent hover:bg-drivex-accent/10 rounded-lg transition-colors" title="Edit">
-                        <Edit size={16} />
-                      </button>
-                      <button className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
+                    </td>
+                    <td className="py-4 px-6 text-sm font-bold text-drivex-text">${vehicle.daily_price}</td>
+                    <td className="py-4 px-6">
+                      <select
+                        value={vehicle.status}
+                        onChange={(e) => handleStatusChange(vehicle.id, e.target.value)}
+                        className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer ${
+                          vehicle.status === 'available' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                          vehicle.status === 'rented' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                          vehicle.status === 'maintenance' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                          'bg-red-500/10 text-red-400 border-red-500/20'
+                        }`}
+                      >
+                        <option value="available" className="bg-[#08090B] text-white">Available</option>
+                        <option value="rented" className="bg-[#08090B] text-white">Rented</option>
+                        <option value="maintenance" className="bg-[#08090B] text-white">Maintenance</option>
+                        <option value="inactive" className="bg-[#08090B] text-white">Inactive</option>
+                      </select>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      <button 
+                        onClick={() => handleDelete(vehicle.id)}
+                        className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors" 
+                        title="Delete Vehicle"
+                      >
                         <Trash2 size={16} />
                       </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-              {vehicles.length === 0 && (
+                    </td>
+                  </motion.tr>
+                ))
+              ) : (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-drivex-text-muted">
-                    No vehicles found. Click "Add New Vehicle" to get started.
+                  <td colSpan={5} className="py-16 text-center text-drivex-text-muted">
+                    <div className="flex flex-col items-center justify-center">
+                      <CarFront size={40} className="text-drivex-border mb-3" />
+                      <p className="text-base font-bold text-drivex-text mb-1">No Vehicles in Fleet</p>
+                      <p className="text-xs text-drivex-text-muted max-w-sm mb-4">
+                        {searchTerm ? 'No vehicles match your search filter.' : 'Your fleet is currently empty. Click "Add New Vehicle" to add a car to your database.'}
+                      </p>
+                      {!searchTerm && (
+                        <button 
+                          onClick={() => setIsAddModalOpen(true)}
+                          className="px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold text-xs uppercase tracking-widest rounded-sm"
+                        >
+                          Add Your First Vehicle
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               )}
@@ -201,7 +276,7 @@ export const AdminVehicles = () => {
               animate={{ opacity: 1 }} 
               exit={{ opacity: 0 }} 
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setIsAddModalOpen(false)}
+              onClick={() => setIsAddModalOpen(false)} 
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }} 
@@ -234,8 +309,8 @@ export const AdminVehicles = () => {
                         name="image_url" 
                         value={formData.image_url} 
                         onChange={handleInputChange} 
-                        placeholder="https://example.com/car-image.jpg" 
-                        className="w-full bg-transparent text-drivex-text outline-none py-1" 
+                        placeholder="https://images.unsplash.com/photo-..." 
+                        className="w-full bg-transparent text-drivex-text outline-none py-1 text-sm" 
                       />
                     </div>
                   </div>
@@ -243,35 +318,67 @@ export const AdminVehicles = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Brand *</label>
-                      <input type="text" name="brand" value={formData.brand} onChange={handleInputChange} required placeholder="e.g. Porsche" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none" />
+                      <input type="text" name="brand" value={formData.brand} onChange={handleInputChange} required placeholder="e.g. BMW, Toyota, Tesla" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Model *</label>
-                      <input type="text" name="model" value={formData.model} onChange={handleInputChange} required placeholder="e.g. 911 GT3" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none" />
+                      <input type="text" name="model" value={formData.model} onChange={handleInputChange} required placeholder="e.g. 5 Series, Model 3" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Registration No *</label>
-                      <input type="text" name="registration_number" value={formData.registration_number} onChange={handleInputChange} required placeholder="e.g. ABC-1234" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none" />
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Registration No (License Plate) *</label>
+                      <input type="text" name="registration_number" value={formData.registration_number} onChange={handleInputChange} required placeholder="e.g. ABC-1234" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Price ($) *</label>
-                      <input type="number" name="daily_price" value={formData.daily_price} onChange={handleInputChange} required placeholder="0.00" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none" />
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Rental Price ($) *</label>
+                      <input type="number" step="0.01" name="daily_price" value={formData.daily_price} onChange={handleInputChange} required placeholder="0.00" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Category</label>
+                      <select name="category_id" value={formData.category_id} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm">
+                        <option value="1">Luxury</option>
+                        <option value="2">Economy</option>
+                        <option value="3">Compact</option>
+                        <option value="4">Mid-size</option>
+                        <option value="5">SUV</option>
+                        <option value="6">Van</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Year</label>
+                      <input type="number" name="year" value={formData.year} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Fuel Type</label>
-                      <select name="fuel_type" value={formData.fuel_type} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none">
+                      <select name="fuel_type" value={formData.fuel_type} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm">
                         <option value="petrol">Petrol</option>
                         <option value="diesel">Diesel</option>
                         <option value="electric">Electric</option>
                         <option value="hybrid">Hybrid</option>
                       </select>
                     </div>
+
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Transmission</label>
-                      <select name="transmission" value={formData.transmission} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none">
+                      <select name="transmission" value={formData.transmission} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm">
                         <option value="automatic">Automatic</option>
                         <option value="manual">Manual</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Seats</label>
+                      <input type="number" name="seats" value={formData.seats} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Status</label>
+                      <select name="status" value={formData.status} onChange={handleInputChange} className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm">
+                        <option value="available">Available</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Inactive</option>
                       </select>
                     </div>
                   </div>
@@ -289,7 +396,7 @@ export const AdminVehicles = () => {
                   form="add-vehicle-form"
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent-hover hover:bg-drivex-accent-hover shadow-md transition-all rounded-lg disabled:opacity-50"
+                  className="px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent-hover shadow-md transition-all rounded-lg disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save Vehicle'}
                 </button>
