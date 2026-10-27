@@ -5,7 +5,7 @@ import VehicleCard from '../components/VehicleCard';
 import Loading from '../components/Loading';
 import { vehicleService } from '../services/vehicleService';
 
-const CATEGORIES = ['All', 'City', 'SUV', 'Luxury', 'Premium', 'Family', 'Van'];
+const CATEGORIES = ['All', 'Luxury', 'SUV', 'Economy', 'Compact', 'Mid-size', 'Van'];
 const TRANSMISSIONS = ['All', 'Automatic', 'Manual'];
 const FUEL_TYPES = ['All', 'Petrol', 'Diesel', 'Electric', 'Hybrid'];
 const SEAT_OPTIONS = ['All', '2', '4', '5', '7+'];
@@ -45,7 +45,8 @@ const Vehicles = () => {
     return vehicles.filter(v => {
       // Category Match
       if (activeCategory !== 'All') {
-        if (!v.category || v.category.toLowerCase() !== activeCategory.toLowerCase()) return false;
+        const cat = v.category_name || v.category || '';
+        if (cat.toLowerCase() !== activeCategory.toLowerCase()) return false;
       }
       
       // Transmission Match
@@ -69,7 +70,11 @@ const Vehicles = () => {
 
       // Availability Match
       if (activeAvailability !== 'All') {
-        if (!v.status || v.status.toLowerCase() !== activeAvailability.toLowerCase()) return false;
+        if (activeAvailability.toLowerCase() === 'available') {
+          if (v.status !== 'available') return false;
+        } else if (activeAvailability.toLowerCase() === 'reserved') {
+          if (v.status === 'available') return false;
+        }
       }
 
       return true;

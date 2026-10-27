@@ -33,14 +33,14 @@ const VehicleCard = ({ vehicle }) => {
         {/* Availability Badge */}
         <div className="absolute top-4 right-4 z-20">
           <Badge variant={isAvailable ? 'accent' : 'default'}>
-            {isAvailable ? 'AVAILABLE' : 'RESERVED'}
+            {isAvailable ? 'AVAILABLE' : (vehicle.status === 'maintenance' ? 'MAINTENANCE' : 'RESERVED')}
           </Badge>
         </div>
         
         {/* Category Pill */}
         <div className="absolute top-4 left-4 z-20">
           <span className="px-3 py-1 bg-[var(--bg)]/60 backdrop-blur-md text-[var(--text)] text-[10px] uppercase tracking-widest border border-[var(--border)] rounded-full shadow-sm">
-            {vehicle.category || 'Luxury'}
+            {vehicle.category_name || vehicle.category || 'Luxury'}
           </span>
         </div>
       </div>
@@ -95,11 +95,11 @@ const VehicleCard = ({ vehicle }) => {
               disabled={!isAvailable}
               className={`flex-1 py-3 font-bold text-xs uppercase tracking-widest transition-colors rounded-sm text-center shadow-sm border border-transparent ${
                 isAvailable 
-                  ? 'bg-[var(--accent)] text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]' 
+                  ? 'bg-[var(--accent)] text-[var(--text-inverse)] hover:bg-[var(--accent-hover)] cursor-pointer' 
                   : 'bg-[var(--sidebar)] text-[var(--text-muted)] cursor-not-allowed border-[var(--border)]'
               }`}
             >
-              Book Now
+              {isAvailable ? 'Book Now' : (vehicle.status === 'maintenance' ? 'Maintenance' : 'Reserved')}
             </button>
           </div>
         </div>

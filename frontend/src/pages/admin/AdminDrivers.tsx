@@ -337,11 +337,11 @@ export const AdminDrivers = () => {
                     name="status" 
                     value={formData.status} 
                     onChange={handleInputChange}
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer"
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]"
                   >
-                    <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
-                    <option value="on_duty" className="bg-drivex-card text-drivex-text">On Duty</option>
-                    <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                    <option value="available" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Available</option>
+                    <option value="on_duty" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">On Duty</option>
+                    <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                   </select>
                 </div>
 
@@ -447,11 +447,11 @@ export const AdminDrivers = () => {
                     name="status" 
                     value={editFormData.status} 
                     onChange={handleEditInputChange}
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer"
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]"
                   >
-                    <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
-                    <option value="on_duty" className="bg-drivex-card text-drivex-text">On Duty</option>
-                    <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                    <option value="available" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Available</option>
+                    <option value="on_duty" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">On Duty</option>
+                    <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                   </select>
                 </div>
 

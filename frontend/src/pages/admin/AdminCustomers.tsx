@@ -175,15 +175,15 @@ export const AdminCustomers = () => {
                         <select 
                           value={status}
                           onChange={(e) => handleStatusChange(customer.id, e.target.value)}
-                          className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer ${
+                          className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer dark:[color-scheme:dark] [color-scheme:light] ${
                             status === 'active' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
                             status === 'suspended' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
                             'bg-orange-500/10 text-orange-400 border-orange-500/20'
                           }`}
                         >
-                          <option value="active" className="bg-drivex-card text-drivex-text">Active</option>
-                          <option value="suspended" className="bg-drivex-card text-drivex-text">Suspended</option>
-                          <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                          <option value="active" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Active</option>
+                          <option value="suspended" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Suspended</option>
+                          <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                         </select>
                       </td>
                       <td className="py-4 px-6">

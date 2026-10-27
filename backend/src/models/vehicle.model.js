@@ -11,7 +11,7 @@ class VehicleModel {
 
     // Get paginated results
     const [rows] = await pool.execute(
-      `SELECT v.*, c.name as category_name, 
+      `SELECT v.*, c.name as category_name, c.name as category,
         (SELECT image_url FROM vehicle_images vi WHERE vi.vehicle_id = v.id ORDER BY is_primary DESC LIMIT 1) as primary_image
        FROM vehicles v 
        LEFT JOIN vehicle_categories c ON v.category_id = c.id 
@@ -26,7 +26,7 @@ class VehicleModel {
 
   async findById(id) {
     const [rows] = await pool.execute(
-      `SELECT v.*, c.name as category_name,
+      `SELECT v.*, c.name as category_name, c.name as category,
         (SELECT image_url FROM vehicle_images vi WHERE vi.vehicle_id = v.id ORDER BY is_primary DESC LIMIT 1) as primary_image
        FROM vehicles v 
        LEFT JOIN vehicle_categories c ON v.category_id = c.id 

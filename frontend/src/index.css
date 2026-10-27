@@ -61,6 +61,27 @@
     font-family: var(--font-heading);
     font-weight: 500;
   }
+
+  /* Universal select and option visibility styling */
+  select {
+    color-scheme: light dark;
+  }
+
+  select option {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+  }
+
+  :root.dark select,
+  .dark select {
+    color-scheme: dark !important;
+  }
+
+  :root.dark select option,
+  .dark select option {
+    background-color: #16181D !important;
+    color: #FFFFFF !important;
+  }
 }
 
 @layer utilities {

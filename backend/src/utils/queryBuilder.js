@@ -42,9 +42,9 @@ const buildVehicleQuery = (query) => {
   if (query.status) {
     conditions.push('status = ?');
     values.push(query.status);
-  } else if (!query.includeAll) { // If not admin requesting all, default to available
-    conditions.push('status = ?');
-    values.push('available');
+  } else if (!query.includeAll) {
+    // Public fleet view shows active vehicles (available, rented, maintenance) with their badges; hides inactive
+    conditions.push("status != 'inactive'");
   }
 
   // Combine conditions

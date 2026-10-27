@@ -311,17 +311,17 @@ export const AdminVehicles = () => {
                       <select
                         value={vehicle.status}
                         onChange={(e) => handleStatusChange(vehicle.id, e.target.value)}
-                        className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer ${
+                        className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer dark:[color-scheme:dark] [color-scheme:light] ${
                           vehicle.status === 'available' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
                           vehicle.status === 'rented' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
                           vehicle.status === 'maintenance' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
                           'bg-red-500/10 text-red-400 border-red-500/20'
                         }`}
                       >
-                        <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
-                        <option value="rented" className="bg-drivex-card text-drivex-text">Rented</option>
-                        <option value="maintenance" className="bg-drivex-card text-drivex-text">Maintenance</option>
-                        <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                        <option value="available" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Available</option>
+                        <option value="rented" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Rented</option>
+                        <option value="maintenance" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Maintenance</option>
+                        <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                       </select>
                     </td>
                     <td className="py-4 px-6 text-right">
@@ -438,13 +438,13 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Category</label>
-                      <select name="category_id" value={formData.category_id} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="1" className="bg-drivex-card text-drivex-text">Luxury</option>
-                        <option value="2" className="bg-drivex-card text-drivex-text">Economy</option>
-                        <option value="3" className="bg-drivex-card text-drivex-text">Compact</option>
-                        <option value="4" className="bg-drivex-card text-drivex-text">Mid-size</option>
-                        <option value="5" className="bg-drivex-card text-drivex-text">SUV</option>
-                        <option value="6" className="bg-drivex-card text-drivex-text">Van</option>
+                      <select name="category_id" value={formData.category_id} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="1" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Luxury</option>
+                        <option value="2" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Economy</option>
+                        <option value="3" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Compact</option>
+                        <option value="4" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Mid-size</option>
+                        <option value="5" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">SUV</option>
+                        <option value="6" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Van</option>
                       </select>
                     </div>
 
@@ -455,19 +455,19 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Fuel Type</label>
-                      <select name="fuel_type" value={formData.fuel_type} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="petrol" className="bg-drivex-card text-drivex-text">Petrol</option>
-                        <option value="diesel" className="bg-drivex-card text-drivex-text">Diesel</option>
-                        <option value="electric" className="bg-drivex-card text-drivex-text">Electric</option>
-                        <option value="hybrid" className="bg-drivex-card text-drivex-text">Hybrid</option>
+                      <select name="fuel_type" value={formData.fuel_type} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="petrol" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Petrol</option>
+                        <option value="diesel" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Diesel</option>
+                        <option value="electric" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Electric</option>
+                        <option value="hybrid" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Hybrid</option>
                       </select>
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Transmission</label>
-                      <select name="transmission" value={formData.transmission} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="automatic" className="bg-drivex-card text-drivex-text">Automatic</option>
-                        <option value="manual" className="bg-drivex-card text-drivex-text">Manual</option>
+                      <select name="transmission" value={formData.transmission} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="automatic" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Automatic</option>
+                        <option value="manual" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Manual</option>
                       </select>
                     </div>
 
@@ -478,10 +478,10 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Status</label>
-                      <select name="status" value={formData.status} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
-                        <option value="maintenance" className="bg-drivex-card text-drivex-text">Maintenance</option>
-                        <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                      <select name="status" value={formData.status} onChange={handleInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="available" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Available</option>
+                        <option value="maintenance" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Maintenance</option>
+                        <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                       </select>
                     </div>
                   </div>
@@ -580,13 +580,13 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Category</label>
-                      <select name="category_id" value={editFormData.category_id} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="1" className="bg-drivex-card text-drivex-text">Luxury</option>
-                        <option value="2" className="bg-drivex-card text-drivex-text">Economy</option>
-                        <option value="3" className="bg-drivex-card text-drivex-text">Compact</option>
-                        <option value="4" className="bg-drivex-card text-drivex-text">Mid-size</option>
-                        <option value="5" className="bg-drivex-card text-drivex-text">SUV</option>
-                        <option value="6" className="bg-drivex-card text-drivex-text">Van</option>
+                      <select name="category_id" value={editFormData.category_id} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="1" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Luxury</option>
+                        <option value="2" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Economy</option>
+                        <option value="3" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Compact</option>
+                        <option value="4" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Mid-size</option>
+                        <option value="5" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">SUV</option>
+                        <option value="6" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Van</option>
                       </select>
                     </div>
 
@@ -597,19 +597,19 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Fuel Type</label>
-                      <select name="fuel_type" value={editFormData.fuel_type} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="petrol" className="bg-drivex-card text-drivex-text">Petrol</option>
-                        <option value="diesel" className="bg-drivex-card text-drivex-text">Diesel</option>
-                        <option value="electric" className="bg-drivex-card text-drivex-text">Electric</option>
-                        <option value="hybrid" className="bg-drivex-card text-drivex-text">Hybrid</option>
+                      <select name="fuel_type" value={editFormData.fuel_type} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="petrol" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Petrol</option>
+                        <option value="diesel" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Diesel</option>
+                        <option value="electric" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Electric</option>
+                        <option value="hybrid" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Hybrid</option>
                       </select>
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Transmission</label>
-                      <select name="transmission" value={editFormData.transmission} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="automatic" className="bg-drivex-card text-drivex-text">Automatic</option>
-                        <option value="manual" className="bg-drivex-card text-drivex-text">Manual</option>
+                      <select name="transmission" value={editFormData.transmission} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="automatic" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Automatic</option>
+                        <option value="manual" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Manual</option>
                       </select>
                     </div>
 
@@ -630,11 +630,11 @@ export const AdminVehicles = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Status</label>
-                      <select name="status" value={editFormData.status} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer">
-                        <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
-                        <option value="rented" className="bg-drivex-card text-drivex-text">Rented</option>
-                        <option value="maintenance" className="bg-drivex-card text-drivex-text">Maintenance</option>
-                        <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                      <select name="status" value={editFormData.status} onChange={handleEditInputChange} className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer dark:[color-scheme:dark] [color-scheme:light]">
+                        <option value="available" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Available</option>
+                        <option value="rented" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Rented</option>
+                        <option value="maintenance" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Maintenance</option>
+                        <option value="inactive" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Inactive</option>
                       </select>
                     </div>
                   </div>
