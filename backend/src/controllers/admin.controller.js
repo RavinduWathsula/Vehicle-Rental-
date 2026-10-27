@@ -186,6 +186,41 @@ class AdminController {
   };
 
   /**
+   * Update Driver
+   */
+  updateDriver = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { name, phone, license_number, license_expiry, status } = req.body;
+
+      const fields = [];
+      const values = [];
+
+      if (name !== undefined) { fields.push('name = ?'); values.push(name); }
+      if (phone !== undefined) { fields.push('phone = ?'); values.push(phone); }
+      if (license_number !== undefined) { fields.push('license_number = ?'); values.push(license_number); }
+      if (license_expiry !== undefined) { fields.push('license_expiry = ?'); values.push(license_expiry); }
+      if (status !== undefined) { fields.push('status = ?'); values.push(status); }
+
+      if (fields.length === 0) {
+        return res.status(400).json({ success: false, message: 'No fields to update' });
+      }
+
+      values.push(id);
+      await pool.query(`UPDATE drivers SET ${fields.join(', ')} WHERE id = ?`, values);
+
+      const [updated] = await pool.query('SELECT * FROM drivers WHERE id = ?', [id]);
+      res.status(200).json({
+        success: true,
+        message: 'Driver updated successfully.',
+        data: updated[0]
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
    * Get Maintenance Records
    */
   getMaintenance = async (req, res, next) => {

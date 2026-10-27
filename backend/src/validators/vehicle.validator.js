@@ -9,12 +9,12 @@ const createVehicleSchema = Joi.object({
   fuel_type: Joi.string().valid('petrol', 'diesel', 'electric', 'hybrid').required(),
   transmission: Joi.string().valid('manual', 'automatic').required(),
   seats: Joi.number().integer().min(1).max(50).required(),
-  doors: Joi.number().integer().min(1).max(10).required(),
-  luggage_capacity: Joi.number().integer().min(0).required(),
+  doors: Joi.number().integer().min(1).max(10).default(4),
+  luggage_capacity: Joi.number().integer().min(0).default(2),
   daily_price: Joi.number().precision(2).positive().required(),
-  weekly_price: Joi.number().precision(2).positive().required(),
-  monthly_price: Joi.number().precision(2).positive().required(),
-  description: Joi.string().allow('', null),
+  weekly_price: Joi.number().precision(2).positive().optional(),
+  monthly_price: Joi.number().precision(2).positive().optional(),
+  description: Joi.string().allow('', null).default(''),
   status: Joi.string().valid('available', 'rented', 'maintenance', 'inactive').default('available'),
   image_url: Joi.string().uri().allow('', null)
 });
@@ -34,7 +34,8 @@ const updateVehicleSchema = Joi.object({
   weekly_price: Joi.number().precision(2).positive(),
   monthly_price: Joi.number().precision(2).positive(),
   description: Joi.string().allow('', null),
-  status: Joi.string().valid('available', 'rented', 'maintenance', 'inactive')
+  status: Joi.string().valid('available', 'rented', 'maintenance', 'inactive'),
+  image_url: Joi.string().uri().allow('', null)
 }).min(1); // At least one field must be provided for update
 
 module.exports = {

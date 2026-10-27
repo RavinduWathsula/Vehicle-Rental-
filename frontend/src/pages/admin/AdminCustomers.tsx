@@ -181,9 +181,9 @@ export const AdminCustomers = () => {
                             'bg-orange-500/10 text-orange-400 border-orange-500/20'
                           }`}
                         >
-                          <option value="active" className="bg-[#08090B] text-white">Active</option>
-                          <option value="suspended" className="bg-[#08090B] text-white">Suspended</option>
-                          <option value="inactive" className="bg-[#08090B] text-white">Inactive</option>
+                          <option value="active" className="bg-drivex-card text-drivex-text">Active</option>
+                          <option value="suspended" className="bg-drivex-card text-drivex-text">Suspended</option>
+                          <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
                         </select>
                       </td>
                       <td className="py-4 px-6">

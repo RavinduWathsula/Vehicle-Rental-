@@ -18,6 +18,13 @@ export const authService = {
   getMe: async () => {
     return apiFetch('/auth/me');
   },
+
+  updateProfile: async (profileData) => {
+    return apiFetch('/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  },
   
   logout: () => {
     localStorage.removeItem('drivex_token');

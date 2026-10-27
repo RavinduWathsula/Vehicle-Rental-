@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UserCircle, Search, Plus, Trash2, Phone, X, RefreshCw } from 'lucide-react';
+import { UserCircle, Search, Plus, Trash2, Phone, X, RefreshCw, Pencil } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 
 export const AdminDrivers = () => {
@@ -8,6 +8,9 @@ export const AdminDrivers = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingDriverId, setEditingDriverId] = useState<number | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -15,8 +18,19 @@ export const AdminDrivers = () => {
     license_expiry: '',
     status: 'available'
   });
+
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    phone: '',
+    license_number: '',
+    license_expiry: '',
+    status: 'available'
+  });
+
   const [submitting, setSubmitting] = useState(false);
+  const [editSubmitting, setEditSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [editError, setEditError] = useState('');
 
   const fetchDrivers = async () => {
     try {
@@ -69,6 +83,49 @@ export const AdminDrivers = () => {
       fetchDrivers();
     } catch (err) {
       console.error('Failed to delete driver:', err);
+    }
+  };
+
+  const handleOpenEditModal = (driver: any) => {
+    setEditingDriverId(driver.id);
+    const rawExpiry = driver.license_expiry ? String(driver.license_expiry).split('T')[0] : '';
+    setEditFormData({
+      name: driver.name || '',
+      phone: driver.phone || '',
+      license_number: driver.license_number || '',
+      license_expiry: rawExpiry,
+      status: driver.status || 'available'
+    });
+    setEditError('');
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditInputChange = (e: any) => {
+    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleEditSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!editingDriverId) return;
+    setEditSubmitting(true);
+    setEditError('');
+
+    try {
+      const res = await apiFetch(`/admin/drivers/${editingDriverId}`, {
+        method: 'PUT',
+        body: JSON.stringify(editFormData)
+      });
+      if (res.success) {
+        setIsEditModalOpen(false);
+        setEditingDriverId(null);
+        fetchDrivers();
+      } else {
+        throw new Error(res.message || 'Failed to update driver');
+      }
+    } catch (err: any) {
+      setEditError(err.message || 'Failed to update driver');
+    } finally {
+      setEditSubmitting(false);
     }
   };
 
@@ -129,7 +186,7 @@ export const AdminDrivers = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-drivex-accent to-purple-500 p-0.5">
-                      <div className="w-full h-full bg-[#08090B] rounded-full flex items-center justify-center">
+                      <div className="w-full h-full bg-drivex-card rounded-full flex items-center justify-center">
                         <UserCircle size={24} className="text-drivex-accent" />
                       </div>
                     </div>
@@ -158,13 +215,22 @@ export const AdminDrivers = () => {
                 </div>
                 <div className="flex items-center justify-between border-t border-drivex-border pt-4">
                   <span className="text-xs text-drivex-text-muted font-mono">ID: #{driver.id}</span>
-                  <button 
-                    onClick={() => handleDelete(driver.id)}
-                    className="p-1.5 text-drivex-text-muted hover:text-red-400 transition-colors"
-                    title="Remove Driver"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => handleOpenEditModal(driver)}
+                      className="p-1.5 text-drivex-text-muted hover:text-drivex-accent transition-colors"
+                      title="Edit Driver"
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(driver.id)}
+                      className="p-1.5 text-drivex-text-muted hover:text-red-400 transition-colors"
+                      title="Remove Driver"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -203,7 +269,7 @@ export const AdminDrivers = () => {
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg bg-[#08090B] border border-drivex-border rounded-2xl shadow-2xl overflow-hidden p-6"
+              className="relative w-full max-w-lg bg-drivex-sidebar border border-drivex-border rounded-2xl shadow-2xl overflow-hidden p-6"
             >
               <div className="flex items-center justify-between pb-4 border-b border-drivex-border mb-6">
                 <h2 className="text-xl font-bold text-drivex-text uppercase tracking-wider">Add New Driver</h2>
@@ -228,7 +294,7 @@ export const AdminDrivers = () => {
                     onChange={handleInputChange} 
                     required 
                     placeholder="e.g. John Miller" 
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" 
                   />
                 </div>
                 <div>
@@ -240,7 +306,7 @@ export const AdminDrivers = () => {
                     onChange={handleInputChange} 
                     required 
                     placeholder="e.g. +1 555-0192" 
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" 
                   />
                 </div>
                 <div>
@@ -252,7 +318,7 @@ export const AdminDrivers = () => {
                     onChange={handleInputChange} 
                     required 
                     placeholder="e.g. DL-8899123" 
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" 
                   />
                 </div>
                 <div>
@@ -262,7 +328,7 @@ export const AdminDrivers = () => {
                     name="license_expiry" 
                     value={formData.license_expiry} 
                     onChange={handleInputChange} 
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm [color-scheme:dark]" 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm dark:[color-scheme:dark]" 
                   />
                 </div>
                 <div>
@@ -271,11 +337,11 @@ export const AdminDrivers = () => {
                     name="status" 
                     value={formData.status} 
                     onChange={handleInputChange}
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm"
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer"
                   >
-                    <option value="available">Available</option>
-                    <option value="on_duty">On Duty</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
+                    <option value="on_duty" className="bg-drivex-card text-drivex-text">On Duty</option>
+                    <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
                   </select>
                 </div>
 
@@ -293,6 +359,116 @@ export const AdminDrivers = () => {
                     className="px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs rounded-sm hover:bg-drivex-accent-hover transition-all disabled:opacity-50"
                   >
                     {submitting ? 'Saving...' : 'Add Driver'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Driver Modal */}
+      <AnimatePresence>
+        {isEditModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setIsEditModalOpen(false)} 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-md bg-drivex-sidebar border border-drivex-border rounded-xl shadow-2xl p-6 overflow-hidden"
+            >
+              <div className="flex items-center justify-between pb-4 border-b border-drivex-border mb-4">
+                <h3 className="text-lg font-bold text-drivex-text uppercase tracking-wider">Edit Driver Profile</h3>
+                <button onClick={() => setIsEditModalOpen(false)} className="text-drivex-text-muted hover:text-drivex-text">
+                  <X size={20} />
+                </button>
+              </div>
+
+              {editError && (
+                <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs font-semibold">
+                  {editError}
+                </div>
+              )}
+
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                <div>
+                  <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Full Name</label>
+                  <input 
+                    type="text" 
+                    name="name" 
+                    value={editFormData.name} 
+                    onChange={handleEditInputChange} 
+                    required 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Phone Number</label>
+                  <input 
+                    type="text" 
+                    name="phone" 
+                    value={editFormData.phone} 
+                    onChange={handleEditInputChange} 
+                    required 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Driving License Number</label>
+                  <input 
+                    type="text" 
+                    name="license_number" 
+                    value={editFormData.license_number} 
+                    onChange={handleEditInputChange} 
+                    required 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">License Expiry Date</label>
+                  <input 
+                    type="date" 
+                    name="license_expiry" 
+                    value={editFormData.license_expiry} 
+                    onChange={handleEditInputChange} 
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm dark:[color-scheme:dark]" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Status</label>
+                  <select 
+                    name="status" 
+                    value={editFormData.status} 
+                    onChange={handleEditInputChange}
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm cursor-pointer"
+                  >
+                    <option value="available" className="bg-drivex-card text-drivex-text">Available</option>
+                    <option value="on_duty" className="bg-drivex-card text-drivex-text">On Duty</option>
+                    <option value="inactive" className="bg-drivex-card text-drivex-text">Inactive</option>
+                  </select>
+                </div>
+
+                <div className="pt-4 flex justify-end gap-3">
+                  <button 
+                    type="button" 
+                    onClick={() => setIsEditModalOpen(false)} 
+                    className="px-4 py-2 text-sm text-drivex-text-muted hover:text-drivex-text"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={editSubmitting}
+                    className="px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs rounded-sm hover:bg-drivex-accent-hover transition-all disabled:opacity-50"
+                  >
+                    {editSubmitting ? 'Updating...' : 'Update Driver'}
                   </button>
                 </div>
               </form>

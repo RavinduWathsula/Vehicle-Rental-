@@ -18,79 +18,106 @@ export interface AuthResponse {
 const API_BASE_URL = 'http://localhost:5000/api/auth';
 
 export const login = async (credentials: any): Promise<AuthResponse> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
-    });
+  const response = await fetch(`${API_BASE_URL}/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials)
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Login failed');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Login error:', error);
-    
-    // Mock login for UI testing
-    if (credentials.email === 'admin@drivex.com') {
-      return {
-        token: 'mock-jwt-token-admin',
-        user: { id: '1', email: 'admin@drivex.com', firstName: 'Admin', lastName: 'User', phone: '+1 (555) 000-0000', licenseNumber: 'DL-0000000', role: 'admin' }
-      };
-    }
-    return {
-      token: 'mock-jwt-token-customer',
-      user: { id: '2', email: credentials.email, firstName: 'John', lastName: 'Doe', phone: '+1 (555) 123-4567', licenseNumber: 'DL-1234567', role: 'customer' }
-    };
+  const resData = await response.json();
+  if (!response.ok || !resData.success) {
+    throw new Error(resData.message || 'Login failed. Please check your credentials.');
   }
+
+  const user = resData.data?.user || resData.data;
+  const token = resData.data?.token || resData.token;
+
+  const nameParts = (user.name || '').trim().split(' ');
+  const formattedUser: User = {
+    id: String(user.id),
+    email: user.email,
+    firstName: nameParts[0] || 'User',
+    lastName: nameParts.slice(1).join(' ') || '',
+    phone: user.phone || '',
+    licenseNumber: user.license_number || '',
+    role: user.role
+  };
+
+  localStorage.setItem('drivex_token', token);
+  localStorage.setItem('drivex_user', JSON.stringify(user));
+
+  return { token, user: formattedUser };
 };
 
 export const register = async (userData: any): Promise<AuthResponse> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
-    });
+  const name = (userData.name || `${userData.firstName || ''} ${userData.lastName || ''}`).trim();
+  const payload = {
+    name,
+    email: userData.email,
+    password: userData.password,
+    phone: userData.phone || null
+  };
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Registration failed');
-    }
+  const response = await fetch(`${API_BASE_URL}/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
 
-    return await response.json();
-  } catch (error) {
-    console.error('Registration error:', error);
-    // Mock registration for UI testing
-    return {
-      token: 'mock-jwt-token-customer',
-      user: { id: '2', email: userData.email, firstName: userData.firstName, lastName: userData.lastName, phone: '+1 (555) 123-4567', licenseNumber: 'DL-1234567', role: 'customer' }
-    };
+  const resData = await response.json();
+  if (!response.ok || !resData.success) {
+    throw new Error(resData.message || 'Registration failed.');
   }
+
+  const user = resData.data?.user || resData.data;
+  const token = resData.data?.token || resData.token;
+
+  const nameParts = (user.name || '').trim().split(' ');
+  const formattedUser: User = {
+    id: String(user.id),
+    email: user.email,
+    firstName: nameParts[0] || 'User',
+    lastName: nameParts.slice(1).join(' ') || '',
+    phone: user.phone || '',
+    licenseNumber: user.license_number || '',
+    role: user.role
+  };
+
+  if (token) {
+    localStorage.setItem('drivex_token', token);
+  }
+  localStorage.setItem('drivex_user', JSON.stringify(user));
+
+  return { token, user: formattedUser };
 };
 
 export const validateSession = async (token: string): Promise<User> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/me`, {
-      method: 'GET',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    });
+  const response = await fetch(`${API_BASE_URL}/me`, {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+  });
 
-    if (!response.ok) throw new Error('Session invalid');
-
-    return await response.json();
-  } catch (error) {
-    console.error('Session validation error:', error);
-    // Mock session validation
-    if (token.includes('admin')) {
-      return { id: '1', email: 'admin@drivex.com', firstName: 'Admin', lastName: 'User', phone: '+1 (555) 000-0000', licenseNumber: 'DL-0000000', role: 'admin' };
-    }
-    return { id: '2', email: 'customer@drivex.com', firstName: 'John', lastName: 'Doe', phone: '+1 (555) 123-4567', licenseNumber: 'DL-1234567', role: 'customer' };
+  if (!response.ok) {
+    throw new Error('Session invalid');
   }
+
+  const resData = await response.json();
+  const user = resData.data?.user || resData.data;
+
+  const nameParts = (user.name || '').trim().split(' ');
+  const formattedUser: User = {
+    id: String(user.id),
+    email: user.email,
+    firstName: nameParts[0] || 'User',
+    lastName: nameParts.slice(1).join(' ') || '',
+    phone: user.phone || '',
+    licenseNumber: user.license_number || '',
+    role: user.role
+  };
+
+  localStorage.setItem('drivex_user', JSON.stringify(user));
+  return formattedUser;
 };

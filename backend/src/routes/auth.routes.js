@@ -20,6 +20,11 @@ router.post('/login', validateRequest(loginSchema), authController.login);
 // @access  Private
 router.get('/me', authenticateUser, authController.getMe);
 
+// @route   PUT /api/auth/me
+// @desc    Update current logged in user profile
+// @access  Private
+router.put('/me', authenticateUser, authController.updateMe);
+
 // @route   POST /api/auth/logout
 // @desc    Logout user
 // @access  Public (or Private if you prefer they must be logged in to log out)

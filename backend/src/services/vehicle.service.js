@@ -56,6 +56,13 @@ class VehicleService {
       throw error;
     }
     
+    // Ensure all required DB fields have values
+    if (!vehicleData.doors) vehicleData.doors = 4;
+    if (vehicleData.luggage_capacity === undefined || vehicleData.luggage_capacity === null) vehicleData.luggage_capacity = 2;
+    if (!vehicleData.weekly_price) vehicleData.weekly_price = parseFloat((vehicleData.daily_price * 6).toFixed(2));
+    if (!vehicleData.monthly_price) vehicleData.monthly_price = parseFloat((vehicleData.daily_price * 22).toFixed(2));
+    if (!vehicleData.description) vehicleData.description = `${vehicleData.brand} ${vehicleData.model} (${vehicleData.year || 2026})`;
+
     // Extract image_url if provided
     const imageUrl = vehicleData.image_url;
     delete vehicleData.image_url;
@@ -64,7 +71,7 @@ class VehicleService {
 
     // If an image was provided, add it to vehicle_images
     if (imageUrl) {
-      const pool = require('../config/db');
+      const { pool } = require('../config/database');
       await pool.execute(
         'INSERT INTO vehicle_images (vehicle_id, image_url, is_primary) VALUES (?, ?, ?)',
         [newVehicle.id, imageUrl, true]
@@ -86,7 +93,36 @@ class VehicleService {
       }
     }
 
-    return await vehicleModel.update(id, vehicleData);
+    const imageUrl = vehicleData.image_url;
+    delete vehicleData.image_url;
+
+    let updated = null;
+    if (Object.keys(vehicleData).length > 0) {
+      updated = await vehicleModel.update(id, vehicleData);
+    } else {
+      updated = await this.getVehicleById(id);
+    }
+
+    if (imageUrl) {
+      const { pool } = require('../config/database');
+      const [existingImgs] = await pool.execute(
+        'SELECT id FROM vehicle_images WHERE vehicle_id = ? AND is_primary = true',
+        [id]
+      );
+      if (existingImgs.length > 0) {
+        await pool.execute(
+          'UPDATE vehicle_images SET image_url = ? WHERE id = ?',
+          [imageUrl, existingImgs[0].id]
+        );
+      } else {
+        await pool.execute(
+          'INSERT INTO vehicle_images (vehicle_id, image_url, is_primary) VALUES (?, ?, ?)',
+          [id, imageUrl, true]
+        );
+      }
+    }
+
+    return updated;
   }
 
   async deleteVehicle(id) {

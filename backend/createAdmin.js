@@ -10,9 +10,10 @@ async function createAdmin() {
     const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', ['admin@drivex.com']);
     
     if (rows.length > 0) {
-      console.log('Admin user already exists!');
+      await pool.query('UPDATE users SET password_hash = ?, role = "admin", status = "active" WHERE email = ?', [passwordHash, 'admin@drivex.com']);
+      console.log('Admin user updated successfully!');
       console.log('Email: admin@drivex.com');
-      console.log('Password: admin123 (or whatever you set previously)');
+      console.log('Password: admin123');
     } else {
       await pool.query(
         'INSERT INTO users (name, email, password_hash, role, status) VALUES (?, ?, ?, ?, ?)',

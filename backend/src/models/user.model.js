@@ -40,6 +40,28 @@ class UserModel {
     
     return this.findById(result.insertId);
   }
+
+  /**
+   * Update user basic details (name, phone)
+   */
+  async update(id, { name, phone }) {
+    await pool.execute(
+      'UPDATE users SET name = COALESCE(?, name), phone = COALESCE(?, phone) WHERE id = ?',
+      [name !== undefined ? name : null, phone !== undefined ? phone : null, id]
+    );
+    return this.findById(id);
+  }
+
+  /**
+   * Update user password hash
+   */
+  async updatePassword(id, password_hash) {
+    await pool.execute(
+      'UPDATE users SET password_hash = ? WHERE id = ?',
+      [password_hash, id]
+    );
+    return true;
+  }
 }
 
 module.exports = new UserModel();

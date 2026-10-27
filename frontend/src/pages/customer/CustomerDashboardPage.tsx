@@ -16,10 +16,11 @@ import {
   CheckCircle2,
   Eye
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getCustomerBookings, type CustomerBooking } from '../../lib/api';
 
 export const CustomerDashboardPage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -379,7 +380,10 @@ export const CustomerDashboardPage = () => {
                 </div>
               </div>
 
-              <button className="w-full mt-8 bg-[var(--sidebar)] border border-[var(--border)] hover:bg-[var(--card-hover)] text-[var(--text)] py-3 rounded-xl text-sm font-bold transition-colors">
+              <button 
+                onClick={() => navigate('/dashboard/profile')}
+                className="w-full mt-8 bg-[var(--sidebar)] border border-[var(--border)] hover:bg-[var(--card-hover)] text-[var(--text)] py-3 rounded-xl text-sm font-bold transition-colors cursor-pointer"
+              >
                 Edit Profile
               </button>
             </div>

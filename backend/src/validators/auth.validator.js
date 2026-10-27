@@ -1,10 +1,9 @@
 const Joi = require('joi');
 
 const registerSchema = Joi.object({
-  name: Joi.string().required().messages({
-    'string.empty': 'Name is required.',
-    'any.required': 'Name is required.'
-  }),
+  name: Joi.string().allow('', null),
+  firstName: Joi.string().allow('', null),
+  lastName: Joi.string().allow('', null),
   email: Joi.string().email().required().messages({
     'string.email': 'Please provide a valid email address.',
     'string.empty': 'Email is required.',

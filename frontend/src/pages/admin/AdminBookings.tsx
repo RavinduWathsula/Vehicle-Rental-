@@ -188,11 +188,11 @@ export const AdminBookings = () => {
                             'bg-orange-500/10 text-orange-400 border-orange-500/20'
                           }`}
                         >
-                          <option value="pending" className="bg-[#08090B] text-white">Pending</option>
-                          <option value="confirmed" className="bg-[#08090B] text-white">Confirmed</option>
-                          <option value="active" className="bg-[#08090B] text-white">Active</option>
-                          <option value="completed" className="bg-[#08090B] text-white">Completed</option>
-                          <option value="cancelled" className="bg-[#08090B] text-white">Cancelled</option>
+                          <option value="pending" className="bg-drivex-card text-drivex-text">Pending</option>
+                          <option value="confirmed" className="bg-drivex-card text-drivex-text">Confirmed</option>
+                          <option value="active" className="bg-drivex-card text-drivex-text">Active</option>
+                          <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
+                          <option value="cancelled" className="bg-drivex-card text-drivex-text">Cancelled</option>
                         </select>
                       </td>
                       <td className="py-4 px-6 text-right">

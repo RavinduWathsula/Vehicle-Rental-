@@ -51,9 +51,9 @@ export const AdminSettings = () => {
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">System Status</label>
-                  <select className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all">
-                    <option value="active">Active (Online)</option>
-                    <option value="maintenance">Maintenance Mode</option>
+                  <select className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all cursor-pointer">
+                    <option value="active" className="bg-drivex-card text-drivex-text">Active (Online)</option>
+                    <option value="maintenance" className="bg-drivex-card text-drivex-text">Maintenance Mode</option>
                   </select>
                 </div>
               </div>
@@ -65,18 +65,18 @@ export const AdminSettings = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Default Currency</label>
-                    <select className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all">
-                      <option value="USD">USD ($)</option>
-                      <option value="EUR">EUR (€)</option>
-                      <option value="GBP">GBP (£)</option>
+                    <select className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all cursor-pointer">
+                      <option value="USD" className="bg-drivex-card text-drivex-text">USD ($)</option>
+                      <option value="EUR" className="bg-drivex-card text-drivex-text">EUR (€)</option>
+                      <option value="GBP" className="bg-drivex-card text-drivex-text">GBP (£)</option>
                     </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Timezone</label>
-                    <select className="w-full bg-[#111218] border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all">
-                      <option value="UTC">UTC</option>
-                      <option value="PST">Pacific Time (US)</option>
-                      <option value="EST">Eastern Time (US)</option>
+                    <select className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text focus:outline-none focus:border-drivex-accent transition-all cursor-pointer">
+                      <option value="UTC" className="bg-drivex-card text-drivex-text">UTC</option>
+                      <option value="PST" className="bg-drivex-card text-drivex-text">Pacific Time (US)</option>
+                      <option value="EST" className="bg-drivex-card text-drivex-text">Eastern Time (US)</option>
                     </select>
                   </div>
                 </div>

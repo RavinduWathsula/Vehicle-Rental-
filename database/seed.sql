@@ -1,8 +1,8 @@
 USE drivex_rental;
 
 -- Password for all seed users is 'password123'
--- Hash is a standard bcrypt hash for 'password123' (e.g. $2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxep68p.gLpG.7Ixy)
-SET @dev_password_hash = '$2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxep68p.gLpG.7Ixy';
+-- Hash is a valid bcrypt hash for 'password123'
+SET @dev_password_hash = '$2b$12$/9AZEQsrhh2Aue5CAq7iNenwdpBcbG1ng3uII4HS8P5EL.aIVjjWK';
 
 -- Seed Users
 INSERT INTO users (name, email, password_hash, phone, role, status) VALUES

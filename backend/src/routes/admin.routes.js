@@ -29,6 +29,7 @@ router.delete('/customers/:id', adminController.deleteCustomer);
 // --- DRIVERS ---
 router.get('/drivers', adminController.getDrivers);
 router.post('/drivers', adminController.createDriver);
+router.put('/drivers/:id', adminController.updateDriver);
 router.delete('/drivers/:id', adminController.deleteDriver);
 
 // --- MAINTENANCE ---

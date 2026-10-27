@@ -38,7 +38,11 @@ export const apiFetch = async (endpoint, options = {}) => {
       // Handle specific HTTP status codes
       switch (response.status) {
         case 401:
-          // Unauthorized: Token expired or invalid
+          // Unauthorized: Check if this was a login or registration attempt
+          if (endpoint.includes('/auth/login') || endpoint.includes('/auth/register')) {
+            throw new Error(data?.message || 'Invalid email or password.');
+          }
+          // Otherwise token expired or invalid
           localStorage.removeItem('drivex_token');
           window.dispatchEvent(new Event('auth-error'));
           throw new Error('Your session has expired. Please log in again.');

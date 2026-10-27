@@ -133,7 +133,7 @@ export const CustomerBookings = () => {
               {filteredBookings.map((booking, index) => {
                 const isCompleted = booking.status === 'completed';
                 const isActive = booking.status === 'active';
-                const isConfirmed = booking.status === 'confirmed';
+                const isConfirmed = (booking.status as string) === 'confirmed' || booking.status === 'upcoming';
                 const isCancelled = booking.status === 'cancelled';
 
                 return (

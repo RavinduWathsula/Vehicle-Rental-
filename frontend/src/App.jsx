@@ -37,6 +37,7 @@ const App = () => {
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
             <Route path="/booking/:id" element={<BookingPage />} />
+            <Route path="/book/:id" element={<BookingPage />} />
           </Route>
 
           {/* Auth Routes */}
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="vehicles" element={<Vehicles />} />
             <Route path="vehicles/:id" element={<VehicleDetailsPage />} />
             <Route path="booking/:id" element={<BookingPage />} />
+            <Route path="book/:id" element={<BookingPage />} />
             <Route path="bookings" element={<CustomerBookings />} />
             <Route path="favorites" element={<CustomerFavorites />} />
             <Route path="profile" element={<CustomerProfile />} />

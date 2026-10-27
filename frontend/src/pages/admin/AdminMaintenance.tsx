@@ -209,10 +209,10 @@ export const AdminMaintenance = () => {
                           'bg-blue-500/10 text-blue-400 border-blue-500/20'
                         }`}
                       >
-                        <option value="scheduled" className="bg-[#08090B] text-white">Scheduled</option>
-                        <option value="in_progress" className="bg-[#08090B] text-white">In Progress</option>
-                        <option value="completed" className="bg-[#08090B] text-white">Completed</option>
-                        <option value="cancelled" className="bg-[#08090B] text-white">Cancelled</option>
+                        <option value="scheduled" className="bg-drivex-card text-drivex-text">Scheduled</option>
+                        <option value="in_progress" className="bg-drivex-card text-drivex-text">In Progress</option>
+                        <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
+                        <option value="cancelled" className="bg-drivex-card text-drivex-text">Cancelled</option>
                       </select>
                     </td>
                     <td className="py-4 px-6 text-right">
@@ -261,7 +261,7 @@ export const AdminMaintenance = () => {
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               exit={{ opacity: 0, scale: 0.95 }} 
-              className="relative w-full max-w-lg bg-[#08090B] border border-drivex-border rounded-2xl shadow-2xl p-6"
+              className="relative w-full max-w-lg bg-drivex-sidebar border border-drivex-border rounded-2xl shadow-2xl p-6"
             >
               <div className="flex justify-between items-center pb-4 border-b border-drivex-border mb-6">
                 <h2 className="text-xl font-bold text-drivex-text uppercase tracking-wider">Schedule Maintenance</h2>
@@ -317,7 +317,7 @@ export const AdminMaintenance = () => {
                       value={formData.start_date}
                       onChange={handleInputChange}
                       required
-                      className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm [color-scheme:dark]"
+                      className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm dark:[color-scheme:dark]"
                     />
                   </div>
                   <div>
@@ -353,9 +353,9 @@ export const AdminMaintenance = () => {
                     onChange={handleInputChange}
                     className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm"
                   >
-                    <option value="scheduled">Scheduled</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
+                    <option value="scheduled" className="bg-drivex-card text-drivex-text">Scheduled</option>
+                    <option value="in_progress" className="bg-drivex-card text-drivex-text">In Progress</option>
+                    <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
                   </select>
                 </div>
 

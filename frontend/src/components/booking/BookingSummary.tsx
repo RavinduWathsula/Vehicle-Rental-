@@ -72,7 +72,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
   };
 
   const handleBookNow = () => {
-    navigate(`/book/${vehicle.id}`, { 
+    navigate(`/booking/${vehicle.id}`, { 
       state: { pickupDate, returnDate, selectedExtras, needsDriver }
     });
   };
