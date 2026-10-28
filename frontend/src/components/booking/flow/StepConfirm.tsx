@@ -115,20 +115,20 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
             
             <div className="flex justify-between text-white/80 text-sm">
               <span>Vehicle ({pricing.rentalDays} days)</span>
-              <span>${pricing.vehicleTotal.toFixed(2)}</span>
+              <span>LKR {pricing.vehicleTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             <div className="flex justify-between text-white/80 text-sm">
               <span>Extras ({data.extras.length})</span>
-              <span>${pricing.extrasTotal.toFixed(2)}</span>
+              <span>LKR {pricing.extrasTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             <div className="flex justify-between text-white/80 text-sm">
               <span>Taxes & Fees</span>
-              <span>${pricing.taxes.toFixed(2)}</span>
+              <span>LKR {pricing.taxes.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
             <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/10">
               <span className="text-white font-heading font-bold text-xl">Total</span>
-              <span className="text-[#00E5FF] font-bold text-3xl">${pricing.grandTotal.toFixed(2)}</span>
+              <span className="text-[#00E5FF] font-bold text-3xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
             <div className="mt-4 flex gap-2 items-start text-[10px] text-white/40 leading-tight">

@@ -170,7 +170,7 @@ export const AdminBookings = () => {
                       </td>
                       <td className="py-4 px-6">
                         <p className="text-sm font-bold text-drivex-text mb-1">
-                          ${parseFloat(booking.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          LKR {parseFloat(booking.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </p>
                         <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-drivex-sidebar text-drivex-text-muted border border-drivex-border">
                           {booking.payment_status || 'Pending'}
@@ -180,7 +180,7 @@ export const AdminBookings = () => {
                         <select 
                           value={status}
                           onChange={(e) => handleStatusChange(booking.id, e.target.value)}
-                          className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer ${
+                          className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer dark:[color-scheme:dark] [color-scheme:light] ${
                             status === 'completed' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
                             status === 'active' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
                             status === 'confirmed' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
@@ -188,11 +188,11 @@ export const AdminBookings = () => {
                             'bg-orange-500/10 text-orange-400 border-orange-500/20'
                           }`}
                         >
-                          <option value="pending" className="bg-drivex-card text-drivex-text">Pending</option>
-                          <option value="confirmed" className="bg-drivex-card text-drivex-text">Confirmed</option>
-                          <option value="active" className="bg-drivex-card text-drivex-text">Active</option>
-                          <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
-                          <option value="cancelled" className="bg-drivex-card text-drivex-text">Cancelled</option>
+                          <option value="pending" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Pending</option>
+                          <option value="confirmed" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Confirmed</option>
+                          <option value="active" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Active</option>
+                          <option value="completed" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Completed</option>
+                          <option value="cancelled" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Cancelled</option>
                         </select>
                       </td>
                       <td className="py-4 px-6 text-right">

@@ -5,7 +5,7 @@ import {
   Users, 
   CarFront, 
   CalendarCheck, 
-  DollarSign, 
+  Banknote, 
   TrendingUp, 
   Clock, 
   CheckCircle2, 
@@ -50,8 +50,8 @@ export const AdminDashboard = () => {
   const statCards = [
     { 
       label: 'Total Revenue', 
-      value: `$${(data.stats.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 
-      icon: DollarSign, 
+      value: `LKR ${(data.stats.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 
+      icon: Banknote, 
       color: 'text-blue-500', 
       bg: 'bg-blue-500/10' 
     },
@@ -189,7 +189,7 @@ export const AdminDashboard = () => {
                           </span>
                         </td>
                         <td className="py-4 px-4 text-sm font-bold text-drivex-text">
-                          ${parseFloat(booking.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          LKR {parseFloat(booking.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </td>
                       </tr>
                     );

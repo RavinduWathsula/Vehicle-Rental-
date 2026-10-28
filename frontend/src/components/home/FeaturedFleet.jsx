@@ -96,7 +96,7 @@ const FeaturedFleet = () => {
                     <h4 className="text-xl font-black text-white italic uppercase tracking-wider">{vehicle.name || vehicle.model}</h4>
                   </div>
                   <div className="text-right">
-                    <span className="block text-2xl font-black text-white">${vehicle.pricePerDay || vehicle.price_per_day}</span>
+                    <span className="block text-2xl font-black text-white">LKR {Number(vehicle.pricePerDay || vehicle.price_per_day).toLocaleString()}</span>
                     <span className="text-[10px] text-gray-500 uppercase tracking-widest">/ Day</span>
                   </div>
                 </div>

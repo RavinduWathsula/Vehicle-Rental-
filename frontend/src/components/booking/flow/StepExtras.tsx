@@ -76,7 +76,7 @@ export const StepExtras: React.FC<Props> = ({ data, updateData, prev, next }) =>
 
                 <div className="text-right shrink-0">
                   <span className={`block font-bold ${isSelected ? 'text-[#00E5FF]' : 'text-white'}`}>
-                    +${extra.pricePerDay}
+                    +LKR {Number(extra.pricePerDay).toLocaleString()}
                   </span>
                   <span className="text-[10px] text-white/50 uppercase">/ day</span>
                 </div>

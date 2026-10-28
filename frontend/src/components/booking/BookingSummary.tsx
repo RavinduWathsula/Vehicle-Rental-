@@ -129,7 +129,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
                   </div>
                   <span className="text-sm text-white/80 select-none">{extra.name}</span>
                 </div>
-                <span className="text-xs text-[#00E5FF] tracking-widest">+${extra.pricePerDay || extra.price}/day</span>
+                <span className="text-xs text-[#00E5FF] tracking-widest">+LKR {Number(extra.pricePerDay || extra.price).toLocaleString()}/day</span>
                 <input type="checkbox" className="hidden" checked={selectedExtras.includes(extra.id)} onChange={() => handleToggleExtra(extra.id)} />
               </label>
             ))}
@@ -151,32 +151,32 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
           <div className="space-y-3 text-sm">
             <div className="flex justify-between text-white/80">
               <span>Vehicle Rate ({pricing.rentalDays} days)</span>
-              <span>${pricing.vehicleTotal.toFixed(2)}</span>
+              <span>LKR {pricing.vehicleTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
             {pricing.driverTotal && pricing.driverTotal > 0 ? (
               <div className="flex justify-between text-white/80">
                 <span>Chauffeur Service</span>
-                <span>${pricing.driverTotal.toFixed(2)}</span>
+                <span>LKR {pricing.driverTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             ) : null}
 
             {pricing.extrasTotal > 0 && (
               <div className="flex justify-between text-white/80">
                 <span>Optional Extras</span>
-                <span>${pricing.extrasTotal.toFixed(2)}</span>
+                <span>LKR {pricing.extrasTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             )}
             
             <div className="flex justify-between text-white/60 text-xs">
               <span>Taxes & Fees</span>
-              <span>${pricing.taxes.toFixed(2)}</span>
+              <span>LKR {pricing.taxes.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
             <div className="pt-4 mt-2 border-t border-white/10 flex justify-between items-end">
               <div>
                 <span className="block text-white/50 text-xs uppercase tracking-widest mb-1">Estimated Total</span>
-                <span className="text-white font-black text-2xl">${pricing.grandTotal.toFixed(2)}</span>
+                <span className="text-white font-black text-2xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
           </div>

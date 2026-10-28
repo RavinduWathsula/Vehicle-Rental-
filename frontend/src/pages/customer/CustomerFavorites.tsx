@@ -80,7 +80,7 @@ export const CustomerFavorites = () => {
                 <div className="flex items-center justify-between border-t border-[var(--border)] pt-4">
                   <div>
                     <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Daily Rate</p>
-                    <p className="text-xl font-black text-[var(--text)]">${vehicle.price}</p>
+                    <p className="text-xl font-black text-[var(--text)]">LKR {Number(vehicle.price).toLocaleString()}</p>
                   </div>
                   <Link 
                     to={`/dashboard/vehicles/${vehicle.id}`}

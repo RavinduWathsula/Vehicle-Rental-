@@ -202,7 +202,7 @@ export const CustomerDashboardPage = () => {
                     <div className="flex items-center justify-between pt-4 border-t border-[var(--border)] mt-auto">
                       <div>
                         <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1">Total</p>
-                        <p className="text-xl font-bold text-[var(--text)]">${nextJourney.total.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-[var(--text)]">LKR {nextJourney.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                       </div>
                       <button className="flex items-center gap-2 bg-[var(--card-hover)] hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] text-[var(--text)] px-4 py-2 rounded-lg transition-colors text-sm font-medium border border-[var(--border)]">
                         View Details <ChevronRight size={16} />
@@ -292,7 +292,7 @@ export const CustomerDashboardPage = () => {
                         <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-1/3">
                           <div className="text-left md:text-right">
                             <p className="text-xs text-[var(--text-muted)]">Total</p>
-                            <p className="font-bold text-[var(--accent)]">${booking.total.toFixed(2)}</p>
+                            <p className="font-bold text-[var(--accent)]">LKR {booking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                           </div>
                           
                           <div className="flex items-center gap-2">

@@ -197,22 +197,22 @@ export const AdminMaintenance = () => {
                       {record.start_date ? new Date(record.start_date).toLocaleDateString() : 'N/A'}
                     </td>
                     <td className="py-4 px-6 text-sm font-bold text-drivex-text">
-                      ${parseFloat(record.cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      LKR {parseFloat(record.cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </td>
                     <td className="py-4 px-6">
                       <select 
                         value={record.status}
                         onChange={(e) => handleStatusChange(record.id, e.target.value)}
-                        className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer ${
+                        className={`text-xs font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none transition-colors cursor-pointer dark:[color-scheme:dark] [color-scheme:light] ${
                           record.status === 'completed' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
                           record.status === 'in_progress' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
                           'bg-blue-500/10 text-blue-400 border-blue-500/20'
                         }`}
                       >
-                        <option value="scheduled" className="bg-drivex-card text-drivex-text">Scheduled</option>
-                        <option value="in_progress" className="bg-drivex-card text-drivex-text">In Progress</option>
-                        <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
-                        <option value="cancelled" className="bg-drivex-card text-drivex-text">Cancelled</option>
+                        <option value="scheduled" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Scheduled</option>
+                        <option value="in_progress" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">In Progress</option>
+                        <option value="completed" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Completed</option>
+                        <option value="cancelled" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Cancelled</option>
                       </select>
                     </td>
                     <td className="py-4 px-6 text-right">
@@ -321,7 +321,7 @@ export const AdminMaintenance = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Estimated Cost ($)</label>
+                    <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Estimated Cost (LKR)</label>
                     <input 
                       type="number"
                       name="cost"
@@ -351,11 +351,11 @@ export const AdminMaintenance = () => {
                     name="status"
                     value={formData.status}
                     onChange={handleInputChange}
-                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm"
+                    className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-2.5 text-drivex-text focus:border-drivex-accent outline-none text-sm dark:[color-scheme:dark] [color-scheme:light]"
                   >
-                    <option value="scheduled" className="bg-drivex-card text-drivex-text">Scheduled</option>
-                    <option value="in_progress" className="bg-drivex-card text-drivex-text">In Progress</option>
-                    <option value="completed" className="bg-drivex-card text-drivex-text">Completed</option>
+                    <option value="scheduled" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Scheduled</option>
+                    <option value="in_progress" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">In Progress</option>
+                    <option value="completed" className="bg-white text-slate-900 dark:bg-[#16181D] dark:text-white">Completed</option>
                   </select>
                 </div>
 

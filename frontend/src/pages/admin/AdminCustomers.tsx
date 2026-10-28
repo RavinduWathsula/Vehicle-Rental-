@@ -188,7 +188,7 @@ export const AdminCustomers = () => {
                       </td>
                       <td className="py-4 px-6">
                         <p className="text-sm font-bold text-drivex-text mb-0.5">
-                          ${parseFloat(customer.total_spent || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          LKR {parseFloat(customer.total_spent || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </p>
                         <p className="text-xs text-drivex-text-muted">
                           {customer.total_bookings || 0} booking{(customer.total_bookings || 0) === 1 ? '' : 's'}

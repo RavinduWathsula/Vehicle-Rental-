@@ -49,7 +49,7 @@ export const StepVehicle: React.FC<Props> = ({ vehicle, prev, next }) => {
           </div>
 
           <div className="mt-2">
-            <span className="text-3xl font-bold text-[#00E5FF]">${vehicle.pricePerDay}</span>
+            <span className="text-3xl font-bold text-[#00E5FF]">LKR {Number(vehicle.pricePerDay).toLocaleString()}</span>
             <span className="text-white/50 text-sm ml-2">/ day</span>
           </div>
         </div>

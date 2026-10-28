@@ -36,7 +36,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             <p className="text-sm text-white/50">{vehicle.brand}</p>
           </div>
           <div className="text-right">
-            <span className="block text-2xl font-bold text-[#00E5FF]">${vehicle.pricePerDay}</span>
+            <span className="block text-2xl font-bold text-[#00E5FF]">LKR {Number(vehicle.pricePerDay).toLocaleString()}</span>
             <span className="text-xs text-white/50 uppercase">per day</span>
           </div>
         </div>

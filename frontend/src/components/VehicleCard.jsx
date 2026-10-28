@@ -75,7 +75,7 @@ const VehicleCard = ({ vehicle }) => {
           <div className="absolute inset-0 flex items-center justify-between transition-transform duration-300 transform group-hover:translate-y-full bg-[var(--card)]">
             <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Daily Rate</p>
             <p className="text-3xl font-black text-[var(--text)]">
-              ${vehicle.daily_price}<span className="text-sm text-[var(--text-muted)] font-normal">/day</span>
+              LKR {Number(vehicle.daily_price).toLocaleString()}<span className="text-sm text-[var(--text-muted)] font-normal">/day</span>
             </p>
           </div>
           

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PieChart, TrendingUp, Calendar, DollarSign, Car, RefreshCw, BarChart2 } from 'lucide-react';
+import { PieChart, TrendingUp, Calendar, Banknote, Car, RefreshCw, BarChart2 } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 
 export const AdminReports = () => {
@@ -52,7 +52,7 @@ export const AdminReports = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-drivex-card p-6 rounded-2xl border border-drivex-border shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 rounded-xl bg-drivex-accent/10 text-drivex-accent">
-              <DollarSign size={24} />
+              <Banknote size={24} />
             </div>
             <span className="flex items-center gap-1 text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-md border border-green-400/20">
               <TrendingUp size={12} /> Live
@@ -60,7 +60,7 @@ export const AdminReports = () => {
           </div>
           <h3 className="text-drivex-text-muted text-sm font-medium mb-1 uppercase tracking-wider">Total Revenue</h3>
           <p className="text-3xl font-black text-drivex-text">
-            ${data.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            LKR {data.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </motion.div>
 
@@ -140,11 +140,11 @@ export const AdminReports = () => {
                 <div key={vehicle.id} className="p-3 bg-drivex-sidebar border border-drivex-border rounded-xl flex items-center justify-between">
                   <div>
                     <p className="text-sm font-bold text-drivex-text">{vehicle.brand} {vehicle.model}</p>
-                    <p className="text-xs text-drivex-text-muted">${vehicle.daily_price}/day</p>
+                    <p className="text-xs text-drivex-text-muted">LKR {Number(vehicle.daily_price).toLocaleString()}/day</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-drivex-accent">{vehicle.bookingCount} reservation{vehicle.bookingCount === 1 ? '' : 's'}</p>
-                    <p className="text-xs text-drivex-text-muted">${parseFloat(vehicle.totalRevenue || 0).toLocaleString()} earned</p>
+                    <p className="text-xs text-drivex-text-muted">LKR {parseFloat(vehicle.totalRevenue || 0).toLocaleString()} earned</p>
                   </div>
                 </div>
               ))}

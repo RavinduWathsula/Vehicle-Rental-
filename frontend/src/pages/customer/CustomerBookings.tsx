@@ -191,7 +191,7 @@ export const CustomerBookings = () => {
                         <div className="text-left md:text-right">
                           <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-1">Total Amount</p>
                           <p className="text-2xl font-black text-[var(--text)]">
-                            ${booking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            LKR {booking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </p>
                         </div>
                       </div>

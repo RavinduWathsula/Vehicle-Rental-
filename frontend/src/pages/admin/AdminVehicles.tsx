@@ -270,7 +270,7 @@ export const AdminVehicles = () => {
               <tr className="bg-drivex-sidebar border-b border-drivex-border">
                 <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider">Vehicle Details</th>
                 <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider">Specs</th>
-                <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider">Price/Day</th>
+                <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider">Price/Day (LKR)</th>
                 <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider">Status</th>
                 <th className="py-4 px-6 text-xs font-bold text-drivex-text-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
@@ -306,7 +306,7 @@ export const AdminVehicles = () => {
                         <span>{vehicle.seats} Seats • {vehicle.category_name || 'Vehicle'}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-sm font-bold text-drivex-text">${vehicle.daily_price}</td>
+                    <td className="py-4 px-6 text-sm font-bold text-drivex-text">LKR {Number(vehicle.daily_price).toLocaleString()}</td>
                     <td className="py-4 px-6">
                       <select
                         value={vehicle.status}
@@ -432,7 +432,7 @@ export const AdminVehicles = () => {
                       <input type="text" name="registration_number" value={formData.registration_number} onChange={handleInputChange} required placeholder="e.g. ABC-1234" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Rental Price ($) *</label>
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Rental Price (LKR) *</label>
                       <input type="number" step="0.01" name="daily_price" value={formData.daily_price} onChange={handleInputChange} required placeholder="0.00" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" />
                     </div>
 
@@ -574,7 +574,7 @@ export const AdminVehicles = () => {
                       <input type="text" name="registration_number" value={editFormData.registration_number} onChange={handleEditInputChange} required placeholder="e.g. ABC-1234" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Rental Price ($) *</label>
+                      <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest">Daily Rental Price (LKR) *</label>
                       <input type="number" step="0.01" name="daily_price" value={editFormData.daily_price} onChange={handleEditInputChange} required placeholder="0.00" className="w-full bg-drivex-card border border-drivex-border rounded-lg px-4 py-3 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-sm" />
                     </div>
 
