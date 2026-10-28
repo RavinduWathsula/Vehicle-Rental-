@@ -145,7 +145,7 @@ class AdminController {
    */
   createDriver = async (req, res, next) => {
     try {
-      const { name, phone, license_number, license_expiry, status = 'available' } = req.body;
+      const { name, phone, license_number, license_expiry, status = 'available', profile_image } = req.body;
       if (!name || !phone || !license_number) {
         return res.status(400).json({ success: false, message: 'Name, phone, and license number are required.' });
       }
@@ -153,8 +153,8 @@ class AdminController {
       const expiry = license_expiry || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
       const [result] = await pool.query(
-        'INSERT INTO drivers (name, phone, license_number, license_expiry, status) VALUES (?, ?, ?, ?, ?)',
-        [name, phone, license_number, expiry, status]
+        'INSERT INTO drivers (name, phone, license_number, license_expiry, status, profile_image) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, phone, license_number, expiry, status, profile_image || null]
       );
 
       const [newDriver] = await pool.query('SELECT * FROM drivers WHERE id = ?', [result.insertId]);
@@ -191,7 +191,7 @@ class AdminController {
   updateDriver = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { name, phone, license_number, license_expiry, status } = req.body;
+      const { name, phone, license_number, license_expiry, status, profile_image } = req.body;
 
       const fields = [];
       const values = [];
@@ -201,6 +201,7 @@ class AdminController {
       if (license_number !== undefined) { fields.push('license_number = ?'); values.push(license_number); }
       if (license_expiry !== undefined) { fields.push('license_expiry = ?'); values.push(license_expiry); }
       if (status !== undefined) { fields.push('status = ?'); values.push(status); }
+      if (profile_image !== undefined) { fields.push('profile_image = ?'); values.push(profile_image); }
 
       if (fields.length === 0) {
         return res.status(400).json({ success: false, message: 'No fields to update' });

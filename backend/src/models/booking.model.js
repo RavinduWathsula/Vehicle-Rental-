@@ -130,6 +130,8 @@ class BookingModel {
         v.brand as vehicle_brand, v.model as vehicle_model,
         u.name as customer_name, u.email as customer_email,
         d.name as driver_name,
+        d.phone as driver_phone,
+        d.profile_image as driver_image,
         pl.name as pickup_location_name,
         rl.name as return_location_name
        FROM bookings b
@@ -161,10 +163,12 @@ class BookingModel {
   async findByUserId(userId, limit = 10, offset = 0) {
     const [rows] = await pool.execute(
       `SELECT b.id, b.booking_reference, b.pickup_datetime, b.return_datetime, b.total_amount, b.booking_status, b.payment_status,
+        b.driver_id, d.name as driver_name, d.phone as driver_phone, d.profile_image as driver_image,
         v.id as vehicle_id, v.brand, v.model,
         (SELECT image_url FROM vehicle_images vi WHERE vi.vehicle_id = v.id ORDER BY is_primary DESC LIMIT 1) as vehicle_image
        FROM bookings b
        JOIN vehicles v ON b.vehicle_id = v.id
+       LEFT JOIN drivers d ON b.driver_id = d.id
        WHERE b.user_id = ?
        ORDER BY b.created_at DESC
        LIMIT ? OFFSET ?`,
@@ -182,11 +186,13 @@ class BookingModel {
   async findAllAdmin(limit = 100, offset = 0) {
     const [rows] = await pool.execute(
       `SELECT b.id, b.booking_reference, b.pickup_datetime, b.return_datetime, b.total_amount, b.booking_status, b.payment_status,
+        b.driver_id, d.name as driver_name, d.phone as driver_phone, d.profile_image as driver_image,
         v.id as vehicle_id, v.brand, v.model, v.registration_number,
         u.name as customer_name, u.email as customer_email, u.phone as customer_phone
        FROM bookings b
        JOIN vehicles v ON b.vehicle_id = v.id
        JOIN users u ON b.user_id = u.id
+       LEFT JOIN drivers d ON b.driver_id = d.id
        ORDER BY b.created_at DESC
        LIMIT ? OFFSET ?`,
       [parseInt(limit), parseInt(offset)]

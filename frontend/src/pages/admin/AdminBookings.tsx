@@ -161,6 +161,18 @@ export const AdminBookings = () => {
                         {booking.registration_number && (
                           <p className="text-xs font-mono text-drivex-text-muted">{booking.registration_number}</p>
                         )}
+                        {booking.driver_name && (
+                          <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-drivex-border/40">
+                            <div className="w-5 h-5 rounded-full overflow-hidden border border-drivex-accent shrink-0 bg-drivex-sidebar flex items-center justify-center shadow-xs">
+                              {booking.driver_image ? (
+                                <img src={booking.driver_image} alt={booking.driver_name} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="text-[9px] font-bold text-drivex-accent">{booking.driver_name.charAt(0)}</span>
+                              )}
+                            </div>
+                            <span className="text-xs text-drivex-text">Driver: <strong className="text-drivex-accent">{booking.driver_name}</strong></span>
+                          </div>
+                        )}
                       </td>
                       <td className="py-4 px-6">
                         <div className="flex flex-col gap-0.5 text-xs text-drivex-text-muted font-medium">

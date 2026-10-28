@@ -58,7 +58,28 @@ app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 // app.use('/api/categories', categoryRoutes);
 app.use('/api/bookings', bookingRoutes);
-// app.use('/api/drivers', driverRoutes);
+
+app.get('/api/drivers', async (req, res, next) => {
+  try {
+    const { pool } = require('./src/config/database');
+    const [rows] = await pool.query('SELECT id, name, phone, license_number, status, profile_image FROM drivers WHERE status = "available" ORDER BY name ASC');
+    res.status(200).json({ success: true, data: rows });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/drivers/:id', async (req, res, next) => {
+  try {
+    const { pool } = require('./src/config/database');
+    const [rows] = await pool.query('SELECT id, name, phone, license_number, status, profile_image FROM drivers WHERE id = ?', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ success: false, message: 'Driver not found' });
+    res.status(200).json({ success: true, data: rows[0] });
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.get('/api/extras', async (req, res, next) => {
   try {
     const { pool } = require('./src/config/database');

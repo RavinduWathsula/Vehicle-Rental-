@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UserCircle, Search, Plus, Trash2, Phone, X, RefreshCw, Pencil } from 'lucide-react';
+import { UserCircle, Search, Plus, Trash2, Phone, X, RefreshCw, Pencil, Upload } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 
 export const AdminDrivers = () => {
@@ -16,7 +16,8 @@ export const AdminDrivers = () => {
     phone: '',
     license_number: '',
     license_expiry: '',
-    status: 'available'
+    status: 'available',
+    profile_image: ''
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -24,7 +25,8 @@ export const AdminDrivers = () => {
     phone: '',
     license_number: '',
     license_expiry: '',
-    status: 'available'
+    status: 'available',
+    profile_image: ''
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -54,6 +56,27 @@ export const AdminDrivers = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size exceeds 5MB. Please choose a smaller image.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      if (isEdit) {
+        setEditFormData(prev => ({ ...prev, profile_image: base64 }));
+      } else {
+        setFormData(prev => ({ ...prev, profile_image: base64 }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleAddDriver = async (e: any) => {
     e.preventDefault();
     setSubmitting(true);
@@ -66,7 +89,7 @@ export const AdminDrivers = () => {
       });
       if (res.success) {
         setIsModalOpen(false);
-        setFormData({ name: '', phone: '', license_number: '', license_expiry: '', status: 'available' });
+        setFormData({ name: '', phone: '', license_number: '', license_expiry: '', status: 'available', profile_image: '' });
         fetchDrivers();
       }
     } catch (err: any) {
@@ -94,7 +117,8 @@ export const AdminDrivers = () => {
       phone: driver.phone || '',
       license_number: driver.license_number || '',
       license_expiry: rawExpiry,
-      status: driver.status || 'available'
+      status: driver.status || 'available',
+      profile_image: driver.profile_image || ''
     });
     setEditError('');
     setIsEditModalOpen(true);
@@ -140,7 +164,7 @@ export const AdminDrivers = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Driver Roster</h1>
-          <p className="text-drivex-text-muted text-sm">Manage professional chauffeurs saved in your database.</p>
+          <p className="text-drivex-text-muted text-sm">Manage chauffeur profiles, licenses, and availability statuses.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
@@ -152,21 +176,22 @@ export const AdminDrivers = () => {
           </button>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-drivex-accent text-drivex-text-inverse font-bold uppercase tracking-widest text-xs hover:bg-drivex-accent-hover shadow-md transition-all rounded-sm shrink-0"
+            className="px-5 py-2.5 bg-drivex-accent hover:bg-drivex-accent-hover text-drivex-text-inverse font-bold uppercase tracking-widest text-xs rounded-sm transition-all shadow-md flex items-center gap-2"
           >
             <Plus size={16} /> Add New Driver
           </button>
         </div>
       </div>
 
+      {/* Driver Cards */}
       <div className="bg-drivex-card border border-drivex-border rounded-2xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-drivex-border flex flex-col md:flex-row gap-4 justify-between items-center bg-drivex-sidebar">
-          <div className="relative w-full md:w-96">
+        <div className="p-4 border-b border-drivex-border flex justify-between items-center bg-drivex-sidebar">
+          <div className="relative w-full max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-drivex-text-muted" size={18} />
             <input 
               type="text" 
               placeholder="Search drivers by name, phone, or license..." 
-              value={searchTerm}
+              value={searchTerm} 
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-drivex-card border border-drivex-border rounded-lg pl-10 pr-4 py-2 text-sm text-drivex-text placeholder-gray-500 focus:outline-none focus:border-drivex-accent focus:ring-1 focus:ring-drivex-accent transition-all" 
             />
@@ -185,10 +210,18 @@ export const AdminDrivers = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-drivex-accent to-purple-500 p-0.5">
-                      <div className="w-full h-full bg-drivex-card rounded-full flex items-center justify-center">
-                        <UserCircle size={24} className="text-drivex-accent" />
-                      </div>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-drivex-accent to-purple-500 p-0.5 shrink-0 overflow-hidden shadow">
+                      {driver.profile_image ? (
+                        <img 
+                          src={driver.profile_image} 
+                          alt={driver.name} 
+                          className="w-full h-full object-cover rounded-full" 
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-drivex-card rounded-full flex items-center justify-center">
+                          <UserCircle size={24} className="text-drivex-accent" />
+                        </div>
+                      )}
                     </div>
                     <div>
                       <h3 className="text-drivex-text font-bold">{driver.name}</h3>
@@ -269,7 +302,7 @@ export const AdminDrivers = () => {
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg bg-drivex-sidebar border border-drivex-border rounded-2xl shadow-2xl overflow-hidden p-6"
+              className="relative w-full max-w-lg bg-drivex-sidebar border border-drivex-border rounded-2xl shadow-2xl overflow-hidden p-6 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between pb-4 border-b border-drivex-border mb-6">
                 <h2 className="text-xl font-bold text-drivex-text uppercase tracking-wider">Add New Driver</h2>
@@ -285,6 +318,60 @@ export const AdminDrivers = () => {
               )}
 
               <form onSubmit={handleAddDriver} className="space-y-4">
+                {/* Profile Picture Upload & Preview */}
+                <div className="bg-drivex-card border border-drivex-border rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="relative shrink-0">
+                    <div className="w-20 h-20 rounded-full border-2 border-drivex-accent overflow-hidden bg-drivex-sidebar flex items-center justify-center shadow-md">
+                      {formData.profile_image ? (
+                        <img 
+                          src={formData.profile_image} 
+                          alt="Driver preview" 
+                          className="w-full h-full object-cover" 
+                        />
+                      ) : (
+                        <UserCircle size={44} className="text-drivex-text-muted" />
+                      )}
+                    </div>
+                    {formData.profile_image && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, profile_image: '' })}
+                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition-colors"
+                        title="Remove photo"
+                      >
+                        <X size={12} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full space-y-2">
+                    <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block">
+                      Profile Picture
+                    </label>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="cursor-pointer px-3 py-1.5 bg-drivex-sidebar hover:bg-drivex-accent hover:text-drivex-text-inverse border border-drivex-border text-drivex-text text-xs font-bold uppercase tracking-wider rounded transition-all flex items-center gap-1.5 shadow-sm">
+                        <Upload size={14} />
+                        Upload Photo
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden" 
+                          onChange={(e) => handleImageFileChange(e, false)} 
+                        />
+                      </label>
+                      <span className="text-[10px] text-drivex-text-muted uppercase tracking-wider">or paste URL below</span>
+                    </div>
+                    <input 
+                      type="url" 
+                      name="profile_image" 
+                      value={formData.profile_image} 
+                      onChange={handleInputChange} 
+                      placeholder="https://images.unsplash.com/photo-..." 
+                      className="w-full bg-drivex-sidebar border border-drivex-border rounded-md px-3 py-1.5 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-xs" 
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Full Name *</label>
                   <input 
@@ -382,7 +469,7 @@ export const AdminDrivers = () => {
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-md bg-drivex-sidebar border border-drivex-border rounded-xl shadow-2xl p-6 overflow-hidden"
+              className="relative w-full max-w-md bg-drivex-sidebar border border-drivex-border rounded-xl shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between pb-4 border-b border-drivex-border mb-4">
                 <h3 className="text-lg font-bold text-drivex-text uppercase tracking-wider">Edit Driver Profile</h3>
@@ -398,6 +485,60 @@ export const AdminDrivers = () => {
               )}
 
               <form onSubmit={handleEditSubmit} className="space-y-4">
+                {/* Profile Picture Upload & Preview */}
+                <div className="bg-drivex-card border border-drivex-border rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="relative shrink-0">
+                    <div className="w-16 h-16 rounded-full border-2 border-drivex-accent overflow-hidden bg-drivex-sidebar flex items-center justify-center shadow-md">
+                      {editFormData.profile_image ? (
+                        <img 
+                          src={editFormData.profile_image} 
+                          alt="Driver preview" 
+                          className="w-full h-full object-cover" 
+                        />
+                      ) : (
+                        <UserCircle size={36} className="text-drivex-text-muted" />
+                      )}
+                    </div>
+                    {editFormData.profile_image && (
+                      <button
+                        type="button"
+                        onClick={() => setEditFormData({ ...editFormData, profile_image: '' })}
+                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition-colors"
+                        title="Remove photo"
+                      >
+                        <X size={12} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full space-y-2">
+                    <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block">
+                      Profile Picture
+                    </label>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="cursor-pointer px-3 py-1 bg-drivex-sidebar hover:bg-drivex-accent hover:text-drivex-text-inverse border border-drivex-border text-drivex-text text-xs font-bold uppercase tracking-wider rounded transition-all flex items-center gap-1.5 shadow-sm">
+                        <Upload size={14} />
+                        Upload
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden" 
+                          onChange={(e) => handleImageFileChange(e, true)} 
+                        />
+                      </label>
+                      <span className="text-[10px] text-drivex-text-muted uppercase tracking-wider">or URL</span>
+                    </div>
+                    <input 
+                      type="url" 
+                      name="profile_image" 
+                      value={editFormData.profile_image} 
+                      onChange={handleEditInputChange} 
+                      placeholder="https://..." 
+                      className="w-full bg-drivex-sidebar border border-drivex-border rounded-md px-3 py-1.5 text-drivex-text placeholder:text-drivex-text-muted/60 focus:border-drivex-accent outline-none text-xs" 
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="text-xs font-bold text-drivex-text-muted uppercase tracking-widest block mb-1">Full Name</label>
                   <input 

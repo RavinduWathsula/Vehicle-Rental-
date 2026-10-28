@@ -83,6 +83,7 @@ CREATE TABLE drivers (
     phone VARCHAR(50) NOT NULL,
     license_number VARCHAR(100) NOT NULL UNIQUE,
     license_expiry DATE NOT NULL,
+    profile_image MEDIUMTEXT DEFAULT NULL,
     status ENUM('available', 'on_duty', 'inactive') NOT NULL DEFAULT 'available',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

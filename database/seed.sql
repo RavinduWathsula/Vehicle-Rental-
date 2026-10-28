@@ -41,10 +41,10 @@ INSERT INTO locations (name, address, city, phone, latitude, longitude, status) 
 ('Northside Station', '456 North Ave', 'Metropolis', '+1234567802', 40.8090, -73.9624, 'active');
 
 -- Seed Drivers
-INSERT INTO drivers (name, phone, license_number, license_expiry, status) VALUES
-('Michael Chang', '+1555123400', 'DL-MC-87654', '2028-05-15', 'available'),
-('Sarah Connor', '+1555123401', 'DL-SC-98765', '2027-11-20', 'available'),
-('David Miller', '+1555123402', 'DL-DM-11223', '2026-08-10', 'available');
+INSERT INTO drivers (name, phone, license_number, license_expiry, profile_image, status) VALUES
+('Michael Chang', '+1555123400', 'DL-MC-87654', '2028-05-15', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80', 'available'),
+('Sarah Connor', '+1555123401', 'DL-SC-98765', '2027-11-20', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80', 'available'),
+('David Miller', '+1555123402', 'DL-DM-11223', '2026-08-10', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80', 'available');
 
 -- Seed Extras
 INSERT INTO extras (name, description, price, pricing_type, status) VALUES

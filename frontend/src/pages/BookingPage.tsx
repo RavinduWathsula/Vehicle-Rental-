@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getVehicleById, type Vehicle, type BookingPayload } from '../lib/api';
 
@@ -22,6 +22,8 @@ const steps = [
 export const BookingPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const stateData = (location.state as any) || {};
 
   const [currentStep, setCurrentStep] = useState<BookingStep>(1);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
@@ -30,7 +32,10 @@ export const BookingPage = () => {
   // Global Booking State
   const [bookingData, setBookingData] = useState<Partial<BookingPayload>>({
     vehicleId: id,
-    extras: [],
+    pickupDate: stateData.pickupDate || '',
+    returnDate: stateData.returnDate || '',
+    extras: stateData.selectedExtras || [],
+    driverId: stateData.driverId || null,
   });
 
   useEffect(() => {

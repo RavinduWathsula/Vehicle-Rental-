@@ -57,6 +57,13 @@ export interface BookingPayload {
   returnDate: string;
   returnTime: string;
   extras: string[];
+  driverId?: string | number | null;
+  driver?: {
+    id: number;
+    name: string;
+    phone: string;
+    profile_image?: string;
+  } | null;
   customer: CustomerDetails;
 }
 
@@ -169,6 +176,7 @@ export const createBooking = async (payload: BookingPayload): Promise<BookingRes
     return_location_id: 1,
     pickup_datetime,
     return_datetime,
+    driver_id: payload.driverId ? Number(payload.driverId) : null,
     extras: (payload.extras || []).map((e: any) => typeof e === 'object' ? e : { extra_id: Number(e) || 1, quantity: 1 })
   };
 
@@ -186,6 +194,25 @@ export const createBooking = async (payload: BookingPayload): Promise<BookingRes
   };
 };
 
+export interface PublicDriver {
+  id: number;
+  name: string;
+  phone: string;
+  license_number?: string;
+  status: string;
+  profile_image?: string;
+}
+
+export const getPublicDrivers = async (): Promise<PublicDriver[]> => {
+  try {
+    const response = await apiFetch('/drivers');
+    return response.data || [];
+  } catch (err) {
+    console.error('Failed to fetch public drivers:', err);
+    return [];
+  }
+};
+
 export interface CustomerBooking {
   id: string;
   vehicle: {
@@ -194,6 +221,12 @@ export interface CustomerBooking {
     brand: string;
     imageUrl: string;
   };
+  driver?: {
+    id: number;
+    name: string;
+    phone: string;
+    profileImage?: string;
+  } | null;
   pickupDate: string;
   pickupTime: string;
   pickupLocation: string;
@@ -219,6 +252,12 @@ export const getCustomerBookings = async (): Promise<CustomerBooking[]> => {
         brand: b.brand || '',
         imageUrl: b.vehicle_image || 'https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop'
       },
+      driver: b.driver_id ? {
+        id: b.driver_id,
+        name: b.driver_name || 'Assigned Chauffeur',
+        phone: b.driver_phone || '',
+        profileImage: b.driver_image || null
+      } : null,
       pickupDate: rawDatePickup.includes('T') ? rawDatePickup.split('T')[0] : rawDatePickup,
       pickupTime: rawDatePickup.includes('T') ? rawDatePickup.split('T')[1].substring(0, 5) : '10:00',
       pickupLocation: 'Downtown Office',

@@ -169,6 +169,32 @@ export const CustomerBookings = () => {
                             <span>{booking.pickupLocation}</span>
                           </div>
                         </div>
+
+                        {booking.driver && (
+                          <div className="flex items-center gap-3 bg-[var(--card)] px-3.5 py-2 rounded-xl border border-[var(--border)] w-fit">
+                            <div className="w-8 h-8 rounded-full overflow-hidden border border-[var(--accent)] shrink-0 bg-[var(--sidebar)] flex items-center justify-center shadow-sm">
+                              {booking.driver.profileImage ? (
+                                <img 
+                                  src={booking.driver.profileImage} 
+                                  alt={booking.driver.name} 
+                                  className="w-full h-full object-cover" 
+                                />
+                              ) : (
+                                <span className="text-xs font-bold text-[var(--accent)]">
+                                  {booking.driver.name.charAt(0)}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs">
+                              <span className="text-[var(--text-muted)] block text-[10px] uppercase tracking-wider font-semibold">Chauffeur</span>
+                              <span className="font-bold text-[var(--text)]">{booking.driver.name}</span>
+                              {booking.driver.phone && (
+                                <span className="text-[var(--text-muted)] ml-2 font-mono">({booking.driver.phone})</span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         <div className="flex items-center gap-2">
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest border ${
                             isCompleted ? 'bg-green-500/10 text-green-500 border-green-500/20' :
