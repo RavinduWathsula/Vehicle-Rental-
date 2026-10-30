@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wrench, Search, Plus, Trash2, CheckCircle2, Clock, X, RefreshCw } from 'lucide-react';
 import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const AdminMaintenance = () => {
   const [records, setRecords] = useState<any[]>([]);
@@ -11,6 +12,8 @@ export const AdminMaintenance = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [deletingRecord, setDeletingRecord] = useState<any | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     vehicle_id: '',
@@ -105,13 +108,22 @@ export const AdminMaintenance = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this maintenance record?')) return;
+  const handleDelete = (record: any) => {
+    setDeletingRecord(record);
+  };
+
+  const confirmDeleteRecord = async () => {
+    if (!deletingRecord) return;
+    setDeleteLoading(true);
     try {
-      await apiFetch(`/admin/maintenance/${id}`, { method: 'DELETE' });
+      await apiFetch(`/admin/maintenance/${deletingRecord.id}`, { method: 'DELETE' });
+      setDeletingRecord(null);
       fetchData();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to delete record:', err);
+      setDeletingRecord(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -217,7 +229,7 @@ export const AdminMaintenance = () => {
                     </td>
                     <td className="py-4 px-6 text-right">
                       <button 
-                        onClick={() => handleDelete(record.id)}
+                        onClick={() => handleDelete(record)}
                         className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                         title="Delete Record"
                       >
@@ -380,6 +392,22 @@ export const AdminMaintenance = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Delete Maintenance Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deletingRecord}
+        onClose={() => !deleteLoading && setDeletingRecord(null)}
+        onConfirm={confirmDeleteRecord}
+        isLoading={deleteLoading}
+        title="Delete Maintenance Record"
+        message="Are you sure you want to remove this service record from maintenance history?"
+        confirmText="Delete Record"
+        item={deletingRecord ? {
+          title: deletingRecord.description || 'Service Entry',
+          subtitle: `${deletingRecord.brand} ${deletingRecord.model} (${deletingRecord.registration_number})`,
+          badge: deletingRecord.status,
+        } : null}
+      />
     </div>
   );
 };

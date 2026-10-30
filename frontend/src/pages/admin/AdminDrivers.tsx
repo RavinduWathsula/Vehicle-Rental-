@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserCircle, Search, Plus, Trash2, Phone, X, RefreshCw, Pencil, Upload } from 'lucide-react';
 import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const AdminDrivers = () => {
   const [drivers, setDrivers] = useState<any[]>([]);
@@ -10,6 +11,8 @@ export const AdminDrivers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingDriverId, setEditingDriverId] = useState<number | null>(null);
+  const [deletingDriver, setDeletingDriver] = useState<any | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -99,13 +102,22 @@ export const AdminDrivers = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to remove this driver?')) return;
+  const handleDelete = (driver: any) => {
+    setDeletingDriver(driver);
+  };
+
+  const confirmDeleteDriver = async () => {
+    if (!deletingDriver) return;
+    setDeleteLoading(true);
     try {
-      await apiFetch(`/admin/drivers/${id}`, { method: 'DELETE' });
+      await apiFetch(`/admin/drivers/${deletingDriver.id}`, { method: 'DELETE' });
+      setDeletingDriver(null);
       fetchDrivers();
-    } catch (err) {
-      console.error('Failed to delete driver:', err);
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete driver');
+      setDeletingDriver(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -257,7 +269,7 @@ export const AdminDrivers = () => {
                       <Pencil size={15} />
                     </button>
                     <button 
-                      onClick={() => handleDelete(driver.id)}
+                      onClick={() => handleDelete(driver)}
                       className="p-1.5 text-drivex-text-muted hover:text-red-400 transition-colors"
                       title="Remove Driver"
                     >
@@ -617,6 +629,23 @@ export const AdminDrivers = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Delete Driver Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deletingDriver}
+        onClose={() => !deleteLoading && setDeletingDriver(null)}
+        onConfirm={confirmDeleteDriver}
+        isLoading={deleteLoading}
+        title="Remove Driver from Roster"
+        message="Are you sure you want to remove this driver profile? The driver will be permanently deleted from the database."
+        confirmText="Remove Driver"
+        item={deletingDriver ? {
+          title: deletingDriver.name,
+          subtitle: `License: ${deletingDriver.license_number} • Phone: ${deletingDriver.phone}`,
+          badge: deletingDriver.status,
+          imageUrl: deletingDriver.profile_image || null
+        } : null}
+      />
     </div>
   );
 };

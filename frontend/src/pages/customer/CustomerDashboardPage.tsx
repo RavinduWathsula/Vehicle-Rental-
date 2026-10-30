@@ -18,10 +18,14 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCustomerBookings, type CustomerBooking } from '../../lib/api';
+import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const CustomerDashboardPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [cancellingBooking, setCancellingBooking] = useState<CustomerBooking | null>(null);
+  const [cancelLoading, setCancelLoading] = useState(false);
 
   useEffect(() => {
     const userStr = localStorage.getItem('drivex_user');
@@ -55,6 +59,23 @@ export const CustomerDashboardPage = () => {
     };
     loadBookings();
   }, []);
+
+  const handleConfirmCancel = async () => {
+    if (!cancellingBooking) return;
+    setCancelLoading(true);
+    try {
+      const id = cancellingBooking.id.replace(/^BK-/, '');
+      await apiFetch(`/bookings/${id}/cancel`, { method: 'PUT' });
+      setCancellingBooking(null);
+      const data = await getCustomerBookings();
+      setBookings(data);
+    } catch (err: any) {
+      console.error('Failed to cancel booking:', err);
+      setCancellingBooking(null);
+    } finally {
+      setCancelLoading(false);
+    }
+  };
 
   const nextJourney = useMemo(() => {
     return bookings.find(b => b.status === 'upcoming' || b.status === 'active');
@@ -302,7 +323,11 @@ export const CustomerDashboardPage = () => {
                               </button>
                             )}
                             {(booking.status === 'upcoming') && (
-                              <button className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 hover:text-red-600 transition-colors" title="Cancel Booking">
+                              <button 
+                                onClick={() => setCancellingBooking(booking)}
+                                className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 hover:text-red-600 transition-colors" 
+                                title="Cancel Booking"
+                              >
                                 <XCircle size={16} />
                               </button>
                             )}
@@ -450,6 +475,23 @@ export const CustomerDashboardPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Cancel Reservation Modal */}
+      <ConfirmModal
+        isOpen={!!cancellingBooking}
+        onClose={() => !cancelLoading && setCancellingBooking(null)}
+        onConfirm={handleConfirmCancel}
+        isLoading={cancelLoading}
+        title="Cancel Reservation"
+        message="Are you sure you want to cancel this booking? If a chauffeur was reserved, they will be released back to the fleet."
+        confirmText="Cancel Reservation"
+        item={cancellingBooking ? {
+          title: cancellingBooking.vehicle.name,
+          subtitle: `${cancellingBooking.pickupDate} to ${cancellingBooking.returnDate} • Total: LKR ${cancellingBooking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          badge: cancellingBooking.id,
+          imageUrl: cancellingBooking.vehicle.imageUrl
+        } : null}
+      />
     </div>
   );
 };

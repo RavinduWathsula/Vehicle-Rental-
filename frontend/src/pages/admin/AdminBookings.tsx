@@ -12,12 +12,15 @@ import {
   Car
 } from 'lucide-react';
 import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const AdminBookings = () => {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [deletingBooking, setDeletingBooking] = useState<any | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchBookings = async () => {
     try {
@@ -50,15 +53,24 @@ export const AdminBookings = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this booking?')) return;
+  const handleDelete = (booking: any) => {
+    setDeletingBooking(booking);
+  };
+
+  const confirmDeleteBooking = async () => {
+    if (!deletingBooking) return;
+    setDeleteLoading(true);
     try {
-      await apiFetch(`/admin/bookings/${id}`, {
+      await apiFetch(`/admin/bookings/${deletingBooking.id}`, {
         method: 'DELETE'
       });
+      setDeletingBooking(null);
       fetchBookings();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to delete booking:', err);
+      setDeletingBooking(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -209,7 +221,7 @@ export const AdminBookings = () => {
                       </td>
                       <td className="py-4 px-6 text-right">
                         <button 
-                          onClick={() => handleDelete(booking.id)}
+                          onClick={() => handleDelete(booking)}
                           className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                           title="Delete Booking"
                         >
@@ -238,6 +250,22 @@ export const AdminBookings = () => {
           </table>
         </div>
       </div>
+
+      {/* Delete Booking Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deletingBooking}
+        onClose={() => !deleteLoading && setDeletingBooking(null)}
+        onConfirm={confirmDeleteBooking}
+        isLoading={deleteLoading}
+        title="Delete Booking Record"
+        message="Are you sure you want to delete this customer reservation? This will remove all associated extras and invoice totals."
+        confirmText="Delete Booking"
+        item={deletingBooking ? {
+          title: deletingBooking.booking_reference || `Booking #${deletingBooking.id}`,
+          subtitle: `${deletingBooking.customer_name || 'Customer'} • ${deletingBooking.brand || ''} ${deletingBooking.model || ''}`,
+          badge: deletingBooking.booking_status,
+        } : null}
+      />
     </div>
   );
 };

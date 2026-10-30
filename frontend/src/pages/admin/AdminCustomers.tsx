@@ -13,12 +13,15 @@ import {
   UserCheck
 } from 'lucide-react';
 import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const AdminCustomers = () => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [deletingCustomer, setDeletingCustomer] = useState<any | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchCustomers = async () => {
     try {
@@ -50,15 +53,24 @@ export const AdminCustomers = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this customer account?')) return;
+  const handleDelete = (customer: any) => {
+    setDeletingCustomer(customer);
+  };
+
+  const confirmDeleteCustomer = async () => {
+    if (!deletingCustomer) return;
+    setDeleteLoading(true);
     try {
-      await apiFetch(`/admin/customers/${id}`, {
+      await apiFetch(`/admin/customers/${deletingCustomer.id}`, {
         method: 'DELETE'
       });
+      setDeletingCustomer(null);
       fetchCustomers();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to delete customer:', err);
+      setDeletingCustomer(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -196,7 +208,7 @@ export const AdminCustomers = () => {
                       </td>
                       <td className="py-4 px-6 text-right">
                         <button 
-                          onClick={() => handleDelete(customer.id)}
+                          onClick={() => handleDelete(customer)}
                           className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                           title="Delete Customer Account"
                         >
@@ -225,6 +237,22 @@ export const AdminCustomers = () => {
           </table>
         </div>
       </div>
+
+      {/* Delete Customer Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deletingCustomer}
+        onClose={() => !deleteLoading && setDeletingCustomer(null)}
+        onConfirm={confirmDeleteCustomer}
+        isLoading={deleteLoading}
+        title="Delete Customer Account"
+        message="Are you sure you want to permanently delete this customer profile? The user will no longer be able to log in."
+        confirmText="Delete Account"
+        item={deletingCustomer ? {
+          title: deletingCustomer.name,
+          subtitle: `${deletingCustomer.email} • ${deletingCustomer.phone || 'No phone'}`,
+          badge: deletingCustomer.status,
+        } : null}
+      />
     </div>
   );
 };

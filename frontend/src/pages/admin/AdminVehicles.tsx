@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CarFront, Search, Plus, Trash2, CheckCircle2, XCircle, X, Image as ImageIcon, RefreshCw, Pencil } from 'lucide-react';
 import { apiFetch } from '../../services/api';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 
 export const AdminVehicles = () => {
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -9,6 +10,8 @@ export const AdminVehicles = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingVehicleId, setEditingVehicleId] = useState<number | null>(null);
+  const [deletingVehicle, setDeletingVehicle] = useState<any | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   
   // Form State
   const [formData, setFormData] = useState<any>({
@@ -136,15 +139,24 @@ export const AdminVehicles = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this vehicle from the fleet?')) return;
+  const handleDelete = (vehicle: any) => {
+    setDeletingVehicle(vehicle);
+  };
+
+  const confirmDeleteVehicle = async () => {
+    if (!deletingVehicle) return;
+    setDeleteLoading(true);
     try {
-      await apiFetch(`/vehicles/${id}`, {
+      await apiFetch(`/vehicles/${deletingVehicle.id}`, {
         method: 'DELETE'
       });
+      setDeletingVehicle(null);
       fetchVehicles();
     } catch (err: any) {
-      alert(err.message || 'Failed to delete vehicle');
+      setError(err.message || 'Failed to delete vehicle');
+      setDeletingVehicle(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -334,7 +346,7 @@ export const AdminVehicles = () => {
                           <Pencil size={16} />
                         </button>
                         <button 
-                          onClick={() => handleDelete(vehicle.id)}
+                          onClick={() => handleDelete(vehicle)}
                           className="p-2 text-drivex-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors" 
                           title="Delete Vehicle"
                         >
@@ -661,6 +673,23 @@ export const AdminVehicles = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Creative Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deletingVehicle}
+        onClose={() => !deleteLoading && setDeletingVehicle(null)}
+        onConfirm={confirmDeleteVehicle}
+        isLoading={deleteLoading}
+        title="Delete Vehicle from Fleet"
+        message="Are you sure you want to delete this vehicle from the fleet? This vehicle will no longer be available for customer bookings."
+        confirmText="Delete Vehicle"
+        item={deletingVehicle ? {
+          title: `${deletingVehicle.brand} ${deletingVehicle.model}`,
+          subtitle: `Plate: ${deletingVehicle.registration_number || 'N/A'} • ${deletingVehicle.year} • LKR ${Number(deletingVehicle.daily_price || 0).toLocaleString()}/day`,
+          badge: deletingVehicle.category_name || 'Fleet',
+          imageUrl: deletingVehicle.primary_image || (deletingVehicle.images && deletingVehicle.images[0]?.image_url) || null
+        } : null}
+      />
     </div>
   );
 };
