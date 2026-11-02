@@ -25,6 +25,13 @@ export const authService = {
       body: JSON.stringify(profileData),
     });
   },
+
+  changePassword: async (passwordData) => {
+    return apiFetch('/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify(passwordData),
+    });
+  },
   
   logout: () => {
     localStorage.removeItem('drivex_token');

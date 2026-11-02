@@ -32,18 +32,20 @@ const ImageGallery = ({ images }) => {
         />
       </AnimatePresence>
 
-      {/* Controls */}
+      {/* Controls: Always visible on touch screens, visible on hover for desktop */}
       {images.length > 1 && (
-        <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 flex items-center justify-between px-3 sm:px-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           <button 
             onClick={() => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-            className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:bg-[#00E5FF] hover:text-black transition-colors"
+            className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:bg-[#00E5FF] hover:text-black transition-colors shadow-lg active:scale-95"
+            aria-label="Previous image"
           >
             ←
           </button>
           <button 
             onClick={() => setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-            className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:bg-[#00E5FF] hover:text-black transition-colors"
+            className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:bg-[#00E5FF] hover:text-black transition-colors shadow-lg active:scale-95"
+            aria-label="Next image"
           >
             →
           </button>
@@ -52,12 +54,13 @@ const ImageGallery = ({ images }) => {
 
       {/* Dots */}
       {images.length > 1 && (
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+        <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
           {images.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${idx === currentIndex ? 'w-8 bg-[#00E5FF]' : 'bg-white/50 hover:bg-white'}`}
+              className={`h-2 rounded-full transition-all ${idx === currentIndex ? 'w-6 sm:w-8 bg-[#00E5FF]' : 'w-2 bg-white/50 hover:bg-white'}`}
+              aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
         </div>
@@ -80,20 +83,20 @@ export const VehicleViewer = ({ vehicle }) => {
       : (vehicle?.primary_image ? [vehicle.primary_image] : ['https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop']);
 
   return (
-    <div className="relative w-full h-[50vh] lg:h-screen bg-black overflow-hidden">
+    <div className="relative w-full h-[45vh] sm:h-[55vh] lg:h-screen bg-black overflow-hidden">
       
       {/* View Toggle */}
       {has3D && images.length > 0 && (
-        <div className="absolute top-24 left-1/2 -translate-x-1/2 z-50 flex gap-1 p-1 bg-black/50 backdrop-blur-md rounded-sm border border-white/10">
+        <div className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 flex gap-1 p-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 shadow-lg">
           <button 
             onClick={() => setViewMode('3D')}
-            className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${viewMode === '3D' ? 'bg-[#00E5FF] text-black' : 'text-gray-400 hover:text-white'}`}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest rounded-md transition-colors ${viewMode === '3D' ? 'bg-[#00E5FF] text-black shadow-sm' : 'text-gray-400 hover:text-white'}`}
           >
             3D View
           </button>
           <button 
             onClick={() => setViewMode('Gallery')}
-            className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${viewMode === 'Gallery' ? 'bg-[#00E5FF] text-black' : 'text-gray-400 hover:text-white'}`}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest rounded-md transition-colors ${viewMode === 'Gallery' ? 'bg-[#00E5FF] text-black shadow-sm' : 'text-gray-400 hover:text-white'}`}
           >
             Gallery
           </button>
@@ -111,7 +114,7 @@ export const VehicleViewer = ({ vehicle }) => {
             </Suspense>
             <OrbitControls autoRotate autoRotateSpeed={0.5} enablePan={false} maxPolarAngle={Math.PI / 2 - 0.1} minDistance={2} maxDistance={10} />
           </Canvas>
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-widest uppercase pointer-events-none">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-[11px] tracking-widest uppercase pointer-events-none bg-black/40 px-3 py-1 rounded-full border border-white/10">
             Drag to rotate
           </div>
         </div>
@@ -119,7 +122,7 @@ export const VehicleViewer = ({ vehicle }) => {
         <ImageGallery images={images} />
       )}
       
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-transparent to-[#08090B] z-10" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-transparent to-[#08090B] z-10 hidden lg:block" />
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#08090B]/50 via-transparent to-[#08090B] z-10 lg:hidden" />
     </div>
   );

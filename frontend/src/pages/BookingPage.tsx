@@ -73,32 +73,37 @@ export const BookingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#08090B] pt-32 pb-24 px-6 md:px-10">
+    <div className="min-h-screen bg-[#08090B] pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 md:px-10">
       <div className="max-w-4xl mx-auto">
         
         {/* Progress Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-8">
-            Complete your <span className="text-[#00E5FF]">Booking.</span>
-          </h1>
+        <div className="mb-8 sm:mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-white">
+              Complete your <span className="text-[#00E5FF]">Booking.</span>
+            </h1>
+            <span className="text-xs font-bold text-[#00E5FF] uppercase tracking-widest sm:hidden">
+              Step {currentStep} / 5
+            </span>
+          </div>
           
-          <div className="flex items-center justify-between relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-white/10 -z-10" />
+          <div className="flex items-center justify-between relative px-2">
+            <div className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-px bg-white/10 -z-10" />
             <div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-[#00E5FF] -z-10 transition-all duration-500 ease-out" 
-              style={{ width: `${((currentStep - 1) / 4) * 100}%` }} 
+              className="absolute left-2 top-1/2 -translate-y-1/2 h-px bg-[#00E5FF] -z-10 transition-all duration-500 ease-out" 
+              style={{ width: `${((currentStep - 1) / 4) * 96}%` }} 
             />
             
             {steps.map(step => (
-              <div key={step.num} className="flex flex-col items-center gap-3 bg-[#08090B] px-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-300 ${
+              <div key={step.num} className="flex flex-col items-center gap-2 bg-[#08090B] px-1.5 sm:px-2">
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-colors duration-300 ${
                   currentStep >= step.num 
-                    ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(212,175,55,0.3)]' 
+                    ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(0,229,255,0.4)]' 
                     : 'bg-white/5 text-white/40 border border-white/10'
                 }`}>
                   {step.num}
                 </div>
-                <span className={`text-xs font-bold tracking-widest hidden md:block ${
+                <span className={`text-[11px] font-bold tracking-widest hidden md:block ${
                   currentStep >= step.num ? 'text-white' : 'text-white/40'
                 }`}>
                   {step.label}
@@ -109,7 +114,7 @@ export const BookingPage = () => {
         </div>
 
         {/* Dynamic Step Content */}
-        <div className="glassmorphism rounded-xl border border-white/10 overflow-hidden relative min-h-[500px]">
+        <div className="glassmorphism rounded-xl border border-white/10 overflow-hidden relative min-h-[460px] sm:min-h-[500px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -117,7 +122,7 @@ export const BookingPage = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="p-8 md:p-12 h-full flex flex-col"
+              className="p-5 sm:p-8 md:p-12 h-full flex flex-col"
             >
               {currentStep === 1 && (
                 <StepJourney data={bookingData} updateData={updateData} next={nextStep} />

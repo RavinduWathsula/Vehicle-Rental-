@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const NewHero = () => {
   return (
-    <section id="home" className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative w-full min-h-screen py-24 sm:py-0 flex items-center justify-center overflow-hidden">
       {/* Background Image/Video */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -17,16 +17,16 @@ const NewHero = () => {
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[var(--color-drivex-accent)] rounded-full blur-[150px] opacity-20 pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[800px] h-[350px] sm:h-[800px] bg-[var(--color-drivex-accent)] rounded-full blur-[100px] sm:blur-[150px] opacity-20 pointer-events-none"
         />
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-12 sm:mt-20">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-[#00E5FF] font-bold tracking-[0.3em] uppercase mb-6 text-sm"
+          className="text-[#00E5FF] font-bold tracking-[0.3em] uppercase mb-4 sm:mb-6 text-xs sm:text-sm"
         >
           Redefining Mobility
         </motion.p>
@@ -35,16 +35,16 @@ const NewHero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="text-5xl md:text-8xl font-black text-white uppercase italic tracking-tighter mb-8 leading-tight drop-shadow-2xl"
+          className="text-3xl min-[400px]:text-4xl sm:text-6xl md:text-8xl font-black text-white uppercase italic tracking-tighter mb-6 sm:mb-8 leading-tight drop-shadow-2xl"
         >
-          Unleash <br/> <span className="inline-block pb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">The Extraordinary</span>
+          Unleash <br/> <span className="inline-block pb-2 sm:pb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">The Extraordinary</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light"
+          className="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 font-light px-2"
         >
           Experience the ultimate thrill with our premium fleet of luxury and high-performance vehicles. Seamless booking, unmatched service.
         </motion.p>
@@ -53,17 +53,17 @@ const NewHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-6 w-full max-w-md sm:max-w-none mx-auto"
         >
           <Link 
             to="/#how-to-work"
-            className="px-8 py-4 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-sm hover:bg-white hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm shadow-[0_0_15px_rgba(0,229,255,0.3)] w-full sm:w-auto"
+            className="px-8 py-3.5 sm:py-4 bg-[#00E5FF] text-black font-bold uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm shadow-[0_0_15px_rgba(0,229,255,0.3)] w-full sm:w-auto text-center"
           >
             How It Works
           </Link>
           <Link 
             to="/register"
-            className="px-8 py-4 bg-transparent border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest text-sm hover:bg-[#00E5FF] hover:text-black hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm w-full sm:w-auto"
+            className="px-8 py-3.5 sm:py-4 bg-transparent border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest text-xs sm:text-sm hover:bg-[#00E5FF] hover:text-black hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] transition-all duration-300 rounded-sm w-full sm:w-auto text-center"
           >
             Create Account
           </Link>
@@ -75,13 +75,13 @@ const NewHero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="hidden sm:flex absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 pointer-events-none"
       >
         <span className="text-[10px] text-white/50 tracking-[0.3em] uppercase">Scroll to explore</span>
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="w-0.5 h-12 bg-gradient-to-b from-[var(--color-drivex-accent)] to-transparent"
+          className="w-0.5 h-10 sm:h-12 bg-gradient-to-b from-[var(--color-drivex-accent)] to-transparent"
         />
       </motion.div>
     </section>

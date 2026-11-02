@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { authService } from '../services/authService';
@@ -27,6 +27,11 @@ const AdminLayout = () => {
   const { theme, toggleTheme } = useTheme();
   const [isSidebarOpen, setSidebarOpen] = React.useState(false);
 
+  // Close sidebar on path change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     authService.logout();
     navigate('/login');
@@ -48,14 +53,14 @@ const AdminLayout = () => {
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-drivex-sidebar backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Admin Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 w-64 bg-drivex-sidebar border-r border-drivex-border flex flex-col shrink-0 z-50 transition-all duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-        <div className="h-20 flex items-center justify-between px-6 border-b border-drivex-border">
+      <aside className={`fixed lg:static inset-y-0 left-0 w-64 bg-drivex-sidebar border-r border-drivex-border flex flex-col shrink-0 z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="h-16 sm:h-20 flex items-center justify-between px-6 border-b border-drivex-border">
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-8 h-8 bg-drivex-accent rounded items-center justify-center transform group-hover:rotate-12 transition-all shadow-[0_0_15px_rgba(0,229,255,0.4)] flex">
               <span className="text-drivex-text-inverse font-black italic text-sm leading-none">D</span>
@@ -64,7 +69,7 @@ const AdminLayout = () => {
               Admin
             </span>
           </Link>
-          <button className="lg:hidden text-drivex-text-muted hover:text-drivex-text" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden text-drivex-text-muted hover:text-drivex-text p-1 rounded-lg" onClick={() => setSidebarOpen(false)}>
             <X size={20} />
           </button>
         </div>
@@ -105,40 +110,48 @@ const AdminLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         {/* Admin Header */}
-        <header className="h-20 bg-drivex-bg/80 backdrop-blur-md border-b border-drivex-border flex items-center justify-between px-6 lg:px-8 shrink-0 transition-colors duration-300">
-          <div className="flex items-center gap-4">
+        <header className="h-16 sm:h-20 bg-drivex-bg/80 backdrop-blur-md border-b border-drivex-border flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0 transition-colors duration-300">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button 
               className="lg:hidden text-drivex-text-muted hover:text-drivex-text transition-colors p-2 bg-drivex-card border border-drivex-border rounded-lg"
               onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
             >
               <Menu size={20} />
             </button>
-            <div className="hidden lg:block text-drivex-text">
+            <div className="hidden sm:block text-drivex-text">
               <DateTimeDisplay />
+            </div>
+            <div className="sm:hidden font-black tracking-widest uppercase italic text-sm text-drivex-text">
+              Admin Portal
             </div>
           </div>
           
-          <div className="flex items-center gap-4 ml-auto">
+          <div className="flex items-center gap-2 sm:gap-4 ml-auto">
             {/* Theme Toggle */}
             <button 
               onClick={toggleTheme}
-              className="relative p-2.5 bg-drivex-card hover:bg-drivex-card-hover border border-drivex-border rounded-full text-drivex-text-muted hover:text-drivex-text transition-colors shadow-sm"
+              className="relative p-2 sm:p-2.5 bg-drivex-card hover:bg-drivex-card-hover border border-drivex-border rounded-full text-drivex-text-muted hover:text-drivex-text transition-colors shadow-sm"
+              title="Toggle theme"
             >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
             </button>
 
-            <button className="relative p-2.5 bg-drivex-card hover:bg-drivex-card-hover border border-drivex-border rounded-full text-drivex-text-muted hover:text-drivex-text transition-colors shadow-sm">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-drivex-accent rounded-full border-2 border-drivex-card"></span>
+            <button 
+              className="relative p-2 sm:p-2.5 bg-drivex-card hover:bg-drivex-card-hover border border-drivex-border rounded-full text-drivex-text-muted hover:text-drivex-text transition-colors shadow-sm"
+              title="Notifications"
+            >
+              <Bell size={17} />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-drivex-accent rounded-full border-2 border-drivex-card"></span>
             </button>
-            <div className="h-8 w-px bg-drivex-border"></div>
-            <div className="flex items-center gap-4">
+            <div className="h-6 sm:h-8 w-px bg-drivex-border"></div>
+            <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-drivex-text uppercase tracking-wider">Super Admin</p>
                 <p className="text-[10px] text-drivex-accent uppercase tracking-widest">System Owner</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-drivex-accent to-purple-500 p-0.5 shadow-sm">
-                <div className="w-full h-full bg-drivex-card rounded-[10px] flex items-center justify-center text-drivex-text text-sm font-black">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-drivex-accent to-purple-500 p-0.5 shadow-sm">
+                <div className="w-full h-full bg-drivex-card rounded-[10px] flex items-center justify-center text-drivex-text text-xs sm:text-sm font-black">
                   SA
                 </div>
               </div>
@@ -147,7 +160,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-drivex-bg transition-colors duration-300">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-drivex-bg transition-colors duration-300">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

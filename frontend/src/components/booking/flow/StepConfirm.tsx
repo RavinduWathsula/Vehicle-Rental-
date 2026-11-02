@@ -69,29 +69,29 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-2xl font-heading font-bold text-white mb-2">Final Review</h2>
-      <p className="text-white/50 mb-8">Please review your journey details, assigned chauffeur, and final costs.</p>
+      <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">Final Review</h2>
+      <p className="text-white/50 mb-6 sm:mb-8 text-xs sm:text-sm">Please review your journey details, assigned chauffeur, and final costs.</p>
 
       {loadingPrice ? (
-        <div className="flex-1 flex items-center justify-center flex-col gap-4">
+        <div className="flex-1 flex items-center justify-center flex-col gap-4 py-12">
           <div className="w-8 h-8 border-2 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
-          <p className="text-white/50 text-sm">Securely calculating pricing with backend...</p>
+          <p className="text-white/50 text-xs sm:text-sm">Securely calculating pricing with backend...</p>
         </div>
       ) : pricing ? (
-        <div className="flex-1 flex flex-col md:flex-row gap-8">
+        <div className="flex-1 flex flex-col md:flex-row gap-6 sm:gap-8">
           {/* Summary Left */}
-          <div className="flex-1 flex flex-col gap-6 bg-white/5 p-6 rounded-xl border border-white/5">
+          <div className="flex-1 flex flex-col gap-5 sm:gap-6 bg-white/5 p-4 sm:p-6 rounded-xl border border-white/5">
             <div>
-              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-4">Journey</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-3 sm:mb-4">Journey</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                 <div>
                   <span className="block text-white/50 mb-1">Pickup</span>
-                  <span className="text-white">{data.pickupLocation}</span>
+                  <span className="text-white font-medium">{data.pickupLocation}</span>
                   <span className="block text-white/80 mt-1">{data.pickupDate} at {data.pickupTime}</span>
                 </div>
                 <div>
                   <span className="block text-white/50 mb-1">Return</span>
-                  <span className="text-white">{data.returnLocation}</span>
+                  <span className="text-white font-medium">{data.returnLocation}</span>
                   <span className="block text-white/80 mt-1">{data.returnDate} at {data.returnTime}</span>
                 </div>
               </div>
@@ -100,9 +100,9 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
             <div className="h-px w-full bg-white/10" />
 
             <div>
-              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-4">Customer Details</h3>
-              <div className="text-sm">
-                <span className="text-white block">{data.customer.firstName} {data.customer.lastName}</span>
+              <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-3 sm:mb-4">Customer Details</h3>
+              <div className="text-xs sm:text-sm">
+                <span className="text-white block font-medium">{data.customer.firstName} {data.customer.lastName}</span>
                 <span className="text-white/80 block mt-1">{data.customer.email}</span>
                 <span className="text-white/80 block mt-1">{data.customer.phone}</span>
                 <span className="text-white/50 block mt-2 text-xs">License: {data.customer.licenseNumber}</span>
@@ -118,8 +118,8 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
                     <span>Assigned Chauffeur</span>
                     <span className="text-[10px] bg-[#00E5FF]/20 text-[#00E5FF] px-2 py-0.5 rounded-full font-medium">Included</span>
                   </h3>
-                  <div className="flex items-center gap-4 bg-white/5 p-3 rounded-lg border border-white/10">
-                    <div className="w-14 h-14 rounded-full border-2 border-[#00E5FF] overflow-hidden shrink-0 bg-white/10 flex items-center justify-center shadow-md">
+                  <div className="flex items-center gap-3.5 bg-white/5 p-3 rounded-lg border border-white/10">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#00E5FF] overflow-hidden shrink-0 bg-white/10 flex items-center justify-center shadow-md">
                       {data.driver.profile_image ? (
                         <img 
                           src={data.driver.profile_image} 
@@ -147,34 +147,34 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
           </div>
 
           {/* Pricing Right */}
-          <div className="flex-1 flex flex-col gap-4 bg-white/5 p-6 rounded-xl border border-[#00E5FF]/20">
+          <div className="flex-1 flex flex-col gap-4 bg-white/5 p-4 sm:p-6 rounded-xl border border-[#00E5FF]/20">
             <h3 className="text-[#00E5FF] text-xs font-bold tracking-widest uppercase mb-2">Final Cost</h3>
             
-            <div className="flex justify-between text-white/80 text-sm">
+            <div className="flex justify-between text-white/80 text-xs sm:text-sm">
               <span>Vehicle ({pricing.rentalDays} days)</span>
               <span>LKR {pricing.vehicleTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             {pricing.driverTotal && pricing.driverTotal > 0 ? (
-              <div className="flex justify-between text-[#00E5FF] text-sm">
+              <div className="flex justify-between text-[#00E5FF] text-xs sm:text-sm">
                 <span>Chauffeur Service ({pricing.rentalDays} days)</span>
                 <span>LKR {pricing.driverTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             ) : null}
-            <div className="flex justify-between text-white/80 text-sm">
+            <div className="flex justify-between text-white/80 text-xs sm:text-sm">
               <span>Extras ({(data.extras || []).length})</span>
               <span>LKR {pricing.extrasTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
-            <div className="flex justify-between text-white/80 text-sm">
+            <div className="flex justify-between text-white/80 text-xs sm:text-sm">
               <span>Taxes & Fees</span>
               <span>LKR {pricing.taxes.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
-            <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/10">
-              <span className="text-white font-heading font-bold text-xl">Total</span>
-              <span className="text-[#00E5FF] font-bold text-3xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-3 pt-3 sm:mt-4 sm:pt-4 border-t border-white/10 gap-1">
+              <span className="text-white font-heading font-bold text-lg sm:text-xl">Total</span>
+              <span className="text-[#00E5FF] font-bold text-2xl sm:text-3xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
-            <div className="mt-4 flex gap-2 items-start text-[10px] text-white/40 leading-tight">
+            <div className="mt-2 sm:mt-4 flex gap-2 items-start text-[10px] text-white/40 leading-tight">
               <ShieldAlert size={14} className="shrink-0 text-[#00E5FF]" />
               <p>Prices are securely calculated by the DRIVEX backend. By clicking confirm, you agree to the rental terms and conditions.</p>
             </div>
@@ -185,22 +185,22 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
       {error && (
         <div className="mt-6 flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-sm border border-red-400/20">
           <AlertCircle size={18} />
-          <span className="text-sm">{error}</span>
+          <span className="text-xs sm:text-sm">{error}</span>
         </div>
       )}
 
-      <div className="mt-10 flex justify-between items-center">
+      <div className="mt-6 sm:mt-10 flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <button 
           onClick={prev} 
           disabled={submitting}
-          className="text-white/60 hover:text-white transition-colors text-sm font-medium tracking-wide disabled:opacity-50"
+          className="text-white/60 hover:text-white transition-colors text-xs sm:text-sm font-medium tracking-wide disabled:opacity-50 py-2.5 text-center"
         >
           BACK TO DETAILS
         </button>
         <Button 
           onClick={handleConfirm} 
           disabled={loadingPrice || submitting || !!error}
-          className="px-10"
+          className="w-full sm:w-auto px-6 sm:px-10"
         >
           {submitting ? 'CONFIRMING...' : 'CONFIRM BOOKING'}
         </Button>

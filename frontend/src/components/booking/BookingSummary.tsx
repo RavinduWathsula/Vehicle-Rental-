@@ -78,11 +78,11 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
   };
 
   return (
-    <div className="bg-[#111218] rounded-xl p-6 md:p-8 border border-white/5 shadow-2xl">
-      <h3 className="text-xl font-black text-white mb-6 uppercase tracking-widest italic">Book Your Journey</h3>
+    <div className="bg-[#111218] rounded-xl p-5 sm:p-6 md:p-8 border border-white/5 shadow-2xl">
+      <h3 className="text-lg sm:text-xl font-black text-white mb-5 sm:mb-6 uppercase tracking-widest italic">Book Your Journey</h3>
 
       {/* Date Selectors */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div>
           <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Pickup Date</label>
           <input 
@@ -108,28 +108,28 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
       {/* Driver Toggle */}
       <div className="mb-6">
         <label className="flex items-center gap-3 cursor-pointer group">
-          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${needsDriver ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
+          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors shrink-0 ${needsDriver ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
             {needsDriver && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
           </div>
           <input type="checkbox" className="hidden" checked={needsDriver} onChange={() => setNeedsDriver(!needsDriver)} />
-          <span className="text-sm text-white/80 select-none">Include Professional Chauffeur</span>
+          <span className="text-xs sm:text-sm text-white/80 select-none">Include Professional Chauffeur</span>
         </label>
       </div>
 
       {/* Extras Selection */}
       {availableExtras.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-3">Optional Extras</label>
           <div className="space-y-3">
             {availableExtras.map(extra => (
-              <label key={extra.id} className="flex items-center justify-between cursor-pointer group">
-                <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${selectedExtras.includes(extra.id) ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
+              <label key={extra.id} className="flex items-center justify-between cursor-pointer group gap-2">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors shrink-0 ${selectedExtras.includes(extra.id) ? 'bg-[#00E5FF] border-[#00E5FF]' : 'border-white/20 group-hover:border-white/50'}`}>
                     {selectedExtras.includes(extra.id) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                   </div>
-                  <span className="text-sm text-white/80 select-none">{extra.name}</span>
+                  <span className="text-xs sm:text-sm text-white/80 select-none truncate">{extra.name}</span>
                 </div>
-                <span className="text-xs text-[#00E5FF] tracking-widest">+LKR {Number(extra.pricePerDay || extra.price).toLocaleString()}/day</span>
+                <span className="text-[11px] sm:text-xs text-[#00E5FF] tracking-wider shrink-0">+LKR {Number(extra.pricePerDay || extra.price).toLocaleString()}/day</span>
                 <input type="checkbox" className="hidden" checked={selectedExtras.includes(extra.id)} onChange={() => handleToggleExtra(extra.id)} />
               </label>
             ))}
@@ -138,17 +138,17 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
       )}
 
       {/* Pricing Breakdown (Backend Driven) */}
-      <div className="bg-[#08090B] rounded-lg p-5 border border-white/5 mb-8">
+      <div className="bg-[#08090B] rounded-lg p-4 sm:p-5 border border-white/5 mb-6 sm:mb-8">
         {(!pickupDate || !returnDate) ? (
-          <p className="text-white/40 text-center text-sm uppercase tracking-widest py-4">Select dates to view pricing</p>
+          <p className="text-white/40 text-center text-xs sm:text-sm uppercase tracking-widest py-4">Select dates to view pricing</p>
         ) : loading ? (
           <div className="flex justify-center py-6">
             <div className="w-6 h-6 border-2 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : error ? (
-          <p className="text-red-500 text-sm text-center py-4">{error}</p>
+          <p className="text-red-500 text-xs sm:text-sm text-center py-4">{error}</p>
         ) : pricing ? (
-          <div className="space-y-3 text-sm">
+          <div className="space-y-3 text-xs sm:text-sm">
             <div className="flex justify-between text-white/80">
               <span>Vehicle Rate ({pricing.rentalDays} days)</span>
               <span>LKR {pricing.vehicleTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -168,15 +168,15 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
               </div>
             )}
             
-            <div className="flex justify-between text-white/60 text-xs">
+            <div className="flex justify-between text-white/60 text-[11px] sm:text-xs">
               <span>Taxes & Fees</span>
               <span>LKR {pricing.taxes.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             
-            <div className="pt-4 mt-2 border-t border-white/10 flex justify-between items-end">
+            <div className="pt-3 sm:pt-4 mt-2 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-1">
               <div>
-                <span className="block text-white/50 text-xs uppercase tracking-widest mb-1">Estimated Total</span>
-                <span className="text-white font-black text-2xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span className="block text-white/50 text-[11px] sm:text-xs uppercase tracking-widest mb-0.5">Estimated Total</span>
+                <span className="text-white font-black text-xl sm:text-2xl">LKR {pricing.grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
           </div>
@@ -186,7 +186,7 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
       <button 
         onClick={handleBookNow}
         disabled={!pricing || loading || !!error}
-        className="w-full py-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-sm rounded-sm hover:bg-white transition-colors disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
+        className="w-full py-3.5 sm:py-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-sm hover:bg-white transition-colors disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed shadow-lg active:scale-[0.99]"
       >
         Book This Vehicle
       </button>

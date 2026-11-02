@@ -48,10 +48,10 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-2xl font-heading font-bold text-white mb-2">Driver Details</h2>
-      <p className="text-white/50 mb-8">Please provide the primary driver's information.</p>
+      <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">Driver Details</h2>
+      <p className="text-white/50 mb-6 sm:mb-8 text-xs sm:text-sm">Please provide the primary driver's information.</p>
 
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 content-start">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 content-start">
         <div className="flex flex-col gap-2">
           <label className="text-xs text-white/60 uppercase tracking-widest font-medium">First Name</label>
           <div className="relative">
@@ -62,7 +62,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.firstName}
               onChange={handleChange}
               placeholder="John" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors text-sm"
             />
           </div>
         </div>
@@ -77,7 +77,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.lastName}
               onChange={handleChange}
               placeholder="Doe" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors text-sm"
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.email}
               onChange={handleChange}
               placeholder="john.doe@example.com" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors text-sm"
             />
           </div>
         </div>
@@ -107,7 +107,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.phone}
               onChange={handleChange}
               placeholder="+1 (555) 000-0000" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors text-sm"
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
               value={customer.licenseNumber}
               onChange={handleChange}
               placeholder="D12345678" 
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-3 pl-10 pr-4 text-white focus:outline-none focus:border-[#00E5FF] transition-colors text-sm"
             />
           </div>
         </div>
@@ -131,15 +131,15 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
       {error && (
         <div className="mt-6 flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-sm border border-red-400/20">
           <AlertCircle size={18} />
-          <span className="text-sm">{error}</span>
+          <span className="text-xs sm:text-sm">{error}</span>
         </div>
       )}
 
-      <div className="mt-10 flex justify-between items-center">
-        <button onClick={prev} className="text-white/60 hover:text-white transition-colors text-sm font-medium tracking-wide">
+      <div className="mt-6 sm:mt-10 flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3">
+        <button onClick={prev} className="text-white/60 hover:text-white transition-colors text-xs sm:text-sm font-medium tracking-wide py-2.5 text-center">
           BACK TO EXTRAS
         </button>
-        <Button onClick={handleNext} className="px-10">REVIEW BOOKING</Button>
+        <Button onClick={handleNext} className="w-full sm:w-auto px-6 sm:px-10">REVIEW BOOKING</Button>
       </div>
     </div>
   );

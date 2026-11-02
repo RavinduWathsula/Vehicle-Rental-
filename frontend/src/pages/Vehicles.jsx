@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SlidersHorizontal, ChevronDown, RotateCcw } from 'lucide-react';
 import Container from '../components/Container';
 import VehicleCard from '../components/VehicleCard';
 import Loading from '../components/Loading';
@@ -15,6 +16,7 @@ const Vehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Filter States
   const [activeCategory, setActiveCategory] = useState('All');
@@ -81,6 +83,15 @@ const Vehicles = () => {
     });
   }, [vehicles, activeCategory, activeTransmission, activeFuel, activeSeats, activeAvailability]);
 
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (activeTransmission !== 'All') count++;
+    if (activeFuel !== 'All') count++;
+    if (activeSeats !== 'All') count++;
+    if (activeAvailability !== 'All') count++;
+    return count;
+  }, [activeTransmission, activeFuel, activeSeats, activeAvailability]);
+
   const resetFilters = () => {
     setActiveCategory('All');
     setActiveTransmission('All');
@@ -90,14 +101,14 @@ const Vehicles = () => {
   };
 
   return (
-    <div className="w-full pt-24 pb-32 min-h-screen bg-[var(--bg)] transition-colors duration-300">
+    <div className="w-full pt-20 sm:pt-24 pb-24 sm:pb-32 min-h-screen bg-[var(--bg)] transition-colors duration-300">
       
       {/* Header Section */}
-      <Container className="mb-12 text-center">
+      <Container className="mb-8 sm:mb-12 text-center px-4">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-[var(--accent)] font-bold tracking-[0.3em] uppercase mb-4 text-xs"
+          className="text-[var(--accent)] font-bold tracking-[0.3em] uppercase mb-3 text-xs"
         >
           Our Fleet
         </motion.p>
@@ -105,15 +116,15 @@ const Vehicles = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-5xl md:text-7xl font-black text-[var(--text)] uppercase italic tracking-tighter"
+          className="text-3xl sm:text-5xl md:text-7xl font-black text-[var(--text)] uppercase italic tracking-tighter leading-tight"
         >
           Find the vehicle built <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--text)] to-[var(--accent)]">for your journey.</span>
         </motion.h1>
       </Container>
 
       {/* Primary Category Pills */}
-      <Container className="mb-12">
-        <div className="flex flex-wrap justify-center gap-3">
+      <Container className="mb-8 sm:mb-12 px-4">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
           {CATEGORIES.map((cat, idx) => (
             <motion.button
               key={cat}
@@ -121,7 +132,7 @@ const Vehicles = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 + (idx * 0.05) }}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 border ${
+              className={`px-4 sm:px-6 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest transition-all duration-300 border ${
                 activeCategory === cat 
                   ? 'bg-[var(--accent)] text-[var(--text-inverse)] border-[var(--accent)] shadow-[0_0_20px_var(--accent)_inset]' 
                   : 'bg-[var(--card)] text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text)] border-[var(--border)]'
@@ -133,28 +144,55 @@ const Vehicles = () => {
         </div>
       </Container>
 
-      <Container>
-        <div className="flex flex-col xl:flex-row gap-12">
+      <Container className="px-4">
+        {/* Mobile Filter Toggle Banner */}
+        <div className="xl:hidden flex items-center justify-between p-3.5 sm:p-4 bg-[var(--sidebar)] border border-[var(--border)] rounded-xl mb-6 shadow-sm">
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal size={16} className="text-[var(--accent)]" />
+            <span className="text-xs font-bold text-[var(--text)] uppercase tracking-wider">
+              Filters {activeFilterCount > 0 && <span className="text-[var(--accent)] font-black">({activeFilterCount})</span>}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            {activeFilterCount > 0 && (
+              <button 
+                onClick={resetFilters} 
+                className="text-[11px] text-[var(--text-muted)] hover:text-[var(--accent)] uppercase tracking-wider flex items-center gap-1 font-semibold"
+              >
+                <RotateCcw size={12} /> Reset
+              </button>
+            )}
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="px-3 py-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] border border-[var(--border)] rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--text)] flex items-center gap-1.5 transition-colors"
+            >
+              {showMobileFilters ? 'Hide' : 'Filter Fleet'}
+              <ChevronDown size={14} className={`transform transition-transform duration-200 ${showMobileFilters ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col xl:flex-row gap-8 xl:gap-12">
           
           {/* Secondary Advanced Filters Sidebar */}
           <motion.aside 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="w-full xl:w-1/4 shrink-0"
+            className={`w-full xl:w-1/4 shrink-0 ${showMobileFilters ? 'block mb-6' : 'hidden xl:block'}`}
           >
-            <div className="bg-[var(--sidebar)] border border-[var(--border)] rounded-2xl p-8 sticky top-28 shadow-sm">
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-widest">Filters</h3>
+            <div className="bg-[var(--sidebar)] border border-[var(--border)] rounded-2xl p-6 sm:p-8 sticky top-28 shadow-sm">
+              <div className="flex items-center justify-between mb-6 sm:mb-8">
+                <h3 className="text-xs sm:text-sm font-bold text-[var(--text)] uppercase tracking-widest">Filters</h3>
                 <button 
                   onClick={resetFilters}
-                  className="text-xs text-[var(--accent)] hover:text-[var(--text)] transition-colors uppercase tracking-widest"
+                  className="text-xs text-[var(--accent)] hover:text-[var(--text)] transition-colors uppercase tracking-widest font-semibold"
                 >
                   Reset
                 </button>
               </div>
               
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Transmission */}
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] uppercase tracking-widest mb-3">Transmission</label>
@@ -232,21 +270,21 @@ const Vehicles = () => {
           </motion.aside>
 
           {/* Vehicle Grid Area */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {isLoading ? (
-              <div className="h-[500px] flex items-center justify-center">
+              <div className="h-[400px] sm:h-[500px] flex items-center justify-center">
                 <Loading />
               </div>
             ) : error ? (
-              <div className="h-[500px] flex flex-col items-center justify-center text-center p-8 bg-[var(--sidebar)] rounded-2xl border border-red-500/20 shadow-sm">
+              <div className="h-[400px] sm:h-[500px] flex flex-col items-center justify-center text-center p-6 sm:p-8 bg-[var(--sidebar)] rounded-2xl border border-red-500/20 shadow-sm">
                 <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <h3 className="text-xl font-bold text-[var(--text)] mb-2 uppercase tracking-widest">Error Loading Fleet</h3>
-                <p className="text-[var(--text-muted)] max-w-md">{error}</p>
+                <p className="text-[var(--text-muted)] max-w-md text-sm">{error}</p>
                 <button 
                   onClick={() => window.location.reload()} 
-                  className="mt-8 px-8 py-3 bg-[var(--accent)] text-[var(--text-inverse)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent-hover)] transition-colors rounded-sm"
+                  className="mt-6 sm:mt-8 px-6 sm:px-8 py-3 bg-[var(--accent)] text-[var(--text-inverse)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent-hover)] transition-colors rounded-sm"
                 >
                   Try Again
                 </button>
@@ -255,26 +293,26 @@ const Vehicles = () => {
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="h-[500px] flex flex-col items-center justify-center text-center p-12 bg-[var(--sidebar)] rounded-2xl border border-[var(--border)] shadow-sm"
+                className="h-[400px] sm:h-[500px] flex flex-col items-center justify-center text-center p-6 sm:p-12 bg-[var(--sidebar)] rounded-2xl border border-[var(--border)] shadow-sm"
               >
-                <div className="w-24 h-24 mb-6 rounded-full bg-[var(--card)] flex items-center justify-center border border-[var(--border)]">
-                  <svg className="w-10 h-10 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 mb-6 rounded-full bg-[var(--card)] flex items-center justify-center border border-[var(--border)]">
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-black text-[var(--text)] mb-3 uppercase tracking-widest italic">No Vehicles Match</h3>
-                <p className="text-[var(--text-muted)] max-w-md mb-8">
+                <h3 className="text-xl sm:text-2xl font-black text-[var(--text)] mb-3 uppercase tracking-widest italic">No Vehicles Match</h3>
+                <p className="text-[var(--text-muted)] max-w-md mb-6 sm:mb-8 text-xs sm:text-sm">
                   We couldn't find any vehicles in our fleet matching your exact criteria. Try adjusting your filters.
                 </p>
                 <button 
                   onClick={resetFilters}
-                  className="px-8 py-3 border border-[var(--accent)] text-[var(--accent)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] transition-colors rounded-sm"
+                  className="px-6 sm:px-8 py-3 border border-[var(--accent)] text-[var(--accent)] font-bold uppercase tracking-widest text-xs hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] transition-colors rounded-sm"
                 >
                   Clear All Filters
                 </button>
               </motion.div>
             ) : (
-              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 <AnimatePresence>
                   {filteredVehicles.map((vehicle) => (
                     <VehicleCard key={vehicle.id} vehicle={vehicle} />
