@@ -173,12 +173,12 @@ export const AdminDrivers = () => {
 
   return (
     <div className="space-y-6 pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Driver Roster</h1>
-          <p className="text-drivex-text-muted text-sm">Manage chauffeur profiles, licenses, and availability statuses.</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-1 sm:mb-2">Driver Roster</h1>
+          <p className="text-drivex-text-muted text-xs sm:text-sm">Manage chauffeur profiles, licenses, and availability statuses.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <button 
             onClick={fetchDrivers}
             className="flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
@@ -211,7 +211,7 @@ export const AdminDrivers = () => {
         </div>
 
         {filteredDrivers.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6">
             {filteredDrivers.map((driver, i) => (
               <motion.div 
                 key={driver.id} 

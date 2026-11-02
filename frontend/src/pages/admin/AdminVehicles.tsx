@@ -237,12 +237,12 @@ export const AdminVehicles = () => {
 
   return (
     <div className="space-y-6 pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Fleet Management</h1>
-          <p className="text-drivex-text-muted text-sm">Manage live vehicles in your database. Any vehicle added here is instantly visible to customers.</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-1 sm:mb-2">Fleet Management</h1>
+          <p className="text-drivex-text-muted text-xs sm:text-sm">Manage live vehicles in your database. Any vehicle added here is instantly visible to customers.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <button 
             onClick={fetchVehicles}
             className="flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"

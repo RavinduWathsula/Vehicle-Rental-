@@ -21,15 +21,15 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-to-work" className="py-32 relative bg-transparent z-20 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <section id="how-to-work" className="py-16 sm:py-24 md:py-32 relative bg-transparent z-20 border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         
-        <div className="text-center mb-24">
+        <div className="text-center mb-12 sm:mb-20">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-4"
+            className="text-xs sm:text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-2 sm:mb-4"
           >
             Seamless Process
           </motion.h2>
@@ -38,13 +38,13 @@ const HowItWorks = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic"
+            className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic"
           >
             How To Work.
           </motion.h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 relative">
           {/* Connecting Line (Desktop only) */}
           <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-0" />
           
@@ -57,12 +57,12 @@ const HowItWorks = () => {
               transition={{ delay: index * 0.2, duration: 0.8 }}
               className="relative z-10 flex flex-col items-center text-center group"
             >
-              <div className="w-24 h-24 rounded-full bg-[#08090B] border border-white/10 flex items-center justify-center mb-8 relative group-hover:border-[#00E5FF] transition-colors duration-500">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#08090B] border border-white/10 flex items-center justify-center mb-6 sm:mb-8 relative group-hover:border-[#00E5FF] transition-colors duration-500 shadow-lg">
                 <div className="absolute inset-0 bg-[#00E5FF]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="text-3xl font-black text-[#00E5FF] italic">{step.number}</span>
+                <span className="text-2xl sm:text-3xl font-black text-[#00E5FF] italic">{step.number}</span>
               </div>
-              <h4 className="text-2xl font-bold text-white mb-4 uppercase">{step.title}</h4>
-              <p className="text-gray-400 font-light leading-relaxed max-w-sm">
+              <h4 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-4 uppercase">{step.title}</h4>
+              <p className="text-gray-400 text-xs sm:text-sm md:text-base font-light leading-relaxed max-w-sm">
                 {step.description}
               </p>
             </motion.div>

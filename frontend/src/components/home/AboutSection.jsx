@@ -3,40 +3,40 @@ import { motion } from 'framer-motion';
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-32 relative bg-transparent z-20 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+    <section id="about" className="py-16 sm:py-24 md:py-32 relative bg-transparent z-20 border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-4">The Standard</h2>
-            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic mb-8">
+            <h2 className="text-xs sm:text-sm font-bold tracking-[0.3em] text-[#00E5FF] uppercase mb-2 sm:mb-4">The Standard</h2>
+            <h3 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic mb-6 sm:mb-8">
               Engineering <br/>Excellence.
             </h3>
-            <p className="text-gray-400 text-lg leading-relaxed mb-6">
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-6">
               Founded on the principle that the journey matters just as much as the destination, DRIVEX provides exclusive access to the world's most sought-after vehicles.
             </p>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8">
               We don't just rent cars. We provide an end-to-end luxury experience. From our meticulously maintained fleet to our 24/7 concierge service, every detail is engineered to exceed expectations.
             </p>
             
-            <div className="flex items-center gap-8">
+            <div className="flex flex-wrap items-center gap-6 sm:gap-8 pt-2">
               <div>
-                <p className="text-3xl font-black text-white">48+</p>
-                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Vehicles</p>
+                <p className="text-2xl sm:text-3xl font-black text-white">48+</p>
+                <p className="text-[10px] sm:text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Vehicles</p>
               </div>
-              <div className="w-px h-10 bg-white/10" />
+              <div className="w-px h-8 sm:h-10 bg-white/10" />
               <div>
-                <p className="text-3xl font-black text-white">12</p>
-                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Locations</p>
+                <p className="text-2xl sm:text-3xl font-black text-white">12</p>
+                <p className="text-[10px] sm:text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Locations</p>
               </div>
-              <div className="w-px h-10 bg-white/10" />
+              <div className="w-px h-8 sm:h-10 bg-white/10" />
               <div>
-                <p className="text-3xl font-black text-white">24/7</p>
-                <p className="text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Support</p>
+                <p className="text-2xl sm:text-3xl font-black text-white">24/7</p>
+                <p className="text-[10px] sm:text-xs text-[#00E5FF] tracking-widest uppercase mt-1">Support</p>
               </div>
             </div>
           </motion.div>
@@ -52,7 +52,7 @@ const AboutSection = () => {
             <img 
               src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2070&auto=format&fit=crop" 
               alt="Interior" 
-              className="w-full h-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-700 relative z-10 border border-white/10"
+              className="w-full h-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-700 relative z-10 border border-white/10 shadow-2xl"
             />
           </motion.div>
         </div>

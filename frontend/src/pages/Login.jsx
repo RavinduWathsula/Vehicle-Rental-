@@ -79,14 +79,14 @@ const Login = () => {
   const toggleState = () => {
     const newState = !isLogin;
     setIsLogin(newState);
-    // Optionally update URL without reloading
+    // Update URL without full reloading
     window.history.pushState({}, '', newState ? '/login' : '/register');
   };
 
   return (
     <div className="min-h-screen relative flex items-center justify-center bg-[#040508] overflow-hidden">
       
-      {/* Background Elements (From AuthLayout) */}
+      {/* Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <motion.img 
           initial={{ scale: 1.1, opacity: 0 }}
@@ -115,7 +115,7 @@ const Login = () => {
       {/* Back to Home */}
       <Link 
         to="/" 
-        className="absolute top-6 left-6 md:top-8 md:left-12 z-[60] flex items-center gap-2 text-white/50 hover:text-white transition-colors uppercase tracking-widest text-xs font-bold group"
+        className="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-12 z-[60] flex items-center gap-2 text-white/50 hover:text-white transition-colors uppercase tracking-widest text-xs font-bold group"
       >
         <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -132,14 +132,14 @@ const Login = () => {
         }}
       />
 
-      {/* Layout Container - We use Grid so both states can sit perfectly on top of each other */}
-      <div className="relative z-10 w-full grid min-h-screen px-6 lg:px-12 py-20">
+      {/* Layout Container */}
+      <div className="relative z-10 w-full grid min-h-screen px-4 sm:px-6 lg:px-12 py-16 sm:py-20">
 
         {/* ======================= */}
         {/*       LOGIN STATE       */}
         {/* ======================= */}
         <div 
-          className="row-start-1 col-start-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12"
+          className="row-start-1 col-start-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12"
           style={{ 
             opacity: isLogin ? 1 : 0, 
             transition: 'opacity 0s 0.3s',
@@ -147,31 +147,31 @@ const Login = () => {
           }}
         >
           {/* Left Branding */}
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <Link to="/" className="inline-flex items-center gap-3 mb-8 group">
-              <div className="w-12 h-12 bg-[#00E5FF] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-                <span className="text-black font-black italic text-3xl leading-none">D</span>
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left mt-6 sm:mt-0">
+            <Link to="/" className="inline-flex items-center gap-3 mb-6 sm:mb-8 group">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00E5FF] rounded-sm flex items-center justify-center transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                <span className="text-black font-black italic text-2xl sm:text-3xl leading-none">D</span>
               </div>
-              <span className="text-3xl font-black tracking-widest text-white uppercase italic">DriveX</span>
+              <span className="text-2xl sm:text-3xl font-black tracking-widest text-white uppercase italic">DriveX</span>
             </Link>
             
-            <h1 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-[0.9] mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-[0.9] mb-4 sm:mb-6">
               Unlock <br/> 
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00E5FF]">The Fleet.</span>
             </h1>
-            <p className="text-gray-400 text-lg md:text-xl font-light max-w-md tracking-wide">
+            <p className="text-gray-400 text-sm sm:text-base md:text-xl font-light max-w-md tracking-wide">
               Experience automotive perfection. Login to manage your bookings and experience the drive of your life.
             </p>
           </div>
 
           {/* Right Form */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-            <div className="w-full max-w-md bg-black/40 backdrop-blur-2xl p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+            <div className="w-full max-w-md bg-black/50 backdrop-blur-2xl p-5 sm:p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent opacity-50 z-20" />
               
-              <div className="mb-10 text-center">
-                <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-widest italic">Welcome Back</h2>
-                <p className="text-gray-400 text-sm tracking-wide">Enter your credentials to access your fleet.</p>
+              <div className="mb-6 sm:mb-10 text-center">
+                <h2 className="text-2xl sm:text-3xl font-black text-white mb-1 sm:mb-2 uppercase tracking-widest italic">Welcome Back</h2>
+                <p className="text-gray-400 text-xs sm:text-sm tracking-wide">Enter your credentials to access your fleet.</p>
               </div>
 
               {error && isLogin && (
@@ -180,7 +180,7 @@ const Login = () => {
                 </div>
               )}
 
-              <form onSubmit={handleLoginSubmit} className="space-y-6 flex-grow" autoComplete="off">
+              <form onSubmit={handleLoginSubmit} className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Email Address</label>
                   <div className="relative">
@@ -196,18 +196,15 @@ const Login = () => {
                       value={loginData.email}
                       onChange={handleLoginChange}
                       required
-                      autoComplete="off"
-                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
                   </div>
                 </div>
-                
+
                 <div>
-                  <div className="flex justify-between mb-2">
-                    <label className="block text-xs font-bold text-white/50 uppercase tracking-widest">Password</label>
-                    <a href="#" className="text-xs font-bold text-[#00E5FF] hover:text-white transition-colors uppercase tracking-widest">
-                      Forgot?
-                    </a>
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Password</label>
+                    <a href="#" className="text-xs text-[#00E5FF] hover:underline uppercase tracking-wider font-semibold">Forgot?</a>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -222,8 +219,7 @@ const Login = () => {
                       value={loginData.password}
                       onChange={handleLoginChange}
                       required
-                      autoComplete="new-password"
-                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
                   </div>
                 </div>
@@ -231,7 +227,7 @@ const Login = () => {
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full py-4 mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 sm:py-4 mt-2 sm:mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed shadow-lg active:scale-[0.99]"
                 >
                   {isLoading ? (
                     <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
@@ -244,8 +240,8 @@ const Login = () => {
                 </button>
               </form>
 
-              <div className="mt-8 pt-8 border-t border-white/10 text-center">
-                <p className="text-sm text-gray-400">
+              <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/10 text-center">
+                <p className="text-xs sm:text-sm text-gray-400">
                   New to DriveX?{' '}
                   <button 
                     type="button"
@@ -264,7 +260,7 @@ const Login = () => {
         {/*     REGISTER STATE      */}
         {/* ======================= */}
         <div 
-          className="row-start-1 col-start-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12"
+          className="row-start-1 col-start-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-8 lg:gap-12"
           style={{ 
             opacity: isLogin ? 0 : 1, 
             transition: 'opacity 0s 0.3s',
@@ -272,31 +268,31 @@ const Login = () => {
           }}
         >
           {/* Right Branding (Mirrored) */}
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right">
-            <Link to="/" className="inline-flex items-center gap-3 mb-8 group">
-              <div className="w-12 h-12 bg-[#00E5FF] rounded-sm flex items-center justify-center transform rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-                <span className="text-black font-black italic text-3xl leading-none">D</span>
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right mt-6 sm:mt-0">
+            <Link to="/" className="inline-flex items-center gap-3 mb-6 sm:mb-8 group">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00E5FF] rounded-sm flex items-center justify-center transform rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                <span className="text-black font-black italic text-2xl sm:text-3xl leading-none">D</span>
               </div>
-              <span className="text-3xl font-black tracking-widest text-white uppercase italic">DriveX</span>
+              <span className="text-2xl sm:text-3xl font-black tracking-widest text-white uppercase italic">DriveX</span>
             </Link>
             
-            <h1 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-[0.9] mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-[0.9] mb-4 sm:mb-6">
               Join <br/> 
               <span className="text-transparent bg-clip-text bg-gradient-to-l from-white to-[#00E5FF]">The Elite.</span>
             </h1>
-            <p className="text-gray-400 text-lg md:text-xl font-light max-w-md tracking-wide">
+            <p className="text-gray-400 text-sm sm:text-base md:text-xl font-light max-w-md tracking-wide">
               Register to gain exclusive access to the world's most premium vehicles.
             </p>
           </div>
 
           {/* Left Form (Mirrored) */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
-            <div className="w-full max-w-md bg-black/40 backdrop-blur-2xl p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+            <div className="w-full max-w-md bg-black/50 backdrop-blur-2xl p-5 sm:p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-[#00E5FF] to-transparent opacity-50 z-20" />
               
-              <div className="mb-10 text-center">
-                <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-widest italic">Create Account</h2>
-                <p className="text-gray-400 text-sm tracking-wide">Join DRIVEX and unlock exclusive access.</p>
+              <div className="mb-6 sm:mb-10 text-center">
+                <h2 className="text-2xl sm:text-3xl font-black text-white mb-1 sm:mb-2 uppercase tracking-widest italic">Create Account</h2>
+                <p className="text-gray-400 text-xs sm:text-sm tracking-wide">Join DRIVEX and unlock exclusive access.</p>
               </div>
 
               {error && !isLogin && (
@@ -305,7 +301,7 @@ const Login = () => {
                 </div>
               )}
 
-              <form onSubmit={handleRegisterSubmit} className="space-y-6 flex-grow">
+              <form onSubmit={handleRegisterSubmit} className="space-y-4 sm:space-y-6 flex-grow">
                 <div>
                   <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Full Name</label>
                   <div className="relative">
@@ -321,12 +317,12 @@ const Login = () => {
                       value={registerData.name}
                       onChange={handleRegisterChange}
                       required
-                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Email Address</label>
                     <div className="relative">
@@ -342,7 +338,7 @@ const Login = () => {
                         value={registerData.email}
                         onChange={handleRegisterChange}
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -361,13 +357,13 @@ const Login = () => {
                         value={registerData.phone}
                         onChange={handleRegisterChange}
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Password</label>
                     <div className="relative">
@@ -383,7 +379,7 @@ const Login = () => {
                         value={registerData.password}
                         onChange={handleRegisterChange}
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -402,7 +398,7 @@ const Login = () => {
                         value={registerData.confirmPassword}
                         onChange={handleRegisterChange}
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -411,7 +407,7 @@ const Login = () => {
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full py-4 mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 sm:py-4 mt-2 sm:mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed shadow-lg active:scale-[0.99]"
                 >
                   {isLoading ? (
                     <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
@@ -424,8 +420,8 @@ const Login = () => {
                 </button>
               </form>
 
-              <div className="mt-8 pt-8 border-t border-white/10 text-center">
-                <p className="text-sm text-gray-400">
+              <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/10 text-center">
+                <p className="text-xs sm:text-sm text-gray-400">
                   Already have an account?{' '}
                   <button 
                     type="button"

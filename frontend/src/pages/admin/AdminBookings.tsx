@@ -90,14 +90,14 @@ export const AdminBookings = () => {
 
   return (
     <div className="space-y-6 pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-2">Booking Management</h1>
-          <p className="text-drivex-text-muted text-sm">Review, approve, and manage live customer reservations from your database.</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-drivex-text italic uppercase tracking-wider mb-1 sm:mb-2">Booking Management</h1>
+          <p className="text-drivex-text-muted text-xs sm:text-sm">Review, approve, and manage live customer reservations from your database.</p>
         </div>
         <button 
           onClick={fetchBookings}
-          className="flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
+          className="w-fit self-start md:self-auto flex items-center gap-2 px-4 py-2 bg-drivex-card border border-drivex-border hover:border-drivex-accent text-drivex-text rounded-sm text-xs font-bold uppercase tracking-wider transition-all"
         >
           <RefreshCw size={14} className={loading ? 'animate-spin text-drivex-accent' : ''} />
           Refresh
