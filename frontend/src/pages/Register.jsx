@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const Register = () => {
@@ -12,8 +13,21 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
+  const [isReadOnly, setIsReadOnly] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setFormData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+    setError('');
+    setIsReadOnly(true);
+    const timer = setTimeout(() => {
+      setIsReadOnly(false);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,7 +48,7 @@ const Register = () => {
       const { confirmPassword, ...registerData } = formData;
       await authService.register(registerData);
       
-      // The backend doesn't return a token on registration, so redirect to login
+      // Redirect to login with clean inputs
       navigate('/login');
     } catch (err) {
       setError(err.message || 'Failed to create account.');
@@ -48,13 +62,13 @@ const Register = () => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full bg-black/40 backdrop-blur-2xl p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
+      className="w-full bg-black/40 backdrop-blur-2xl p-5 sm:p-8 md:p-12 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent opacity-50" />
       
-      <div className="mb-10 text-center">
-        <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-widest italic">Create Account</h2>
-        <p className="text-gray-400 text-sm tracking-wide">Join DRIVEX and unlock exclusive access to our fleet.</p>
+      <div className="mb-6 sm:mb-10 text-center">
+        <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 uppercase tracking-widest italic">Create Account</h2>
+        <p className="text-gray-400 text-xs sm:text-sm tracking-wide">Join DRIVEX and unlock exclusive access to our fleet.</p>
       </div>
 
       {error && (
@@ -67,7 +81,11 @@ const Register = () => {
         </motion.div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4 sm:space-y-6">
+        {/* Browser Autofill Traps */}
+        <input type="text" name="fake_email_prevent" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+        <input type="password" name="fake_password_prevent" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
         <div>
           <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Full Name</label>
           <div className="relative">
@@ -82,13 +100,16 @@ const Register = () => {
               placeholder="John Doe"
               value={formData.name}
               onChange={handleChange}
+              onFocus={() => setIsReadOnly(false)}
+              readOnly={isReadOnly}
+              autoComplete="off"
               required
-              className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+              className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Email Address</label>
             <div className="relative">
@@ -103,8 +124,11 @@ const Register = () => {
                 placeholder="name@example.com"
                 value={formData.email}
                 onChange={handleChange}
+                onFocus={() => setIsReadOnly(false)}
+                readOnly={isReadOnly}
+                autoComplete="off"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
               />
             </div>
           </div>
@@ -122,14 +146,17 @@ const Register = () => {
                 placeholder="+1 234 567 8900"
                 value={formData.phone}
                 onChange={handleChange}
+                onFocus={() => setIsReadOnly(false)}
+                readOnly={isReadOnly}
+                autoComplete="off"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
               />
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Password</label>
             <div className="relative">
@@ -139,14 +166,26 @@ const Register = () => {
                 </svg>
               </div>
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"} 
                 name="password"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
+                onFocus={() => setIsReadOnly(false)}
+                readOnly={isReadOnly}
+                autoComplete="new-password"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-11 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-[#00E5FF] transition-colors focus:outline-none"
+                tabIndex={-1}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
           <div>
@@ -158,14 +197,26 @@ const Register = () => {
                 </svg>
               </div>
               <input 
-                type="password" 
+                type={showConfirmPassword ? "text" : "password"} 
                 name="confirmPassword"
                 placeholder="••••••••"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                onFocus={() => setIsReadOnly(false)}
+                readOnly={isReadOnly}
+                autoComplete="new-password"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-11 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-[#00E5FF] transition-colors focus:outline-none"
+                tabIndex={-1}
+                title={showConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
         </div>
@@ -173,7 +224,7 @@ const Register = () => {
         <button 
           type="submit" 
           disabled={isLoading}
-          className="w-full py-4 mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
+          className="w-full py-3.5 sm:py-4 mt-2 sm:mt-4 bg-[var(--color-drivex-accent)] text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-sm hover:bg-white transition-colors flex justify-center items-center gap-2 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed shadow-lg active:scale-[0.99]"
         >
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
@@ -186,8 +237,8 @@ const Register = () => {
         </button>
       </form>
 
-      <div className="mt-8 pt-8 border-t border-white/10 text-center">
-        <p className="text-sm text-gray-400">
+      <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/10 text-center">
+        <p className="text-xs sm:text-sm text-gray-400">
           Already have an account?{' '}
           <Link to="/login" className="text-white hover:text-[#00E5FF] transition-colors font-bold uppercase tracking-widest text-xs ml-1">
             Sign In

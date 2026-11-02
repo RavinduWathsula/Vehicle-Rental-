@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(() => location.pathname !== '/register');
-  
-  useEffect(() => {
-    setIsLogin(location.pathname !== '/register');
-  }, [location.pathname]);
+  const [isReadOnly, setIsReadOnly] = useState(true);
 
-  // Form states
+  // Password visibility states
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Form states - strictly initialized to empty strings
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ 
     name: '', email: '', phone: '', password: '', confirmPassword: '' 
@@ -20,6 +23,22 @@ const Login = () => {
   
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Clear inputs and keep readOnly briefly on mount/route change to prevent browser auto-injection
+  useEffect(() => {
+    setIsLogin(location.pathname !== '/register');
+    setLoginData({ email: '', password: '' });
+    setRegisterData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+    setError('');
+    setIsReadOnly(true);
+    
+    // Release readOnly after the initial render cycle
+    const timer = setTimeout(() => {
+      setIsReadOnly(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -65,9 +84,10 @@ const Login = () => {
     try {
       const { confirmPassword: _confirmPassword, ...data } = registerData;
       await authService.register(data);
-      // On success, switch to login
+      // On success, switch to login with clean empty fields
       setIsLogin(true);
-      setLoginData(prev => ({ ...prev, email: registerData.email }));
+      setLoginData({ email: '', password: '' });
+      setRegisterData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
       navigate('/login');
     } catch (err) {
       setError(err.message || 'Failed to create account.');
@@ -79,8 +99,13 @@ const Login = () => {
   const toggleState = () => {
     const newState = !isLogin;
     setIsLogin(newState);
+    setLoginData({ email: '', password: '' });
+    setRegisterData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+    setError('');
+    setIsReadOnly(true);
     // Update URL without full reloading
     window.history.pushState({}, '', newState ? '/login' : '/register');
+    setTimeout(() => setIsReadOnly(false), 250);
   };
 
   return (
@@ -180,7 +205,11 @@ const Login = () => {
                 </div>
               )}
 
-              <form onSubmit={handleLoginSubmit} className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleLoginSubmit} autoComplete="off" className="space-y-4 sm:space-y-6">
+                {/* Browser Autofill Traps to intercept Chrome/Edge automatic credential injection */}
+                <input type="text" name="fake_email_prevent_autofill" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                <input type="password" name="fake_password_prevent_autofill" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
                 <div>
                   <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Email Address</label>
                   <div className="relative">
@@ -192,9 +221,13 @@ const Login = () => {
                     <input 
                       type="email" 
                       name="email"
+                      id="login-email"
                       placeholder="name@example.com"
                       value={loginData.email}
                       onChange={handleLoginChange}
+                      onFocus={() => setIsReadOnly(false)}
+                      readOnly={isReadOnly}
+                      autoComplete="off"
                       required
                       className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
@@ -213,14 +246,27 @@ const Login = () => {
                       </svg>
                     </div>
                     <input 
-                      type="password" 
+                      type={showLoginPassword ? "text" : "password"} 
                       name="password"
+                      id="login-password"
                       placeholder="••••••••"
                       value={loginData.password}
                       onChange={handleLoginChange}
+                      onFocus={() => setIsReadOnly(false)}
+                      readOnly={isReadOnly}
+                      autoComplete="new-password"
                       required
-                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
+                      className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-11 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-[#00E5FF] transition-colors focus:outline-none"
+                      tabIndex={-1}
+                      title={showLoginPassword ? "Hide password" : "Show password"}
+                    >
+                      {showLoginPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
                   </div>
                 </div>
 
@@ -301,7 +347,11 @@ const Login = () => {
                 </div>
               )}
 
-              <form onSubmit={handleRegisterSubmit} className="space-y-4 sm:space-y-6 flex-grow">
+              <form onSubmit={handleRegisterSubmit} autoComplete="off" className="space-y-4 sm:space-y-6 flex-grow">
+                {/* Browser Autofill Traps */}
+                <input type="text" name="fake_email_prevent_autofill_reg" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                <input type="password" name="fake_password_prevent_autofill_reg" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
                 <div>
                   <label className="block text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Full Name</label>
                   <div className="relative">
@@ -313,9 +363,13 @@ const Login = () => {
                     <input 
                       type="text" 
                       name="name"
+                      id="reg-name"
                       placeholder="John Doe"
                       value={registerData.name}
                       onChange={handleRegisterChange}
+                      onFocus={() => setIsReadOnly(false)}
+                      readOnly={isReadOnly}
+                      autoComplete="off"
                       required
                       className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                     />
@@ -334,9 +388,13 @@ const Login = () => {
                       <input 
                         type="email" 
                         name="email"
+                        id="reg-email"
                         placeholder="name@example.com"
                         value={registerData.email}
                         onChange={handleRegisterChange}
+                        onFocus={() => setIsReadOnly(false)}
+                        readOnly={isReadOnly}
+                        autoComplete="off"
                         required
                         className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
@@ -353,9 +411,13 @@ const Login = () => {
                       <input 
                         type="tel" 
                         name="phone"
+                        id="reg-phone"
                         placeholder="+1 234 567 8900"
                         value={registerData.phone}
                         onChange={handleRegisterChange}
+                        onFocus={() => setIsReadOnly(false)}
+                        readOnly={isReadOnly}
+                        autoComplete="off"
                         required
                         className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
@@ -373,14 +435,27 @@ const Login = () => {
                         </svg>
                       </div>
                       <input 
-                        type="password" 
+                        type={showRegisterPassword ? "text" : "password"} 
                         name="password"
+                        id="reg-password"
                         placeholder="••••••••"
                         value={registerData.password}
                         onChange={handleRegisterChange}
+                        onFocus={() => setIsReadOnly(false)}
+                        readOnly={isReadOnly}
+                        autoComplete="new-password"
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-11 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-[#00E5FF] transition-colors focus:outline-none"
+                        tabIndex={-1}
+                        title={showRegisterPassword ? "Hide password" : "Show password"}
+                      >
+                        {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
                   <div>
@@ -392,14 +467,27 @@ const Login = () => {
                         </svg>
                       </div>
                       <input 
-                        type="password" 
+                        type={showConfirmPassword ? "text" : "password"} 
                         name="confirmPassword"
+                        id="reg-confirm-password"
                         placeholder="••••••••"
                         value={registerData.confirmPassword}
                         onChange={handleRegisterChange}
+                        onFocus={() => setIsReadOnly(false)}
+                        readOnly={isReadOnly}
+                        autoComplete="new-password"
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-4 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm pl-11 pr-11 py-2.5 sm:py-3 text-white placeholder-gray-600 focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all outline-none text-sm"
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-[#00E5FF] transition-colors focus:outline-none"
+                        tabIndex={-1}
+                        title={showConfirmPassword ? "Hide password" : "Show password"}
+                      >
+                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
                 </div>

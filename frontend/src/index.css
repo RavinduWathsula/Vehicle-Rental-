@@ -82,6 +82,28 @@
     background-color: #16181D !important;
     color: #FFFFFF !important;
   }
+
+  /* Autofill styling overrides to eliminate bright white background and keep dark styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #08090B inset !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    transition: background-color 5000s ease-in-out 0s;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  :root:not(.dark) input:-webkit-autofill,
+  :root:not(.dark) input:-webkit-autofill:hover, 
+  :root:not(.dark) input:-webkit-autofill:focus, 
+  :root:not(.dark) input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+    -webkit-text-fill-color: #0F172A !important;
+    caret-color: #0F172A !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 @layer utilities {
