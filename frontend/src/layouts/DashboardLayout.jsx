@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { authService } from '../services/authService';
 import DateTimeDisplay from '../components/ui/DateTimeDisplay';
 import { useTheme } from '../context/ThemeContext';
+import { ConciergeChatbot } from '../components/chat/ConciergeChatbot';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -195,6 +196,9 @@ const DashboardLayout = () => {
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-10 no-scrollbar relative bg-[var(--bg)] text-[var(--text)] transition-colors duration-300">
           <Outlet />
         </div>
+
+        {/* 24/7 VIP Concierge AI Chatbot */}
+        <ConciergeChatbot />
       </main>
     </div>
   );

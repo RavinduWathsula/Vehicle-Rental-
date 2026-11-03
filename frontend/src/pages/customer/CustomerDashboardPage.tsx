@@ -839,14 +839,13 @@ export const CustomerDashboardPage = () => {
                   <PhoneCall size={14} /> Emergency Helpline (+94 11 234 5678)
                 </a>
 
-                <a
-                  href="https://wa.me/94112345678"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[var(--sidebar)] hover:bg-[var(--card-hover)] border border-[var(--border)] text-[var(--text)] font-semibold text-xs transition-colors cursor-pointer"
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-concierge-chat'))}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[var(--sidebar)] hover:bg-[var(--accent)] hover:text-[var(--text-inverse)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text)] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-sm group"
                 >
-                  <ExternalLink size={13} /> Chat with Concierge
-                </a>
+                  <Sparkles size={14} className="text-[var(--accent)] group-hover:text-[var(--text-inverse)] transition-colors" /> Chat with Concierge
+                </button>
               </div>
             </div>
           </section>
