@@ -56,8 +56,8 @@ export const StepConfirm: React.FC<Props> = ({ data, vehicle, prev }) => {
 
     try {
       const response = await createBooking(data);
-      if (response.status === 'confirmed') {
-        navigate('/dashboard/bookings');
+      if (response.status === 'confirmed' || response.reference) {
+        navigate('/dashboard/bookings', { state: { confirmedBooking: response } });
       } else {
         throw new Error(response.message || 'Booking could not be confirmed.');
       }

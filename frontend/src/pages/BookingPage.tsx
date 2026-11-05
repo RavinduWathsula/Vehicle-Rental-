@@ -28,12 +28,21 @@ export const BookingPage = () => {
   const [currentStep, setCurrentStep] = useState<BookingStep>(1);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Sensible default dates: tomorrow and 3 days later
+  const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  const threeDaysLater = new Date(Date.now() + 86400000 * 4).toISOString().split('T')[0];
 
   // Global Booking State
   const [bookingData, setBookingData] = useState<Partial<BookingPayload>>({
     vehicleId: id,
-    pickupDate: stateData.pickupDate || '',
-    returnDate: stateData.returnDate || '',
+    pickupLocation: stateData.pickupLocation || 'Downtown Headquarters',
+    returnLocation: stateData.returnLocation || 'Downtown Headquarters',
+    pickupDate: stateData.pickupDate || tomorrow,
+    returnDate: stateData.returnDate || threeDaysLater,
+    pickupTime: stateData.pickupTime || '10:00',
+    returnTime: stateData.returnTime || '10:00',
     extras: stateData.selectedExtras || [],
     driverId: stateData.driverId || null,
   });
@@ -41,18 +50,24 @@ export const BookingPage = () => {
   useEffect(() => {
     const fetchVehicle = async () => {
       if (!id) {
-        navigate('/');
+        navigate('/vehicles');
         return;
       }
       setLoading(true);
-      const data = await getVehicleById(id);
-      if (data) {
-        setVehicle(data);
-        setBookingData(prev => ({ ...prev, vehicleId: data.id }));
-      } else {
-        navigate('/');
+      setLoadError(null);
+      try {
+        const data = await getVehicleById(id);
+        if (data) {
+          setVehicle(data);
+          setBookingData(prev => ({ ...prev, vehicleId: data.id }));
+        } else {
+          setLoadError(`Unable to find vehicle "${id}". It may be temporarily unavailable.`);
+        }
+      } catch (err: any) {
+        setLoadError(err.message || 'Error loading vehicle.');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchVehicle();
   }, [id, navigate]);
@@ -64,13 +79,33 @@ export const BookingPage = () => {
     setBookingData(prev => ({ ...prev, ...data }));
   };
 
-  if (loading || !vehicle) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#08090B] flex items-center justify-center pt-20">
         <div className="w-12 h-12 border-4 border-[#00E5FF] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
+
+  if (loadError && !vehicle) {
+    return (
+      <div className="min-h-screen bg-[#08090B] flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 text-[#00E5FF]">
+          !
+        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{loadError}</h2>
+        <p className="text-white/50 text-sm mb-6 max-w-md">The requested vehicle could not be loaded into the reservation engine.</p>
+        <button 
+          onClick={() => navigate('/vehicles')}
+          className="px-6 py-2.5 rounded-lg bg-[#00E5FF] text-black font-bold uppercase tracking-wider text-xs hover:bg-[#00c4dc] transition-colors"
+        >
+          Return to Fleet
+        </button>
+      </div>
+    );
+  }
+
+  if (!vehicle) return null;
 
   return (
     <div className="min-h-screen bg-[#08090B] pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 md:px-10">

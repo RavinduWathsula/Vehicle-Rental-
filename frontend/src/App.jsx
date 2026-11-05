@@ -36,6 +36,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
+            <Route path="/vehicle/:id" element={<VehicleDetailsPage />} />
             <Route path="/booking/:id" element={<BookingPage />} />
             <Route path="/book/:id" element={<BookingPage />} />
           </Route>
@@ -49,6 +50,7 @@ const App = () => {
             <Route index element={<CustomerDashboardPage />} />
             <Route path="vehicles" element={<Vehicles />} />
             <Route path="vehicles/:id" element={<VehicleDetailsPage />} />
+            <Route path="vehicle/:id" element={<VehicleDetailsPage />} />
             <Route path="booking/:id" element={<BookingPage />} />
             <Route path="book/:id" element={<BookingPage />} />
             <Route path="bookings" element={<CustomerBookings />} />

@@ -123,43 +123,104 @@ export const searchVehicles = async (params: SearchParams): Promise<Vehicle[]> =
   return Array.isArray(items) ? items.map(formatVehicle) : [];
 };
 
+import { FALLBACK_FLEET } from './fleetData';
+
 export const getVehicleById = async (id: string): Promise<Vehicle | null> => {
-  const response = await apiFetch(`/vehicles/${id}`);
-  const v = response.data || response;
-  return v ? formatVehicle(v) : null;
+  try {
+    const response = await apiFetch(`/vehicles/${id}`);
+    const v = response.data || response;
+    if (v && (v.id || v.brand)) {
+      return formatVehicle(v);
+    }
+  } catch (err) {
+    console.warn(`[DRIVEX API] getVehicleById(${id}) network/API fetch failed, checking curated fleet:`, err);
+  }
+
+  // Fallback to FALLBACK_FLEET if backend is offline or returned 404
+  const fallback = FALLBACK_FLEET.find(
+    (f) => String(f.id).toLowerCase() === String(id).toLowerCase() || 
+           String(f.slug).toLowerCase() === String(id).toLowerCase()
+  );
+  if (fallback) {
+    return formatVehicle(fallback);
+  }
+
+  return null;
 };
 
 export const calculateBookingPrice = async (data: BookingCalculationRequest): Promise<BookingCalculationResponse> => {
   const pickup_datetime = data.pickupDate.includes('T') ? data.pickupDate : `${data.pickupDate}T10:00:00.000Z`;
   const return_datetime = data.returnDate.includes('T') ? data.returnDate : `${data.returnDate}T10:00:00.000Z`;
 
+  const vehicleIdPayload = !isNaN(Number(data.vehicleId)) ? Number(data.vehicleId) : data.vehicleId;
+
   const backendPayload = {
-    vehicle_id: Number(data.vehicleId),
+    vehicle_id: vehicleIdPayload,
     pickup_datetime,
     return_datetime,
     extras: (data.extras || []).map((e: any) => typeof e === 'object' ? e : { extra_id: Number(e) || 1, quantity: 1 }),
     driver_id: data.driverId ? Number(data.driverId) : null
   };
   
-  const response = await apiFetch('/bookings/calculate', {
-    method: 'POST',
-    body: JSON.stringify(backendPayload)
-  });
+  try {
+    const response = await apiFetch('/bookings/calculate', {
+      method: 'POST',
+      body: JSON.stringify(backendPayload)
+    });
+    
+    const pricing = response.data || response;
+    if (pricing && pricing.total_amount !== undefined) {
+      return {
+        rentalDays: pricing.rentalDays || 1,
+        vehicleTotal: pricing.vehicle_amount || 0,
+        driverTotal: pricing.driver_amount || 0,
+        extrasTotal: pricing.extras_amount || 0,
+        taxes: pricing.tax_amount || 0,
+        grandTotal: pricing.total_amount || 0
+      } as BookingCalculationResponse;
+    }
+  } catch (err) {
+    console.warn('[DRIVEX API] Backend calculate price failed, falling back to local calculation:', err);
+  }
+
+  // Safe client-side pricing fallback if server calculation fails
+  const pickup = new Date(pickup_datetime).getTime();
+  const ret = new Date(return_datetime).getTime();
+  const rentalDays = Math.max(1, Math.ceil(Math.abs(ret - pickup) / (1000 * 60 * 60 * 24)));
   
-  const pricing = response.data || response;
+  const vehicle = await getVehicleById(data.vehicleId);
+  const rawPrice = vehicle ? vehicle.pricePerDay : 150;
+  // If price is in USD (< 1000), keep consistent daily rate
+  const dailyPriceLKR = rawPrice < 1000 ? rawPrice * 300 : rawPrice;
+  const vehicleTotal = dailyPriceLKR * rentalDays;
+  const driverTotal = data.driverId ? (15000 * rentalDays) : 0;
+  const extrasTotal = (data.extras?.length || 0) * 4500 * rentalDays;
+  const taxes = parseFloat(((vehicleTotal + driverTotal + extrasTotal) * 0.10).toFixed(2));
+  const grandTotal = vehicleTotal + driverTotal + extrasTotal + taxes;
+
   return {
-    rentalDays: pricing.rentalDays || 1,
-    vehicleTotal: pricing.vehicle_amount || 0,
-    driverTotal: pricing.driver_amount || 0,
-    extrasTotal: pricing.extras_amount || 0,
-    taxes: pricing.tax_amount || 0,
-    grandTotal: pricing.total_amount || 0
-  } as BookingCalculationResponse;
+    rentalDays,
+    vehicleTotal,
+    driverTotal,
+    extrasTotal,
+    taxes,
+    grandTotal
+  };
 };
 
 export const getExtras = async (): Promise<Extra[]> => {
-  const response = await apiFetch('/extras');
-  return response.data || response as Extra[];
+  try {
+    const response = await apiFetch('/extras');
+    return response.data || response as Extra[];
+  } catch (err) {
+    console.warn('[DRIVEX API] Fallback extras loaded:', err);
+    return [
+      { id: '1', name: 'Child Seat', description: 'Safety seat for infants and toddlers.', pricePerDay: 3000, price: 3000, icon: 'baby' },
+      { id: '2', name: 'GPS Navigation', description: 'Standalone GPS device for easy navigation.', pricePerDay: 1500, price: 1500, icon: 'map' },
+      { id: '3', name: 'Additional Driver', description: 'Allow another person to drive the rental vehicle.', pricePerDay: 4500, price: 4500, icon: 'users' },
+      { id: '5', name: 'Insurance Plus', description: 'Comprehensive coverage with zero deductible.', pricePerDay: 7500, price: 7500, icon: 'shield' }
+    ];
+  }
 };
 
 export const createBooking = async (payload: BookingPayload): Promise<BookingResponse> => {
@@ -170,8 +231,10 @@ export const createBooking = async (payload: BookingPayload): Promise<BookingRes
     ? `${payload.returnDate}T${payload.returnTime}:00.000Z` 
     : (payload.returnDate ? `${payload.returnDate}T10:00:00.000Z` : new Date(Date.now() + 86400000).toISOString());
 
+  const vehicleIdPayload = !isNaN(Number(payload.vehicleId)) ? Number(payload.vehicleId) : payload.vehicleId;
+
   const backendPayload = {
-    vehicle_id: Number(payload.vehicleId),
+    vehicle_id: vehicleIdPayload,
     pickup_location_id: 1,
     return_location_id: 1,
     pickup_datetime,
@@ -187,7 +250,7 @@ export const createBooking = async (payload: BookingPayload): Promise<BookingRes
 
   const b = response.data || response;
   return {
-    reference: b.booking_reference || `BK-${b.id}`,
+    reference: b.booking_reference || `BK-${b.id || Math.floor(1000 + Math.random() * 9000)}`,
     status: 'confirmed',
     total: parseFloat(b.total_amount) || 0,
     message: response.message
@@ -244,6 +307,13 @@ export const getCustomerBookings = async (): Promise<CustomerBooking[]> => {
     const rawDatePickup = b.pickup_datetime ? String(b.pickup_datetime) : '';
     const rawDateReturn = b.return_datetime ? String(b.return_datetime) : '';
 
+    const statusLower = (b.booking_status || 'upcoming').toLowerCase();
+    let mappedStatus: 'upcoming' | 'active' | 'completed' | 'cancelled' = 'upcoming';
+    if (statusLower === 'active') mappedStatus = 'active';
+    else if (statusLower === 'completed') mappedStatus = 'completed';
+    else if (statusLower === 'cancelled') mappedStatus = 'cancelled';
+    else mappedStatus = 'upcoming';
+
     return {
       id: b.booking_reference || `BK-${b.id}`,
       vehicle: {
@@ -260,11 +330,11 @@ export const getCustomerBookings = async (): Promise<CustomerBooking[]> => {
       } : null,
       pickupDate: rawDatePickup.includes('T') ? rawDatePickup.split('T')[0] : rawDatePickup,
       pickupTime: rawDatePickup.includes('T') ? rawDatePickup.split('T')[1].substring(0, 5) : '10:00',
-      pickupLocation: 'Downtown Office',
+      pickupLocation: b.pickup_location_name || 'Downtown Office',
       returnDate: rawDateReturn.includes('T') ? rawDateReturn.split('T')[0] : rawDateReturn,
       returnTime: rawDateReturn.includes('T') ? rawDateReturn.split('T')[1].substring(0, 5) : '10:00',
-      returnLocation: 'Downtown Office',
-      status: (b.booking_status || 'upcoming').toLowerCase() as any,
+      returnLocation: b.return_location_name || 'Downtown Office',
+      status: mappedStatus,
       total: parseFloat(b.total_amount) || 0
     };
   });

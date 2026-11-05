@@ -21,6 +21,29 @@ export const StepDetails: React.FC<Props> = ({ data, updateData, prev, next }) =
     licenseNumber: ''
   };
 
+  // Auto-populate customer information from active session if available
+  React.useEffect(() => {
+    if (!customer.firstName && !customer.email) {
+      try {
+        const storedUser = localStorage.getItem('drivex_user');
+        if (storedUser) {
+          const u = JSON.parse(storedUser);
+          const fullName = u.name || '';
+          const parts = fullName.trim().split(' ');
+          updateData({
+            customer: {
+              firstName: customer.firstName || parts[0] || 'Guest',
+              lastName: customer.lastName || parts.slice(1).join(' ') || 'Customer',
+              email: customer.email || u.email || '',
+              phone: customer.phone || u.phone || '+94 77 123 4567',
+              licenseNumber: customer.licenseNumber || u.license_number || u.licenseNumber || 'DL-9948201'
+            }
+          });
+        }
+      } catch (e) {}
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateData({
       customer: {

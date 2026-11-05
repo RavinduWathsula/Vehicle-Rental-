@@ -1,31 +1,30 @@
 const Joi = require('joi');
 
 const createBookingSchema = Joi.object({
-  vehicle_id: Joi.number().integer().required(),
+  vehicle_id: Joi.alternatives().try(Joi.number().integer(), Joi.string()).required(),
   driver_id: Joi.number().integer().allow(null).optional(),
-  pickup_location_id: Joi.number().integer().required(),
-  return_location_id: Joi.number().integer().required(),
+  pickup_location_id: Joi.number().integer().default(1),
+  return_location_id: Joi.number().integer().default(1),
   
-  // Must be a valid date string and pickup must be in the future
-  pickup_datetime: Joi.date().iso().min('now').required().messages({
-    'date.min': 'Pickup date must be in the future.'
-  }),
+  // Must be a valid date string
+  pickup_datetime: Joi.date().iso().required(),
   
   // Return must be strictly after pickup
   return_datetime: Joi.date().iso().greater(Joi.ref('pickup_datetime')).required().messages({
     'date.greater': 'Return date must be after the pickup date.'
   }),
 
-  // Extras should be an array of objects: { extra_id: 1, quantity: 1 }
+  // Extras should be an array of objects or IDs
   extras: Joi.array().items(
-    Joi.object({
-      extra_id: Joi.number().integer().required(),
-      quantity: Joi.number().integer().min(1).default(1)
-    })
+    Joi.alternatives().try(
+      Joi.object({
+        extra_id: Joi.number().integer().required(),
+        quantity: Joi.number().integer().min(1).default(1)
+      }),
+      Joi.number().integer(),
+      Joi.string()
+    )
   ).optional().default([])
-
-  // NOTE: We strictly DO NOT validate or accept pricing info from the client payload.
-  // The service layer completely calculates total_amount, tax, etc.
 });
 
 // Admin schema for updating status

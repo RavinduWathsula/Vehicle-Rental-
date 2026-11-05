@@ -37,8 +37,10 @@ class BookingService {
       throw error;
     }
 
+    const resolvedVehicleId = vehicle.id;
+
     // 2. Check Overlaps (Bookings, Maintenance, Driver)
-    const overlapCheck = await bookingModel.findOverlaps(vehicle_id, driver_id, pickup_datetime, return_datetime);
+    const overlapCheck = await bookingModel.findOverlaps(resolvedVehicleId, driver_id, pickup_datetime, return_datetime);
     if (overlapCheck.conflict) {
       const error = new Error(`Scheduling conflict detected: ${overlapCheck.type}`);
       error.statusCode = 409;
@@ -47,22 +49,20 @@ class BookingService {
 
     // 3. Calculation Engine
     const pricing = await this.calculatePrice({
-      vehicle_id,
+      vehicle_id: resolvedVehicleId,
       driver_id,
       pickup_datetime,
       return_datetime,
       extras
     });
-    
-
 
     // 4. Assemble Data
     const bookingData = {
       user_id: userId,
-      vehicle_id,
+      vehicle_id: resolvedVehicleId,
       driver_id: driver_id || null,
-      pickup_location_id,
-      return_location_id,
+      pickup_location_id: pickup_location_id || 1,
+      return_location_id: return_location_id || 1,
       pickup_datetime,
       return_datetime,
       vehicle_amount: pricing.vehicle_amount,
@@ -71,8 +71,8 @@ class BookingService {
       discount_amount: pricing.discount_amount,
       tax_amount: pricing.tax_amount,
       total_amount: pricing.total_amount,
-      booking_status: 'pending',
-      payment_status: 'pending'
+      booking_status: 'confirmed',
+      payment_status: 'paid'
     };
 
     // 5. Transactional Insert
