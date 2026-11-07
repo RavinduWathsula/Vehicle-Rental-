@@ -8,16 +8,19 @@ import {
   CheckCircle2,
   XCircle,
   Search,
-  RefreshCw
+  RefreshCw,
+  Eye
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCustomerBookings, type CustomerBooking } from '../../lib/api';
+import { BookingDetailsModal } from '../../components/ui/BookingDetailsModal';
 
 export const CustomerBookings = () => {
   const [bookings, setBookings] = useState<CustomerBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedBookingForDetails, setSelectedBookingForDetails] = useState<CustomerBooking | null>(null);
 
   const loadBookings = async () => {
     try {
@@ -220,6 +223,13 @@ export const CustomerBookings = () => {
                             LKR {booking.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </p>
                         </div>
+
+                        <button
+                          onClick={() => setSelectedBookingForDetails(booking)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[var(--accent)]/10 hover:bg-[var(--accent)] text-[var(--accent)] hover:text-[var(--text-inverse)] transition-all cursor-pointer shadow-sm"
+                        >
+                          <Eye size={13} /> View Details
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -229,6 +239,13 @@ export const CustomerBookings = () => {
           )}
         </div>
       </div>
+
+      {/* Booking Details Modal */}
+      <BookingDetailsModal
+        isOpen={!!selectedBookingForDetails}
+        onClose={() => setSelectedBookingForDetails(null)}
+        booking={selectedBookingForDetails}
+      />
     </div>
   );
 };
