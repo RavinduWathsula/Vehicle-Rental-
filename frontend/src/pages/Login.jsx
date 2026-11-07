@@ -29,7 +29,11 @@ const Login = () => {
     setIsLogin(location.pathname !== '/register');
     setLoginData({ email: '', password: '' });
     setRegisterData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
-    setError('');
+    if (location.state?.message) {
+      setError(location.state.message);
+    } else {
+      setError('');
+    }
     setIsReadOnly(true);
     
     // Release readOnly after the initial render cycle
@@ -101,7 +105,11 @@ const Login = () => {
     setIsLogin(newState);
     setLoginData({ email: '', password: '' });
     setRegisterData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
-    setError('');
+    if (location.state?.message) {
+      setError(location.state.message);
+    } else {
+      setError('');
+    }
     setIsReadOnly(true);
     // Update URL without full reloading
     window.history.pushState({}, '', newState ? '/login' : '/register');

@@ -47,6 +47,18 @@ export const BookingPage = () => {
     driverId: stateData.driverId || null,
   });
 
+  // Check user authentication - require registration before booking
+  useEffect(() => {
+    const token = localStorage.getItem('drivex_token');
+    const user = localStorage.getItem('drivex_user');
+    if (!token && !user) {
+      navigate('/register', {
+        replace: true,
+        state: { message: 'Registration required: Please create an account or sign in before completing a vehicle reservation.' }
+      });
+    }
+  }, [navigate]);
+
   useEffect(() => {
     const fetchVehicle = async () => {
       if (!id) {

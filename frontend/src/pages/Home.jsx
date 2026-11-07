@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import NewHero from '../components/home/NewHero';
 import FeaturedFleet from '../components/home/FeaturedFleet';
@@ -67,29 +68,58 @@ const CreativeBackground = () => (
 );
 
 const Home = () => {
+  const location = useLocation();
+
+  // Smooth scroll to target hash on navigation or page load
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          const offset = 80;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }, 150);
+      }
+    }
+  }, [location]);
+
   return (
     <div className="w-full relative text-white">
       <CreativeBackground />
       
       <div className="relative z-10 w-full">
+        {/* Hero Section */}
         <div id="home">
           <NewHero />
         </div>
         
-        <FeaturedFleet />
+        {/* Featured Fleet Section */}
+        <div id="fleet">
+          <FeaturedFleet />
+        </div>
+
         <ExperienceSection />
         
+        {/* About Section */}
         <div id="about">
           <WhyChooseUs />
           <AboutSection />
         </div>
         
+        {/* How It Works Section */}
         <div id="how-to-work">
           <HowItWorks />
         </div>
         
         <Testimonials />
         
+        {/* Contact Section */}
         <div id="contact">
           <ContactSection />
         </div>
