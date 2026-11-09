@@ -150,6 +150,7 @@ export const VehicleDetailsPage = () => {
   const [returnDate, setReturnDate] = useState(searchParams.get('returnDate') || '');
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     const fetchVehicle = async () => {
       if (!id) return;
       try {

@@ -25,11 +25,13 @@ import { AdminDrivers } from './pages/admin/AdminDrivers';
 import { AdminMaintenance } from './pages/admin/AdminMaintenance';
 import { AdminReports } from './pages/admin/AdminReports';
 import { AdminSettings } from './pages/admin/AdminSettings';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>

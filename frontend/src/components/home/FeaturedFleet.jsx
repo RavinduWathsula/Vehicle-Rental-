@@ -77,6 +77,7 @@ const FeaturedFleet = () => {
           >
             <Link 
               to="/vehicles"
+              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
               className="group flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-widest text-white hover:text-[#00E5FF] transition-colors"
             >
               View Full Fleet
@@ -159,6 +160,7 @@ const FeaturedFleet = () => {
                   <div className="grid grid-cols-2 gap-2 pt-2">
                     <Link 
                       to={`/vehicles/${vehicle.id}`}
+                      onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
                       className="py-3 text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold uppercase tracking-widest text-[11px] transition-colors rounded-sm flex items-center justify-center"
                     >
                       View Details
@@ -180,6 +182,7 @@ const FeaturedFleet = () => {
         <div className="mt-12 sm:mt-16 text-center">
           <Link
             to="/vehicles"
+            onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
             className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-[#00E5FF] text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-sm transition-all duration-300 shadow-[0_0_20px_rgba(0,229,255,0.2)]"
           >
             Explore Complete Fleet & Filter Vehicles <ChevronRight size={16} />

@@ -306,6 +306,11 @@ const Vehicles = () => {
   const [activeSeats, setActiveSeats] = useState('All');
   const [activeAvailability, setActiveAvailability] = useState('All');
 
+  // Ensure page always starts scrolled to the very top on navigation
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   // Sync category state if URL param changes
   useEffect(() => {
     const cat = searchParams.get('category');
